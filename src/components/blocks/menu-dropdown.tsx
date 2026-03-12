@@ -51,8 +51,12 @@ const MenuDropdown = ({ trigger, navigationData, activeSection, align = 'start' 
       >
         {navigationData.map(navItem => {
           if (navItem.href) {
-            // Extract section ID from href (e.g., "/#categories" -> "categories", "/#" -> "home")
-            const sectionFromHref = navItem.href === '/#' ? 'home' : navItem.href.replace('/#', '')
+            const sectionFromHref =
+              navItem.href === '/#' || navItem.href === '/#home'
+                ? '/'
+                : navItem.href.startsWith('/#')
+                  ? navItem.href
+                  : navItem.href
             const isActive = sectionFromHref === activeSection
 
             return (

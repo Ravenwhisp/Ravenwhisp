@@ -1,0 +1,21 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+const pageTitle = 'About Us | Ravenwhisp Studio'
+const pageDescription = 'Learn more about Ravenwhisp Studio and our mission behind Bound By Death.'
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-16 sm:py-24'>
+    <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <h1 class='text-foreground text-4xl font-bold'>About Us</h1>
+      <p class='text-muted-foreground text-lg'>
+        Ravenwhisp Studio is an indie game studio focused on crafting atmospheric and memorable gameplay experiences.
+      </p>
+      <p class='text-muted-foreground'>
+        We are currently building <strong class='text-foreground'>Bound By Death</strong>, a dark fantasy co-op
+        hack-and-slash for two players.
+      </p>
+    </div>
+  </section>
+</Layout>

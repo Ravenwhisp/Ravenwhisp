@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { MailIcon, MenuIcon } from 'lucide-react'
+import { DownloadIcon, MenuIcon } from 'lucide-react'
 
 import ThemeToggle from '@/components/layout/theme-toggle'
 
@@ -23,7 +23,7 @@ type HeaderProps = {
 
 const Header = ({ navigationData, className }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('home')
+  const [activeSection, setActiveSection] = useState('/')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,56 +38,17 @@ const Header = ({ navigationData, className }: HeaderProps) => {
     }
   }, [])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Only handle scroll-based active section on the home page
-      const path = window.location.pathname
-
-      if (path !== '/') {
-        return
-      }
-
-      const sections = document.querySelectorAll('section[id]')
-      const scrollPosition = window.scrollY + window.innerHeight / 2
-
-      for (const section of sections) {
-        const element = section as HTMLElement
-        const { offsetTop, offsetHeight } = element
-
-        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-          if (element.id !== activeSection) {
-            setActiveSection(element.id)
-          }
-
-          break
-        }
-      }
-    }
-
-    // Initial check
-    handleScroll()
-
-    // Listen for scroll events
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [activeSection])
-
   useLayoutEffect(() => {
     // Update activeSection based on the current route using window.location.pathname
     const path = window.location.pathname
 
     setTimeout(() => {
       if (path === '/' || path === '/#home') {
-        setActiveSection('home')
-      } else if (path.startsWith('/blog/')) {
-        setActiveSection('') // Don't show any active state on blog post pages
-      } else if (path.startsWith('/contact')) {
-        setActiveSection('') // Don't show any active state on contact page
+        setActiveSection('/')
+      } else if (path.startsWith('/blog')) {
+        setActiveSection('/blog')
       } else {
-        setActiveSection('') // Default case for other routes
+        setActiveSection(path)
       }
     }, 0)
   }, [])
@@ -116,7 +77,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
         <div className='flex gap-3'>
           <ThemeToggle />
           <Button variant='outline' className='max-sm:hidden' asChild>
-            <a href='/contact-us'>Get in Touch</a>
+            <a href='/download'>Download</a>
           </Button>
 
           {/* Navigation for small screens */}
@@ -125,13 +86,13 @@ const Header = ({ navigationData, className }: HeaderProps) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant='outline' size='icon' className='sm:hidden' asChild>
-                    <a href='/contact-us'>
-                      <MailIcon />
-                      <span className='sr-only'>Get in Touch</span>
+                    <a href='/download'>
+                      <DownloadIcon />
+                      <span className='sr-only'>Download</span>
                     </a>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Get in Touch</TooltipContent>
+                <TooltipContent>Download</TooltipContent>
               </Tooltip>
             </TooltipProvider>
 
