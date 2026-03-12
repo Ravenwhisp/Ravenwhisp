@@ -67,7 +67,6 @@ const Header = ({ navigationData, className }: HeaderProps) => {
         {/* Logo */}
         <a href='/#home' className='flex items-center gap-3'>
           <LogoSvg />
-          <span className='text-primary text-[20px] font-semibold'>INK</span>
         </a>
 
         {/* Navigation */}
