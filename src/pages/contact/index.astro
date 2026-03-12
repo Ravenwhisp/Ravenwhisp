@@ -1,12 +1,110 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 
-import ContactUs from '@/components/blocks/contact-us/contact-us'
+import { SOCIAL_LINKS } from '@/consts'
+import {
+  ExternalLinkIcon,
+  GithubIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  MailIcon,
+  Music2Icon,
+  TwitterIcon,
+  YoutubeIcon
+} from 'lucide-react'
 
 const pageTitle = 'Contact | Ravenwhisp Studio'
 const pageDescription = 'Get in touch with Ravenwhisp Studio.'
+const contactEmail = 'ravenwhispstudios@gmail.com'
+
+const socialItems = [
+  { label: 'GitHub', href: SOCIAL_LINKS.github, icon: GithubIcon },
+  { label: 'LinkedIn', href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },
+  { label: 'Instagram', href: SOCIAL_LINKS.instagram, icon: InstagramIcon },
+  { label: 'TikTok', href: SOCIAL_LINKS.tiktok, icon: Music2Icon },
+  { label: 'YouTube', href: SOCIAL_LINKS.youtube, icon: YoutubeIcon },
+  { label: 'X (Twitter)', href: SOCIAL_LINKS.twitter, icon: TwitterIcon }
+]
+
+const pressKitItems = [
+  { title: 'Logo Pack', image: '/images/blog-post/post-1.webp' },
+  { title: 'Key Art', image: '/images/blog-post/post-2.webp' },
+  { title: 'Screenshots', image: '/images/blog-post/post-3.webp' },
+  { title: 'Studio Shots', image: '/images/blog-post/post-4.webp' }
+]
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <ContactUs />
+  <section class='py-12 sm:py-16'>
+    <div class='mx-auto max-w-7xl space-y-10 px-4 sm:px-6 lg:px-8'>
+      <div class='grid gap-6 lg:grid-cols-2'>
+        <article class='bg-card border-border rounded-xl border p-6'>
+          <h2 class='text-foreground text-2xl font-semibold'>Email</h2>
+          <p class='text-muted-foreground mt-2'>For general inquiries, partnerships, and support:</p>
+          <a
+            href={`mailto:${contactEmail}`}
+            class='text-primary mt-4 inline-flex items-center gap-2 text-lg font-semibold hover:underline'
+          >
+            <MailIcon className='size-5' />
+            {contactEmail}
+          </a>
+        </article>
+
+        <article class='bg-card border-border rounded-xl border p-6'>
+          <h2 class='text-foreground text-2xl font-semibold'>Social Media</h2>
+          <p class='text-muted-foreground mt-2'>Follow Ravenwhisp Studio:</p>
+          <div class='mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2'>
+            {
+              socialItems.map(item => {
+                const Icon = item.icon
+
+                return (
+                  <a
+                    href={item.href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    class='border-border hover:bg-muted inline-flex items-center justify-between rounded-lg border px-4 py-3 transition-colors'
+                  >
+                    <span class='text-foreground inline-flex items-center gap-2 font-medium'>
+                      <Icon className='size-4' />
+                      {item.label}
+                    </span>
+                    <ExternalLinkIcon className='text-muted-foreground size-4' />
+                  </a>
+                )
+              })
+            }
+          </div>
+        </article>
+      </div>
+
+      <article class='space-y-4'>
+        <div>
+          <h2 class='text-foreground text-2xl font-semibold'>Press Kit</h2>
+          <p class='text-muted-foreground mt-2'>
+            We are still working on this. Press kit materials will be available here for media and content creators.
+          </p>
+        </div>
+
+        <div class='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+          {
+            pressKitItems.map(item => (
+              <a href='#' class='group bg-card border-border overflow-hidden rounded-xl border'>
+                <img
+                  src={item.image}
+                  alt={`${item.title} placeholder`}
+                  class='h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105'
+                  loading='lazy'
+                />
+                <div class='flex items-center justify-between px-4 py-3'>
+                  <span class='text-foreground font-medium'>{item.title}</span>
+                  <ExternalLinkIcon className='text-muted-foreground size-4' />
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </article>
+    </div>
+  </section>
 </Layout>
