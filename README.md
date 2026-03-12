@@ -219,11 +219,20 @@ This project uses **Prettier** for code formatting with the following features:
 Edit `src/consts.ts` to customize your site:
 
 ```typescript
-export const siteConfig = {
-  creatorName: 'Shadcn Studio',
-  demoName: 'Ink',
-  templateName: 'Blog Landing Page'
-  // ... more settings
+export const SITE_TITLE = 'Bound By Death Game | Ravenwhisp Studio'
+export const SITE_DESCRIPTION = 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.'
+
+export const SITE_URL = 'https://your-domain.com/'
+export const GITHUB_URL = 'https://github.com/your-org/your-repo'
+
+export const SITE_METADATA = {
+  title: { default: SITE_TITLE },
+  description: SITE_DESCRIPTION,
+  themeColor: {
+    light: '#111826',
+    dark: '#e4e8ef'
+  }
+  // openGraph, twitter, icons, verification...
 }
 ```
 
@@ -231,36 +240,41 @@ export const siteConfig = {
 
 Configure the site's SEO and global metadata in `src/consts.ts`. These settings power the `HeadSeo.astro` layout and `seo.ts` helpers so pages have correct titles, descriptions, and social previews.
 
-Recommended fields:
+Recommended fields in this project:
 
-- `siteTitle`: The site-wide default title.
-- `siteDescription`: Default meta description for pages.
-- `siteUrl`: The canonical base URL for building absolute links.
-- `siteLocale`: Locale string used for html/lang and Open Graph (e.g. `en-US`).
-- `siteAuthor`: Default author/creator name.
-- `siteKeywords`: Array of SEO keywords.
-- `socialImage`: Path to the default social preview image (OG/Twitter card).
-- `faviconPath`: Path to the favicon in `/public`.
-- `themeColor`: Theme color meta for browsers and PWA.
-- `twitterHandle`: Official Twitter/X handle for site cards.
-- `analyticsId`: Optional analytics measurement id (Google Analytics, Plausible, etc.).
+- `SITE_TITLE` and `SITE_DESCRIPTION`: Defaults used for RSS + SEO fallbacks.
+- `SITE_URL`: Canonical base URL used in metadata.
+- `GITHUB_URL`: Used by social/profile links.
+- `SITE_METADATA.title.default`: Default `<title>` fallback.
+- `SITE_METADATA.keywords`: Comma-joined keyword meta values.
+- `SITE_METADATA.openGraph`: Open Graph title/description/image defaults.
+- `SITE_METADATA.twitter`: Twitter card + account metadata.
+- `SITE_METADATA.icons`: Favicon/apple icon definitions.
+- `SITE_METADATA.themeColor.light` and `SITE_METADATA.themeColor.dark`: Browser theme color for light/dark mode.
+- `SITE_METADATA.verification`: Search engine verification tags.
 
-Example `siteConfig` with SEO fields:
+Example `consts.ts` values for SEO fields:
 
 ```typescript
-// Example SEO & site settings — edit src/consts.ts
-export const siteConfig = {
-  siteTitle: 'Ink — Blog Landing Page',
-  siteDescription: 'A beautifully crafted Blog and product landing page built with Astro and shadcn/studio.',
-  siteUrl: 'https://example.com',
-  siteLocale: 'en-US',
-  siteAuthor: 'Shadcn Studio',
-  siteKeywords: ['Blog', 'landing page', 'astro', 'shadcn'],
-  socialImage: '/images/social-preview.png',
-  faviconPath: '/favicon/favicon.ico',
-  themeColor: '#0ea5e9',
-  twitterHandle: '@ShadcnStudio',
-  analyticsId: '' // optional
+// Example settings — edit src/consts.ts
+export const SITE_URL = 'https://ravenwhisp.com/'
+export const GITHUB_URL = 'https://github.com/ravenwhisp/Ravenwhisp_web'
+
+export const SITE_METADATA = {
+  title: { default: 'Bound By Death Game | Ravenwhisp Studio' },
+  description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
+  themeColor: {
+    light: '#E8EDE8',
+    dark: '#202020'
+  },
+  openGraph: {
+    title: 'Bound By Death | Ravenwhisp Studio',
+    images: [{ url: '/images/og-image.png', width: 1200, height: 630 }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@Raven_Whisp'
+  }
 }
 ```
 

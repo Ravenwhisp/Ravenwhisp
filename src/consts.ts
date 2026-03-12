@@ -1,40 +1,42 @@
 // Site Configuration
 // Centralized configuration for site metadata, SEO, and branding
 
-export const SITE_TITLE = 'Demo: Ink - Blog Landing Page | Shadcn Studio'
-export const SITE_DESCRIPTION =
-  'Ink is a free Shadcn UI Blog Landing Page template to publish articles, insights, and categories with a clean, fast, and readable layout.'
+export const SITE_TITLE = 'Bound By Death Game | Ravenwhisp Studio'
+export const SITE_DESCRIPTION = 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.'
 
-export const GITHUB_URL = 'https://github.com/yourusername/master-shadcn-astro'
-export const SITE_URL = 'https://shadcnstudio.com/'
+export const GITHUB_URL = 'https://github.com/yourusername/master-shadcn-astro' // TODO: Update with your actual GitHub repository URL
+export const SITE_URL = 'https://shadcnstudio.com/' // TODO: Update with your actual site URL
 
 export const SITE_METADATA = {
   title: {
-    default: 'Demo: Ink - Blog Landing Page | Shadcn Studio'
+    default: 'Bound By Death Game | Ravenwhisp Studio'
   },
-  description:
-    'Ink is a free Shadcn UI Blog Landing Page template to publish articles, insights, and categories with a clean, fast, and readable layout.',
+  description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
+  themeColor: {
+    light: '#111826',
+    dark: '#e4e8ef'
+  },
   keywords: [
-    'Astro',
-    'astro template',
-    'astro theme',
-    'astro starter',
-    'shadcn template',
-    'shadcn ui',
-    'shadcn/ui components',
-    'tailwind template',
-    'tailwind css',
-    'react components',
-    'SEO optimized',
-    'web development',
-    'static site generator',
-    'modern web apps',
-    'performance',
-    'typescript'
+    'Ravenwhisp Studio',
+    'Bound by Death',
+    'indie game',
+    'indie game studio',
+    'co-op game',
+    'hack-and-slash game',
+    'dark fantasy game',
+    'action RPG',
+    'game development',
+    'indie game development',
+    'game design',
+    'game art',
+    'game programming',
+    'game portfolio',
+    'game showcase',
+    'game trailer'
   ],
-  authors: [{ name: 'shadcn Studio', url: SITE_URL }],
-  creator: 'shadcn Studio',
-  publisher: 'shadcn Studio',
+  authors: [{ name: 'Ravenwhisp Studio', url: SITE_URL }],
+  creator: 'Ravenwhisp Studio',
+  publisher: 'Ravenwhisp Studio',
   robots: {
     index: true,
     follow: true
@@ -55,27 +57,26 @@ export const SITE_METADATA = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Ink',
-    title: 'Ink - Blog Landing Page | Shadcn Studio',
-    description:
-      'Ink is a free Shadcn UI Blog Landing Page template to publish articles, insights, and categories with a clean, fast, and readable layout.',
+    siteName: 'Bound By Death | Ravenwhisp Studio',
+    title: 'Bound By Death | Ravenwhisp Studio',
+    description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
     images: [
       {
         url: '/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Ink - Blog Landing Page',
+        alt: 'Bound By Death | Ravenwhisp Studio',
         type: 'image/png'
       }
     ]
   },
   twitter: {
+    // TODO: Update Twitter handle and card type if needed
     card: 'summary_large_image',
-    site: '@shadcnstudio',
-    creator: '@shadcnstudio',
-    title: 'Ink - Blog Landing Page | Shadcn Studio',
-    description:
-      'Ink is a free Shadcn UI Blog Landing Page template to publish articles, insights, and categories with a clean, fast, and readable layout.',
+    site: '@ravenwhispstudio',
+    creator: '@ravenwhispstudio',
+    title: 'Bound By Death | Ravenwhisp Studio',
+    description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
     images: ['/images/og-image.png']
   },
   verification: {
@@ -88,29 +89,19 @@ export const SITE_METADATA = {
 // Social media links
 export const SOCIAL_LINKS = {
   github: GITHUB_URL,
-  twitter: 'https://twitter.com/shadcnstudio',
-  linkedin: 'https://linkedin.com/company/shadcnstudio',
-  discord: 'https://discord.gg/shadcnstudio'
+  twitter: 'https://x.com/Raven_Whisp',
+  linkedin: 'https://www.linkedin.com/company/ravenwhisp',
+  instagram: 'https://www.instagram.com/ravenwhisp_studios',
+  tiktok: 'https://www.tiktok.com/@ravenwhisp.studio',
+  youtube: 'https://www.youtube.com/@Ravenwhisp'
 }
 
 // Company information for structured data
 export const COMPANY_INFO = {
-  name: 'Ink',
-  legalName: 'shadcn Studio Inc.',
+  name: 'Bound By Death',
+  legalName: 'Ravenwhisp Studio',
   url: SITE_URL,
   logo: `/images/site-logo.png`,
-  foundingDate: '2024',
-  address: {
-    streetAddress: '123 Web Dev Street',
-    addressLocality: 'San Francisco',
-    addressRegion: 'CA',
-    postalCode: '94102',
-    addressCountry: 'US'
-  },
-  contactPoint: {
-    telephone: '+1-555-123-4567',
-    contactType: 'customer support',
-    email: 'support@shadcnstudio.com'
-  },
+  foundingDate: '2026',
   sameAs: Object.values(SOCIAL_LINKS)
 }

@@ -31,7 +31,7 @@ const {
 } = Astro.props
 
 // Use site metadata defaults if not provided
-const finalTitle = title ? `Demo: ${title} - Ink | Shadcn Studio` : SITE_METADATA.title.default
+const finalTitle = title || SITE_METADATA.title.default
 const finalDescription = description || SITE_METADATA.description
 const finalKeywords = keywords || SITE_METADATA.keywords.join(', ')
 const finalImage = image || SITE_METADATA.openGraph.images[0].url
@@ -177,8 +177,8 @@ const schemaData = schema || defaultSchema
 />
 
 <!-- Theme Color -->
-<meta name='theme-color' content='#111826' media='(prefers-color-scheme: light)' />
-<meta name='theme-color' content='#e4e8ef' media='(prefers-color-scheme: dark)' />
+<meta name='theme-color' content={SITE_METADATA.themeColor.light} media='(prefers-color-scheme: light)' />
+<meta name='theme-color' content={SITE_METADATA.themeColor.dark} media='(prefers-color-scheme: dark)' />
 
 <!-- Structured Data (JSON-LD) -->
 {/* eslint-disable-next-line astro/no-set-html-directive */}
