@@ -14,6 +14,19 @@ export function calculateReadTime(text: string | undefined): number {
   return readTime
 }
 
+export function sortPostsByPubDate<T extends { pubDate: string }>(posts: T[]): T[] {
+  return [...posts].sort((left, right) => {
+    const leftTime = Date.parse(left.pubDate)
+    const rightTime = Date.parse(right.pubDate)
+
+    if (Number.isNaN(leftTime) || Number.isNaN(rightTime)) {
+      return right.pubDate.localeCompare(left.pubDate)
+    }
+
+    return rightTime - leftTime
+  })
+}
+
 /**
  * Get related posts based on category
  */

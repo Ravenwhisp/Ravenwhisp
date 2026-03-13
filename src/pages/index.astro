@@ -1,9 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
+import { sortPostsByPubDate } from '@/utils/blog'
 
 import HeroSection from '@/components/blocks/hero-section/hero-section'
-import Blog from '@/components/blocks/blog-component/blog-component'
+import HomeBlogPreview from '@/components/blocks/home-blog-preview/home-blog-preview'
 import CTA from '@/components/blocks/cta-section/cta-section'
 
 // Get all blog posts and convert to the format expected by components
@@ -15,28 +16,30 @@ const peopleById = new Map(allPeople.map(person => [person.id, person]))
 const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
 
 // Convert to the format expected by the React components
-const allBlogPosts = publishedPosts
-  .map((post, index) => {
-    const authorId = getAuthorId(post.data.author)
-    const authorPerson = peopleById.get(authorId)
+const allBlogPosts = publishedPosts.map((post, index) => {
+  const authorId = getAuthorId(post.data.author)
+  const authorPerson = peopleById.get(authorId)
 
-    return {
-      id: post.data.id || index + 1,
-      slug: post.data.slug || post.id,
-      title: post.data.title,
-      description: post.data.description,
-      imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
-      imageAlt: post.data.imageAlt || post.data.title,
-      pubDate: post.data.pubDate,
-      category: post.data.category,
-      author: authorPerson?.data.name || 'Unknown Author',
-      avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
-      authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
-      readTime: post.data.readTime || 5,
-      featured: post.data.featured || false
-    }
-  })
-  .sort((a, b) => b.pubDate.localeCompare(a.pubDate))
+  return {
+    id: post.data.id || index + 1,
+    slug: post.data.slug || post.id,
+    title: post.data.title,
+    description: post.data.description,
+    imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
+    imageAlt: post.data.imageAlt || post.data.title,
+    pubDate: post.data.pubDate,
+    category: post.data.category,
+    author: authorPerson?.data.name || 'Unknown Author',
+    avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
+    authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
+    readTime: post.data.readTime || 5,
+    featured: post.data.featured || false
+  }
+})
+
+const sortedBlogPosts = sortPostsByPubDate(allBlogPosts)
+const featuredPosts = sortedBlogPosts.filter(post => post.featured).slice(0, 2)
+const latestNonFeaturedPosts = sortedBlogPosts.filter(post => !post.featured).slice(0, 3)
 
 // Page-specific SEO configuration
 const pageTitle = ''
@@ -67,7 +70,6 @@ const schema = {
 
 <Layout title={pageTitle} description={pageDescription} keywords={pageKeywords} schema={schema}>
   <!--  All Sections -->
-  <HeroSection blogData={allBlogPosts} client:load />
-  <Blog blogData={allBlogPosts} client:load />
-  <CTA />
+  <HeroSection client:load />
+  <HomeBlogPreview featuredPosts={featuredPosts} latestNonFeaturedPosts={latestNonFeaturedPosts} client:load />
 </Layout>

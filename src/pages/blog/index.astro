@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
+import { sortPostsByPubDate } from '@/utils/blog'
 
 import Blog from '@/components/blocks/blog-component/blog-component'
 
@@ -11,28 +12,28 @@ const publishedPosts = allPosts
 const peopleById = new Map(allPeople.map(person => [person.id, person]))
 const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
 
-const allBlogPosts = publishedPosts
-  .map((post, index) => {
-    const authorId = getAuthorId(post.data.author)
-    const authorPerson = peopleById.get(authorId)
+const allBlogPosts = publishedPosts.map((post, index) => {
+  const authorId = getAuthorId(post.data.author)
+  const authorPerson = peopleById.get(authorId)
 
-    return {
-      id: post.data.id || index + 1,
-      slug: post.data.slug || post.id,
-      title: post.data.title,
-      description: post.data.description,
-      imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
-      imageAlt: post.data.imageAlt || post.data.title,
-      pubDate: post.data.pubDate,
-      category: post.data.category,
-      author: authorPerson?.data.name || 'Unknown Author',
-      avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
-      authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
-      readTime: post.data.readTime || 5,
-      featured: post.data.featured || false
-    }
-  })
-  .sort((a, b) => b.pubDate.localeCompare(a.pubDate))
+  return {
+    id: post.data.id || index + 1,
+    slug: post.data.slug || post.id,
+    title: post.data.title,
+    description: post.data.description,
+    imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
+    imageAlt: post.data.imageAlt || post.data.title,
+    pubDate: post.data.pubDate,
+    category: post.data.category,
+    author: authorPerson?.data.name || 'Unknown Author',
+    avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
+    authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
+    readTime: post.data.readTime || 5,
+    featured: post.data.featured || false
+  }
+})
+
+const sortedBlogPosts = sortPostsByPubDate(allBlogPosts)
 
 const pageTitle = 'Blog | Bound By Death'
 const pageDescription = 'News, updates, and development insights from Ravenwhisp Studio.'
@@ -46,5 +47,5 @@ const pageDescription = 'News, updates, and development insights from Ravenwhisp
     </div>
   </section>
 
-  <Blog blogData={allBlogPosts} client:load />
+  <Blog blogData={sortedBlogPosts} client:load />
 </Layout>

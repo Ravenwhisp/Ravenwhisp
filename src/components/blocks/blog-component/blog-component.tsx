@@ -134,34 +134,8 @@ const Blog = ({ blogData = [] }: BlogProps) => {
   }
 
   return (
-    <section className='py-8 sm:py-16 lg:py-24' id='categories'>
-      <div className='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:space-y-16 lg:px-8'>
-        {/* Header */}
-        <div className='space-y-4'>
-          {selectedTab === 'All' && <p className='text-sm'>Blogs</p>}
-          {selectedTab !== 'All' && (
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href='#'>Blog</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{selectedTab}</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          )}
-
-          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>
-            Build Better Products with Insights & Inspiration.
-          </h2>
-
-          <p className='text-muted-foreground text-lg md:text-xl'>
-            Practical insights and real stories to guide your product from vision to reality.
-          </p>
-        </div>
-
+    <section className='py-8 sm:pb-16 lg:pb-24' id='categories'>
+      <div className='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
         {/* Tabs and Search */}
         <Tabs defaultValue='All' value={selectedTab} onValueChange={handleTabChange} className='gap-8 lg:gap-16'>
           <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
