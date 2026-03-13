@@ -5,8 +5,12 @@ import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 
+const githubPagesSite = 'https://ravenwhisp.github.io/Ravenwhisp/'
+const githubPagesBase = '/Ravenwhisp'
+
 export default defineConfig({
-  site: 'http://localhost:4321/',
+  site: githubPagesSite,
+  base: githubPagesBase,
   integrations: [
     react(),
     mdx(),
@@ -15,7 +19,7 @@ export default defineConfig({
       customPages: [],
       serialize(item) {
         // Homepage - highest priority
-        if (item.url === 'http://localhost:4321/') {
+        if (item.url === githubPagesSite) {
           // @ts-expect-error - Valid sitemap changefreq value
           item.changefreq = 'daily'
           item.priority = 1.0

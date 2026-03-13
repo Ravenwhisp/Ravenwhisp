@@ -113,7 +113,7 @@ Then deploy the generated `dist/` output (or connect the repo to Vercel).
 
 ## Repository
 
-- Primary remote: `https://github.com/Ravenwhisp/Ravenwhisp-Web.git`
+- Primary remote: `https://github.com/Ravenwhisp/Ravenwhisp.git`
 - Previous template remote can remain as backup under `old-origin`.
 
 ## Credits

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/navigation-menu'
 
 import { cn } from '@/lib/utils'
+import { withBasePath } from '@/lib/paths'
 
 export type NavigationItem = {
   title: string
@@ -54,7 +55,7 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
             return (
               <NavigationMenuItem key={navItem.title}>
                 <NavigationMenuLink
-                  href={navItem.href}
+                  href={withBasePath(navItem.href)}
                   className={cn(
                     navigationMenuTriggerStyle(),
                     'hover:text-primary dark:hover:bg-accent/50 bg-transparent px-3 py-1.5 text-base!',
@@ -77,7 +78,7 @@ const MenuNavigation = ({ navigationData, activeSection, className }: MenuNaviga
                 <ul className='grid w-38 gap-4'>
                   <li>
                     {navItem.items?.map(item => (
-                      <NavigationMenuLink key={item.title} href={item.href}>
+                      <NavigationMenuLink key={item.title} href={withBasePath(item.href)}>
                         {item.title}
                       </NavigationMenuLink>
                     ))}

@@ -1,70 +1,59 @@
-name: Deploy - Demos
-run-name: ${{ github.ref_name == 'main' && '🚀' || '🧪' }} Deploy - Demos
-
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+name: Deploy to GitHub Pages
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Checkout current repo
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          path: shadcn-studio/template
 
-      - name: ⬇️ Checkout automation-scripts repo
-        uses: actions/checkout@v4
-        with:
-          repository: themeselection/automation-scripts
-          token: ${{ secrets.GH_PAT }}
-          path: automation-scripts
-
-      - name: 📦 Setup pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: latest
-      - name: ⬇️ Install packages in automation-scripts dir
-        working-directory: automation-scripts/astro
-        run: pnpm install
+          version: 10
 
-      - name: 📦 Install template dependencies
-        working-directory: shadcn-studio/template
-        run: pnpm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
 
-      - name: 🏗️ Build with automation script
-        working-directory: automation-scripts/astro
-        run: |
-          echo "🔧 Building Astro template..."
-          echo "Repository: ${{ github.repository }}"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "Environment: ${{ github.ref_name == 'main' && 'Production 🚀' || 'Preview 🧪' }}"
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
-          pnpm tsx ./src/shadcn-studio/template/generateBuild.ts \
-            $([[ "${{ github.ref_name }}" == "main" ]] && echo "--prod") \
-            --vercel-token ${{ secrets.VERCEL_TOKEN }}
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: 🚀 Deploy to Vercel
-        working-directory: shadcn-studio/template
-        run: |
-          # Install Vercel CLI globally
-          pnpm add -g vercel@latest
+      - name: Build site
+        run: pnpm build
 
-          # Link to Vercel project
-          echo "🔗 Linking to Vercel project..."
-          vercel link --yes --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
 
-          # Deploy based on branch
-          if [[ "${{ github.ref_name }}" == "main" ]]; then
-            echo "🚀 Deploying to Production..."
-            vercel deploy --prod --prebuilt --token ${{ secrets.VERCEL_TOKEN }} --yes
-          else
-            echo "🧪 Deploying to Preview (${{ github.ref_name }})..."
-            vercel deploy --prebuilt --token ${{ secrets.VERCEL_TOKEN }} --yes
-          fi
-
-          echo "✅ Deployment completed successfully!"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

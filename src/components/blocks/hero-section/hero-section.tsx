@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import HeroScene from '@/components/blocks/hero-section/hero-scene'
+import { withBasePath } from '@/lib/paths'
 
 const HeroSection = () => {
   return (
@@ -14,7 +15,7 @@ const HeroSection = () => {
       </div>
 
       <img
-        src='/images/DeathAndLyriel.png'
+        src={withBasePath('/images/DeathAndLyriel.png')}
         alt='Death and Lyriel'
         className='pointer-events-none absolute right-0 -bottom-8 z-10 h-4/5 w-auto object-contain object-bottom lg:-bottom-24'
       />
@@ -31,7 +32,7 @@ const HeroSection = () => {
           </p>
           <form className='gap-3 py-1 max-sm:w-full max-sm:space-y-2 sm:flex sm:flex-row md:w-sm lg:mx-0'>
             <Button size='lg' className='pointer-events-auto text-base max-sm:w-full' asChild>
-              <a href='/download'>Download</a>
+              <a href={withBasePath('/download')}>Download</a>
             </Button>
           </form>
         </div>

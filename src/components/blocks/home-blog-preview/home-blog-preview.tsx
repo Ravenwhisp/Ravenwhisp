@@ -5,6 +5,7 @@ import { ArrowRightIcon, ArrowUpRightIcon, CalendarDaysIcon } from 'lucide-react
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { withBasePath } from '@/lib/paths'
 
 import type { BlogPost } from '@/components/blocks/blog-component/blog-component'
 
@@ -29,9 +30,12 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
               <Card className='cursor-default py-0 shadow-none'>
                 <CardContent className='grid grid-cols-1 px-0 xl:grid-cols-2'>
                   <div className='p-6'>
-                    <a href={`/blog/${item.slug}`} className='block h-59.5 w-full overflow-hidden rounded-lg'>
+                    <a
+                      href={withBasePath(`/blog/${item.slug}`)}
+                      className='block h-59.5 w-full overflow-hidden rounded-lg'
+                    >
                       <img
-                        src={item.imageUrl}
+                        src={withBasePath(item.imageUrl)}
                         alt={item.imageAlt}
                         className='w-full object-cover transition-transform duration-300 group-hover:scale-105'
                         loading='lazy'
@@ -49,7 +53,7 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                         <Badge className='bg-secondary/10 text-secondary border-0 text-sm'>Featured</Badge>
                       </div>
                     </div>
-                    <a href={`/blog/${item.slug}`}>
+                    <a href={withBasePath(`/blog/${item.slug}`)}>
                       <h3 className='text-xl font-medium'>{item.title}</h3>
                     </a>
 
@@ -57,7 +61,7 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                     <div className='flex w-full items-center justify-between gap-1 py-1'>
                       {item.authorUrl ? (
                         <a
-                          href={item.authorUrl}
+                          href={withBasePath(item.authorUrl)}
                           className='text-sm font-medium hover:underline'
                           onClick={e => {
                             e.stopPropagation()
@@ -73,7 +77,7 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                         className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
                         asChild
                       >
-                        <a href={`/blog/${item.slug}`}>
+                        <a href={withBasePath(`/blog/${item.slug}`)}>
                           <ArrowUpRightIcon />
                         </a>
                       </Button>
@@ -90,14 +94,14 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
             <p className='text-muted-foreground max-w-2xl text-lg'>Latest Posts</p>
 
             <Button asChild variant='outline' className='rounded-xl'>
-              <a href='/blog'>Read more posts</a>
+              <a href={withBasePath('/blog')}>Read more posts</a>
             </Button>
           </div>
 
           <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
             {latestNonFeaturedPosts.map(post => (
               <a
-                href={`/blog/${post.slug}`}
+                href={withBasePath(`/blog/${post.slug}`)}
                 key={post.id}
                 className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
               >
@@ -105,7 +109,7 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                   <CardContent className='space-y-3.5'>
                     <div className='mb-6 overflow-hidden rounded-lg sm:mb-10'>
                       <img
-                        src={post.imageUrl}
+                        src={withBasePath(post.imageUrl)}
                         alt={post.imageAlt}
                         className='h-59.5 w-full object-cover transition-transform duration-300 group-hover:scale-105'
                         loading='lazy'
@@ -123,7 +127,7 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                     <div className='flex items-center justify-between'>
                       {post.authorUrl ? (
                         <a
-                          href={post.authorUrl}
+                          href={withBasePath(post.authorUrl)}
                           className='text-sm font-medium hover:underline'
                           onClick={e => {
                             e.stopPropagation()

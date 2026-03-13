@@ -13,6 +13,7 @@ import MenuNavigation from '@/components/blocks/menu-navigation'
 import type { NavigationSection } from '@/components/blocks/menu-navigation'
 
 import { cn } from '@/lib/utils'
+import { stripBasePath, withBasePath } from '@/lib/paths'
 
 import LogoSvg from '@/assets/svg/logo'
 
@@ -40,7 +41,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
 
   useLayoutEffect(() => {
     // Update activeSection based on the current route using window.location.pathname
-    const path = window.location.pathname
+    const path = stripBasePath(window.location.pathname)
 
     setTimeout(() => {
       if (path === '/' || path === '/#home') {
@@ -65,7 +66,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
     >
       <div className='mx-auto flex h-full max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8'>
         {/* Logo */}
-        <a href='/#home' className='flex items-center gap-3'>
+        <a href={withBasePath('/#home')} className='flex items-center gap-3'>
           <LogoSvg />
         </a>
 
@@ -76,7 +77,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
         <div className='flex gap-3'>
           <ThemeToggle />
           <Button variant='outline' className='max-sm:hidden' asChild>
-            <a href='/download'>Download</a>
+            <a href={withBasePath('/download')}>Download</a>
           </Button>
 
           {/* Navigation for small screens */}
@@ -85,7 +86,7 @@ const Header = ({ navigationData, className }: HeaderProps) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant='outline' size='icon' className='sm:hidden' asChild>
-                    <a href='/download'>
+                    <a href={withBasePath('/download')}>
                       <DownloadIcon />
                       <span className='sr-only'>Download</span>
                     </a>

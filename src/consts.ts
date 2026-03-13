@@ -1,11 +1,13 @@
+import { withBasePath } from '@/lib/paths'
+
 // Site Configuration
 // Centralized configuration for site metadata, SEO, and branding
 
 export const SITE_TITLE = 'Bound By Death Game | Ravenwhisp Studio'
 export const SITE_DESCRIPTION = 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.'
 
-export const GITHUB_URL = 'https://github.com/yourusername/master-shadcn-astro' // TODO: Update with your actual GitHub repository URL
-export const SITE_URL = 'https://shadcnstudio.com/' // TODO: Update with your actual site URL
+export const GITHUB_URL = 'https://github.com/Ravenwhisp/Ravenwhisp'
+export const SITE_URL = 'https://ravenwhisp.github.io/Ravenwhisp/'
 
 export const SITE_METADATA = {
   title: {
@@ -45,14 +47,14 @@ export const SITE_METADATA = {
   locale: 'en_US',
   icons: {
     icon: [
-      { url: '/favicon/favicon.ico', sizes: '48x48' },
-      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/favicon/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' }
+      { url: withBasePath('/favicon/favicon.ico'), sizes: '48x48' },
+      { url: withBasePath('/favicon/favicon-32x32.png'), sizes: '32x32', type: 'image/png' },
+      { url: withBasePath('/favicon/favicon-16x16.png'), sizes: '16x16', type: 'image/png' },
+      { url: withBasePath('/favicon/android-chrome-192x192.png'), sizes: '192x192', type: 'image/png' },
+      { url: withBasePath('/favicon/android-chrome-512x512.png'), sizes: '512x512', type: 'image/png' }
     ],
-    apple: [{ url: '/favicon/apple-touch-icon.png', sizes: '180x180' }],
-    shortcut: [{ url: '/favicon/favicon.ico' }]
+    apple: [{ url: withBasePath('/favicon/apple-touch-icon.png'), sizes: '180x180' }],
+    shortcut: [{ url: withBasePath('/favicon/favicon.ico') }]
   },
   openGraph: {
     type: 'website',
@@ -62,7 +64,7 @@ export const SITE_METADATA = {
     description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
     images: [
       {
-        url: '/images/og-image.png',
+        url: withBasePath('/images/og-image.png'),
         width: 1200,
         height: 630,
         alt: 'Bound By Death | Ravenwhisp Studio',
@@ -77,7 +79,7 @@ export const SITE_METADATA = {
     creator: '@ravenwhispstudio',
     title: 'Bound By Death | Ravenwhisp Studio',
     description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
-    images: ['/images/og-image.png']
+    images: [withBasePath('/images/og-image.png')]
   },
   verification: {
     google: '', // Add your Google verification code
@@ -101,7 +103,7 @@ export const COMPANY_INFO = {
   name: 'Bound By Death',
   legalName: 'Ravenwhisp Studio',
   url: SITE_URL,
-  logo: `/images/site-logo.png`,
+  logo: withBasePath('/images/site-logo.png'),
   foundingDate: '2026',
   sameAs: Object.values(SOCIAL_LINKS)
 }

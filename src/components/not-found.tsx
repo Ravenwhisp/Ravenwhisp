@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { withBasePath } from '@/lib/paths'
 
 import Icon404 from '@/assets/svg/404'
 
@@ -9,7 +10,7 @@ const NotFound = () => {
       <div className='flex flex-col items-center gap-4 text-center'>
         <p className='text-muted-foreground text-xl sm:text-2xl'>We couldn&apos;t find the page you are looking for</p>
         <Button size='lg' asChild>
-          <a href='/'>Go back to home</a>
+          <a href={withBasePath('/')}>Go back to home</a>
         </Button>
       </div>
     </div>

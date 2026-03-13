@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { getCollection, render } from 'astro:content'
+import { withBasePath } from '@/lib/paths'
 
 export async function getStaticPaths() {
   const people = await getCollection('people')
@@ -23,11 +24,15 @@ const pageDescription = person.data.bio
   <section class='py-16 sm:py-24'>
     <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
       <div class='flex'>
-        <a href='/about-us' class='text-muted-foreground text-sm hover:underline'>← Back to About Us</a>
+        <a href={withBasePath('/about-us')} class='text-muted-foreground text-sm hover:underline'>← Back to About Us</a>
       </div>
 
       <div class='flex items-start gap-5'>
-        <img src={person.data.avatarUrl} alt={person.data.name} class='size-20 rounded-full object-cover' />
+        <img
+          src={withBasePath(person.data.avatarUrl)}
+          alt={person.data.name}
+          class='size-20 rounded-full object-cover'
+        />
         <div class='space-y-2'>
           <h1 class='text-foreground text-4xl font-bold'>{person.data.name}</h1>
           <p class='text-muted-foreground text-lg'>{person.data.bio}</p>

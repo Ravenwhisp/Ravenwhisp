@@ -4,12 +4,13 @@ import { Separator } from '@/components/ui/separator'
 
 import Logo from '@/components/logo'
 import { SOCIAL_LINKS } from '@/consts'
+import { withBasePath } from '@/lib/paths'
 
 const Footer = () => {
   return (
     <footer>
       <div className='mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 max-md:flex-col sm:px-6 sm:py-6 md:gap-6 md:py-8 lg:px-8'>
-        <a href='/#'>
+        <a href={withBasePath('/#')}>
           <div className='flex items-center gap-3'>
             <Logo className='gap-3' />
           </div>
@@ -93,7 +94,7 @@ const Footer = () => {
         <p className='flex items-center gap-1 text-center font-medium text-balance max-sm:flex-col'>
           <span>
             {`©${new Date().getFullYear()}`}{' '}
-            <a className='hover:underline' href='/#'>
+            <a className='hover:underline' href={withBasePath('/#')}>
               Ravenwhisp Studio -
             </a>
           </span>

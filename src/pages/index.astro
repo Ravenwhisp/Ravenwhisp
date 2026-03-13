@@ -42,28 +42,26 @@ const featuredPosts = sortedBlogPosts.filter(post => post.featured).slice(0, 2)
 const latestNonFeaturedPosts = sortedBlogPosts.filter(post => !post.featured).slice(0, 3)
 
 // Page-specific SEO configuration
-const pageTitle = ''
+const pageTitle = 'Bound By Death | Ravenwhisp Studio'
 const pageDescription =
-  'Discover insightful articles and tutorials about modern web development, Astro, and building fast, scalable websites with cutting-edge tools.'
+  'Bound By Death is a dark fantasy co-op hack-and-slash from Ravenwhisp Studio. Explore the world, meet the team, and follow development updates.'
 const pageKeywords =
-  'web development, Astro tutorials, scalable websites, modern web technologies, SEO optimization, Tailwind CSS, shadcn UI'
+  'Bound By Death, Ravenwhisp Studio, indie game, dark fantasy, co-op game, hack-and-slash, game development, devlog'
 
 // Structured data for better SEO
 const schema = {
   '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: 'Ink',
+  '@type': 'VideoGame',
+  name: 'Bound By Death',
   description: pageDescription,
-  applicationCategory: 'DeveloperApplication',
-  operatingSystem: 'Any',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD'
-  },
+  genre: ['Action', 'Hack and Slash', 'Co-op', 'Dark Fantasy'],
   author: {
     '@type': 'Organization',
-    name: 'Your Company Name'
+    name: 'Ravenwhisp Studio'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Ravenwhisp Studio'
   }
 }
 ---

@@ -6,6 +6,7 @@ import { getCollection } from 'astro:content'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { withBasePath } from '@/lib/paths'
 
 import type { BlogPost } from '@/components/blocks/blog-component/blog-component'
 
@@ -37,7 +38,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
         <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {relatedPosts.map(post => (
             <a
-              href={`/blog/${post.slug}`}
+              href={withBasePath(`/blog/${post.slug}`)}
               key={post.id}
               className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
             >
@@ -45,7 +46,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                 <CardContent className='space-y-3.5'>
                   <div className='mb-6 overflow-hidden rounded-lg sm:mb-12'>
                     <img
-                      src={post.imageUrl}
+                      src={withBasePath(post.imageUrl)}
                       alt={post.imageAlt}
                       className='h-59.5 w-full object-cover transition-transform duration-300 group-hover:scale-105'
                       loading='lazy'
@@ -63,7 +64,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                   <div className='flex items-center justify-between'>
                     {post.authorUrl ? (
                       <a
-                        href={post.authorUrl}
+                        href={withBasePath(post.authorUrl)}
                         className='text-sm font-medium hover:underline'
                         onClick={e => {
                           e.stopPropagation()

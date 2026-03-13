@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { withBasePath } from '@/lib/paths'
 
-const MODEL_URL = '/3dmodels/RedPartScene.glb'
+const MODEL_URL = withBasePath('/3dmodels/RedPartScene.glb')
 const CAMERA_NAME = 'camera'
 const LIGHT_INTENSITY_MULTIPLIER = 2.5
 const CAMERA_PARALLAX_STRENGTH = 0.1

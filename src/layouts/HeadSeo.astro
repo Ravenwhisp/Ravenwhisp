@@ -1,5 +1,6 @@
 ---
 import { SITE_METADATA } from '@/consts'
+import { withBasePath } from '@/lib/paths'
 
 interface Props {
   title?: string
@@ -34,7 +35,7 @@ const {
 const finalTitle = title || SITE_METADATA.title.default
 const finalDescription = description || SITE_METADATA.description
 const finalKeywords = keywords || SITE_METADATA.keywords.join(', ')
-const finalImage = image || SITE_METADATA.openGraph.images[0].url
+const finalImage = withBasePath(image || SITE_METADATA.openGraph.images[0].url)
 const imageURL = new URL(finalImage, Astro.site)
 const finalAuthor = author || SITE_METADATA.authors[0].name
 
@@ -86,7 +87,7 @@ const schemaData = schema || defaultSchema
 <meta name='bingbot' content={robotsContent} />
 
 <!-- Sitemap -->
-<link rel='sitemap' href='/sitemap-index.xml' />
+<link rel='sitemap' href={withBasePath('/sitemap-index.xml')} />
 
 <!-- Verification (if provided) -->
 {
@@ -105,10 +106,10 @@ const schemaData = schema || defaultSchema
 {SITE_METADATA.icons.icon.map(icon => <link rel='icon' type={icon.type} sizes={icon.sizes} href={icon.url} />)}
 {SITE_METADATA.icons.apple.map(icon => <link rel='apple-touch-icon' sizes={icon.sizes} href={icon.url} />)}
 {SITE_METADATA.icons.shortcut.map(icon => <link rel='shortcut icon' href={icon.url} />)}
-<link rel='manifest' href='/site.webmanifest' />
+<link rel='manifest' href={withBasePath('/site.webmanifest')} />
 
 <!-- Sitemap -->
-<link rel='sitemap' href='/sitemap.xml' />
+<link rel='sitemap' href={withBasePath('/sitemap.xml')} />
 
 <!-- RSS Feed -->
 <link

@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { cn } from '@/lib/utils'
+import { withBasePath } from '@/lib/paths'
 
 export type NavigationItem = {
   title: string
@@ -61,7 +62,10 @@ const MenuDropdown = ({ trigger, navigationData, activeSection, align = 'start' 
 
             return (
               <DropdownMenuItem key={navItem.title} asChild>
-                <a href={navItem.href} className={cn(isActive && 'bg-accent text-accent-foreground font-medium')}>
+                <a
+                  href={withBasePath(navItem.href)}
+                  className={cn(isActive && 'bg-accent text-accent-foreground font-medium')}
+                >
                   {navItem.icon}
                   {navItem.title}
                 </a>
@@ -82,7 +86,7 @@ const MenuDropdown = ({ trigger, navigationData, activeSection, align = 'start' 
                 <CollapsibleContent className='pl-2'>
                   {navItem.items?.map(item => (
                     <DropdownMenuItem key={item.title} asChild>
-                      <a href={item.href}>
+                      <a href={withBasePath(item.href)}>
                         <CircleSmallIcon />
                         <span>{item.title}</span>
                       </a>

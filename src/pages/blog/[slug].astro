@@ -14,6 +14,7 @@ import {
 import DynamicToc from '@/components/astro/DynamicToc.astro'
 import { AuthorMetadata } from '@/components/AuthorAvatar'
 import { getRelatedPosts, getPostNavigation, calculateReadTime } from '@/utils/blog'
+import { withBasePath } from '@/lib/paths'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import Blog from '@/components/blocks/blog-related-post/blog-related-post'
@@ -41,7 +42,8 @@ const entryAuthorId = getAuthorId(entry.data.author)
 const authorPerson = peopleById.get(entryAuthorId)
 const authorName = authorPerson?.data.name || 'Unknown Author'
 const authorAvatarUrl = authorPerson?.data.avatarUrl
-const authorProfileUrl = authorPerson?.data.type === 'team' ? `/about-us/team/${entryAuthorId}` : undefined
+const authorProfileUrl =
+  authorPerson?.data.type === 'team' ? withBasePath(`/about-us/team/${entryAuthorId}`) : undefined
 
 // Get related posts (same category)
 const relatedPosts = getRelatedPosts(publishedPosts, entry.id, entry.data.category, 3)
@@ -61,7 +63,7 @@ const formattedRelatedPosts = relatedPosts.map(post => {
     pubDate: post.data.pubDate,
     author: author?.data.name || 'Unknown Author',
     avatarUrl: author?.data.avatarUrl || '',
-    authorUrl: author?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
+    authorUrl: author?.data.type === 'team' ? withBasePath(`/about-us/team/${authorId}`) : undefined,
     category: post.data.category,
     readTime: post.data.readTime || calculateReadTime(post.body),
     featured: post.data.featured || false
@@ -79,7 +81,7 @@ const schema = {
   '@type': 'BlogPosting',
   headline: entry.data.title,
   description: entry.data.description,
-  image: entry.data.imageUrl,
+  image: entry.data.imageUrl ? withBasePath(entry.data.imageUrl) : undefined,
   datePublished: entry.data.pubDate,
   author: {
     '@type': 'Person',
@@ -113,11 +115,11 @@ const schema = {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                    <BreadcrumbLink href={withBasePath('/')}>Home</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbLink href='/blog'>Blog</BreadcrumbLink>
+                    <BreadcrumbLink href={withBasePath('/blog')}>Blog</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
@@ -165,7 +167,7 @@ const schema = {
               entry.data.imageUrl && (
                 <div>
                   <img
-                    src={entry.data.imageUrl}
+                    src={withBasePath(entry.data.imageUrl)}
                     alt={entry.data.title}
                     class='max-h-148 w-full rounded-xl'
                     loading='lazy'
@@ -183,7 +185,7 @@ const schema = {
             <div class='flex w-full justify-between pt-8'>
               {
                 previousPost ? (
-                  <a href={`/blog/${previousPost.id}`}>
+                  <a href={withBasePath(`/blog/${previousPost.id}`)}>
                     <Button className='rounded-xl' variant='outline'>
                       <ChevronLeftIcon className='size-4' />
                       Previous Post
@@ -199,7 +201,7 @@ const schema = {
 
               {
                 nextPost ? (
-                  <a class='ms-auto' href={`/blog/${nextPost.id}`}>
+                  <a class='ms-auto' href={withBasePath(`/blog/${nextPost.id}`)}>
                     <Button
                       className='rounded-xl bg-sky-600/10 text-sky-600 hover:bg-sky-600/20 focus-visible:ring-sky-600/20 dark:bg-sky-400/10 dark:text-sky-400 dark:hover:bg-sky-400/20 dark:focus-visible:ring-sky-400/40'
                       variant='outline'
