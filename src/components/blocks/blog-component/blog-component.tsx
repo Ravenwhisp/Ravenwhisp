@@ -175,7 +175,7 @@ const Blog = ({ blogData = [] }: BlogProps) => {
               </div>
               <Input
                 type='search'
-                placeholder='Search'
+                placeholder='Search (WIP)'
                 className='peer h-10 px-9 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none'
               />
             </div>
