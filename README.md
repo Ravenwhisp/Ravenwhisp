@@ -15,16 +15,51 @@ This repo contains the marketing site, blog/content pages, and the interactive T
 
 ## Project Structure
 
-```text
-public/
-  images/
-  3dmodels/
-src/
-  components/
-  content/blog/
-  layouts/
-  pages/
-  styles/
+```shadcn-studio-astro-template/
+├── public/                    # Public static assets
+│   ├── favicon/               # Favicon files
+│   ├── images/                # Public images
+│   ├── 3dmodels/                # 3D Models for threejs
+│   ├── _headers               # Netlify Deploy Headers
+│   ├── robots.txt             # SEO crawler rules
+│   └── site.webmanifest       # PWA manifest
+│
+├── src/
+│   ├── assets/                # SVG and other assets
+│   │
+│   ├── components/            # Reusable UI components
+│   │   └── blocks/            # Block components
+│   │   └── layout/            # Layout components
+│   │   └── sections/          # Data of components
+│   │   └── ui/                # Base UI components
+│   │
+│   ├── layouts/               # Astro layout files
+│   │   ├── BlankLayout.astro  # Minimal layout
+│   │   ├── HeadSeo.astro      # SEO head layout
+│   │   └── Layout.astro       # Main site layout
+│   │
+│   ├── lib/                   # Helper libraries
+│   │   └── utils.ts           # Utility functions
+│   │
+│   ├── pages/                 # Route-based pages
+│   │   ├── 404.astro          # 404 page
+│   │   ├── index.astro        # Home page
+│   │   └── rss.xml.js         # RSS feed generator
+│   │
+│   ├── styles/
+│   │   └── global.css         # Global styles
+│   │
+│   ├── utils/                 # Utility functions
+│   │   └── seo.ts             # SEO helpers
+│   └── consts.ts              # Application constants (SEO)
+│
+├── astro.config.mjs           # Astro configuration
+├── content.config.ts          # Content collections config
+├── .env.example               # Environment variable template
+├── components.json            # shadcn/ui config
+├── package.json               # Dependencies & scripts
+├── tsconfig.json              # TypeScript configuration
+└── vercel.json                # Vercel deployment config
 ```
 
 ## Getting Started
@@ -32,31 +67,31 @@ src/
 ### Prerequisites
 
 - Node.js 20+
-- pnpm (recommended) or npm
+- pnpm or npm
 
 ### Install
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### Run locally
 
 ```bash
-pnpm dev
+npm dev
 ```
 
 Site runs at `http://localhost:4321`.
 
 ## Available Scripts
 
-- `pnpm dev` — start local dev server
-- `pnpm build` — build production output
-- `pnpm preview` — preview production build
-- `pnpm lint` — run ESLint
-- `pnpm lint:fix` — run ESLint with auto-fixes
-- `pnpm format` — run Prettier
-- `pnpm check-types` — run TypeScript type checks
+- `npm dev` — start local dev server
+- `npm build` — build production output
+- `npm preview` — preview production build
+- `npm lint` — run ESLint
+- `npm lint:fix` — run ESLint with auto-fixes
+- `npm format` — run Prettier
+- `npm check-types` — run TypeScript type checks
 
 ## Content
 
@@ -70,8 +105,8 @@ This project is configured for static deployment and includes `vercel.json`.
 Typical deploy flow:
 
 ```bash
-pnpm install
-pnpm build
+npm install
+npm build
 ```
 
 Then deploy the generated `dist/` output (or connect the repo to Vercel).
