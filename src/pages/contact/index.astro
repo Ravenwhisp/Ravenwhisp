@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import { getPressKitAssets } from '@/utils/presskit'
 import { siGithub, siInstagram, siTiktok, siX, siYoutube } from 'simple-icons'
+import { withBasePath } from '@/lib/paths'
 
 import { SOCIAL_LINKS } from '@/consts'
 import { BriefcaseBusinessIcon, ExternalLinkIcon, MailIcon } from 'lucide-react'
@@ -26,23 +27,23 @@ const socialItems = [
 const pressKitItems = [
   {
     title: 'Logo Pack',
-    image: logoPackAssets[0]?.src || '/images/placeholder.png',
+    image: withBasePath(logoPackAssets[0]?.src || '/images/placeholder.png'),
     href: '/contact/press-kit/logo-pack',
     alt: 'Ravenwhisp logo pack preview'
   },
   {
     title: 'Key Art',
-    image: keyartAssets[0]?.src || '/images/placeholder.png',
+    image: withBasePath(keyartAssets[0]?.src || '/images/placeholder.png'),
     alt: 'Key art placeholder'
   },
   {
     title: 'Screenshots',
-    image: screenshotsAssets[0]?.src || '/images/placeholder.png',
+    image: withBasePath(screenshotsAssets[0]?.src || '/images/placeholder.png'),
     alt: 'Screenshots placeholder'
   },
   {
     title: 'Studio Shots',
-    image: studioShotsAssets[0]?.src || '/images/placeholder.png',
+    image: withBasePath(studioShotsAssets[0]?.src || '/images/placeholder.png'),
     alt: 'Studio shots placeholder'
   }
 ]
@@ -126,7 +127,7 @@ const pressKitItems = [
               )
 
               return item.href ? (
-                <a href={item.href} class='group bg-card border-border overflow-hidden rounded-xl border'>
+                <a href={withBasePath(item.href)} class='group bg-card border-border overflow-hidden rounded-xl border'>
                   {content}
                 </a>
               ) : (
