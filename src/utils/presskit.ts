@@ -20,12 +20,16 @@ function formatAssetTitle(fileName: string) {
 export function getPressKitAssets(folderName: string): PressKitAsset[] {
   const folderPath = join(publicDir, 'images', 'presskit', folderName)
 
-  return readdirSync(folderPath)
-    .filter(fileName => /\.(png|jpe?g|webp|svg)$/i.test(fileName))
-    .sort((left, right) => left.localeCompare(right))
-    .map(fileName => ({
-      fileName,
-      src: `/images/presskit/${folderName}/${fileName}`,
-      title: formatAssetTitle(fileName)
-    }))
+  try {
+    return readdirSync(folderPath)
+      .filter(fileName => /\.(png|jpe?g|webp|svg)$/i.test(fileName))
+      .sort((left, right) => left.localeCompare(right))
+      .map(fileName => ({
+        fileName,
+        src: `/images/presskit/${folderName}/${fileName}`,
+        title: formatAssetTitle(fileName)
+      }))
+  } catch {
+    return []
+  }
 }
