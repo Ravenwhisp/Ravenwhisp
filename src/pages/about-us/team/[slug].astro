@@ -22,7 +22,9 @@ const pageDescription = person.data.bio
 <Layout title={pageTitle} description={pageDescription}>
   <section class='py-16 sm:py-24'>
     <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
-      <a href='/about-us' class='text-muted-foreground flex text-sm hover:underline'>← Back to About Us</a>
+      <div class='flex'>
+        <a href='/about-us' class='text-muted-foreground text-sm hover:underline'>← Back to About Us</a>
+      </div>
 
       <div class='flex items-start gap-5'>
         <img src={person.data.avatarUrl} alt={person.data.name} class='size-20 rounded-full object-cover' />
