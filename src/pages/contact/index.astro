@@ -1,36 +1,50 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { getPressKitAssets } from '@/utils/presskit'
+import { siGithub, siInstagram, siTiktok, siX, siYoutube } from 'simple-icons'
 
 import { SOCIAL_LINKS } from '@/consts'
-import {
-  ExternalLinkIcon,
-  GithubIcon,
-  InstagramIcon,
-  LinkedinIcon,
-  MailIcon,
-  Music2Icon,
-  TwitterIcon,
-  YoutubeIcon
-} from 'lucide-react'
+import { BriefcaseBusinessIcon, ExternalLinkIcon, MailIcon } from 'lucide-react'
 
 const pageTitle = 'Contact | Ravenwhisp Studio'
 const pageDescription = 'Get in touch with Ravenwhisp Studio.'
 const contactEmail = 'ravenwhispstudios@gmail.com'
+const logoPackAssets = getPressKitAssets('logo-pack')
+const keyartAssets = getPressKitAssets('key-art')
+const screenshotsAssets = getPressKitAssets('screenshots')
+const studioShotsAssets = getPressKitAssets('studio-shots')
 
 const socialItems = [
-  { label: 'GitHub', href: SOCIAL_LINKS.github, icon: GithubIcon },
-  { label: 'LinkedIn', href: SOCIAL_LINKS.linkedin, icon: LinkedinIcon },
-  { label: 'Instagram', href: SOCIAL_LINKS.instagram, icon: InstagramIcon },
-  { label: 'TikTok', href: SOCIAL_LINKS.tiktok, icon: Music2Icon },
-  { label: 'YouTube', href: SOCIAL_LINKS.youtube, icon: YoutubeIcon },
-  { label: 'X (Twitter)', href: SOCIAL_LINKS.twitter, icon: TwitterIcon }
+  { label: 'GitHub', href: SOCIAL_LINKS.github, iconPath: siGithub.path },
+  { label: 'LinkedIn', href: SOCIAL_LINKS.linkedin, icon: BriefcaseBusinessIcon },
+  { label: 'Instagram', href: SOCIAL_LINKS.instagram, iconPath: siInstagram.path },
+  { label: 'TikTok', href: SOCIAL_LINKS.tiktok, iconPath: siTiktok.path },
+  { label: 'YouTube', href: SOCIAL_LINKS.youtube, iconPath: siYoutube.path },
+  { label: 'X (Twitter)', href: SOCIAL_LINKS.twitter, iconPath: siX.path }
 ]
 
 const pressKitItems = [
-  { title: 'Logo Pack', image: '/images/blog-post/post-1.webp' },
-  { title: 'Key Art', image: '/images/blog-post/post-2.webp' },
-  { title: 'Screenshots', image: '/images/blog-post/post-3.webp' },
-  { title: 'Studio Shots', image: '/images/blog-post/post-4.webp' }
+  {
+    title: 'Logo Pack',
+    image: logoPackAssets[0]?.src || '/images/placeholder.png',
+    href: '/contact/press-kit/logo-pack',
+    alt: 'Ravenwhisp logo pack preview'
+  },
+  {
+    title: 'Key Art',
+    image: keyartAssets[0]?.src || '/images/placeholder.png',
+    alt: 'Key art placeholder'
+  },
+  {
+    title: 'Screenshots',
+    image: screenshotsAssets[0]?.src || '/images/placeholder.png',
+    alt: 'Screenshots placeholder'
+  },
+  {
+    title: 'Studio Shots',
+    image: studioShotsAssets[0]?.src || '/images/placeholder.png',
+    alt: 'Studio shots placeholder'
+  }
 ]
 ---
 
@@ -66,7 +80,13 @@ const pressKitItems = [
                     class='border-border hover:bg-muted inline-flex items-center justify-between rounded-lg border px-4 py-3 transition-colors'
                   >
                     <span class='text-foreground inline-flex items-center gap-2 font-medium'>
-                      <Icon className='size-4' />
+                      {item.iconPath ? (
+                        <svg viewBox='0 0 24 24' aria-hidden='true' class='size-4 fill-current'>
+                          <path d={item.iconPath} />
+                        </svg>
+                      ) : (
+                        Icon && <Icon className='size-4' />
+                      )}
                       {item.label}
                     </span>
                     <ExternalLinkIcon className='text-muted-foreground size-4' />
@@ -82,26 +102,37 @@ const pressKitItems = [
         <div>
           <h2 class='text-foreground text-2xl font-semibold'>Press Kit</h2>
           <p class='text-muted-foreground mt-2'>
-            We are still working on this. Press kit materials will be available here for media and content creators.
+            Logo pack assets are available now. More press kit materials will be added here for media and content
+            creators.
           </p>
         </div>
 
         <div class='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           {
-            pressKitItems.map(item => (
-              <a href='#' class='group bg-card border-border overflow-hidden rounded-xl border'>
-                <img
-                  src={item.image}
-                  alt={`${item.title} placeholder`}
-                  class='h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105'
-                  loading='lazy'
-                />
-                <div class='flex items-center justify-between px-4 py-3'>
-                  <span class='text-foreground font-medium'>{item.title}</span>
-                  <ExternalLinkIcon className='text-muted-foreground size-4' />
-                </div>
-              </a>
-            ))
+            pressKitItems.map(item => {
+              const content = (
+                <>
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    class='h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105'
+                    loading='lazy'
+                  />
+                  <div class='flex items-center justify-between px-4 py-3'>
+                    <span class='text-foreground font-medium'>{item.title}</span>
+                    <ExternalLinkIcon className='text-muted-foreground size-4' />
+                  </div>
+                </>
+              )
+
+              return item.href ? (
+                <a href={item.href} class='group bg-card border-border overflow-hidden rounded-xl border'>
+                  {content}
+                </a>
+              ) : (
+                <div class='bg-card border-border overflow-hidden rounded-xl border opacity-70'>{content}</div>
+              )
+            })
           }
         </div>
       </article>

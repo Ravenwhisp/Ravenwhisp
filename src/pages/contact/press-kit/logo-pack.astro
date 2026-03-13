@@ -1,0 +1,57 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { Button } from '@/components/ui/button'
+import { DownloadIcon } from 'lucide-react'
+import { getPressKitAssets } from '@/utils/presskit'
+
+const pageTitle = 'Logo Pack | Press Kit | Ravenwhisp Studio'
+const pageDescription = 'Download official Ravenwhisp Studio logo assets for press, media, and creator use.'
+const logoPackAssets = getPressKitAssets('logo-pack')
+
+const getPreviewClass = (fileName: string) => {
+  if (fileName.includes('Light')) return 'bg-[#d9ddd8]'
+  if (fileName.includes('Dark')) return 'bg-[#1d1f24]'
+  return 'bg-black'
+}
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-12 sm:py-16'>
+    <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <div class='space-y-3'>
+        <a href='/contact' class='text-muted-foreground flex text-sm hover:underline'>← Press Kit</a>
+        <h1 class='text-foreground text-4xl font-bold'>Logo Pack</h1>
+        <p class='text-muted-foreground max-w-3xl text-lg'>
+          Official Ravenwhisp Studio logo files for press, partners, and content creators.
+        </p>
+      </div>
+
+      <div class='grid gap-6 lg:grid-cols-2'>
+        {
+          logoPackAssets.map(asset => (
+            <article class='bg-card border-border overflow-hidden rounded-xl border'>
+              <div class={`relative flex min-h-72 flex-col justify-center ${getPreviewClass(asset.fileName)}`}>
+                <img src={asset.src} alt={asset.title} class='h-full w-full object-contain' loading='lazy' />
+                <a
+                  class='absolute right-4 bottom-4 rounded-full shadow-lg'
+                  href={asset.src}
+                  download={asset.fileName}
+                  aria-label={`Download ${asset.title}`}
+                >
+                  <DownloadIcon className='size-6' />
+                </a>
+              </div>
+
+              <div class='flex items-center justify-between px-4 py-3'>
+                <div>
+                  <h2 class='text-foreground font-medium'>{asset.title}</h2>
+                  <p class='text-muted-foreground text-sm'>{asset.fileName}</p>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>
