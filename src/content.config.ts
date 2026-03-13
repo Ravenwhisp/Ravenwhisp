@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
 const blog = defineCollection({
@@ -11,12 +11,21 @@ const blog = defineCollection({
     imageUrl: z.string().optional(),
     imageAlt: z.string().optional(),
     pubDate: z.string(),
-    author: z.string().default('shadcn Studio'),
-    avatarUrl: z.string().optional(),
+    author: reference('people'),
     category: z.string().default('General'),
     readTime: z.number().optional(),
     featured: z.boolean().default(false)
   })
 })
 
-export const collections = { blog }
+const people = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/people' }),
+  schema: z.object({
+    name: z.string(),
+    avatarUrl: z.string(),
+    type: z.enum(['team', 'guest']).default('team'),
+    bio: z.string()
+  })
+})
+
+export const collections = { blog, people }

@@ -32,26 +32,41 @@ const { Content, headings } = await render(entry)
 
 // Get all posts for navigation and related posts
 const allPosts = await getCollection('blog')
+const people = await getCollection('people')
 const publishedPosts = allPosts
+
+const peopleById = new Map(people.map(person => [person.id, person]))
+const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
+const entryAuthorId = getAuthorId(entry.data.author)
+const authorPerson = peopleById.get(entryAuthorId)
+const authorName = authorPerson?.data.name || 'Unknown Author'
+const authorAvatarUrl = authorPerson?.data.avatarUrl
+const authorProfileUrl = authorPerson?.data.type === 'team' ? `/about-us/team/${entryAuthorId}` : undefined
 
 // Get related posts (same category)
 const relatedPosts = getRelatedPosts(publishedPosts, entry.id, entry.data.category, 3)
 
 // Map relatedPosts to BlogPost type for the Blog component
-const formattedRelatedPosts = relatedPosts.map(post => ({
-  id: post.data.id,
-  slug: post.data.slug,
-  title: post.data.title,
-  description: post.data.description,
-  imageUrl: post.data.imageUrl || '',
-  imageAlt: post.data.imageAlt || '',
-  pubDate: post.data.pubDate,
-  author: post.data.author,
-  avatarUrl: post.data.avatarUrl || '',
-  category: post.data.category,
-  readTime: post.data.readTime || calculateReadTime(post.body),
-  featured: post.data.featured || false
-}))
+const formattedRelatedPosts = relatedPosts.map(post => {
+  const authorId = getAuthorId(post.data.author)
+  const author = peopleById.get(authorId)
+
+  return {
+    id: post.data.id,
+    slug: post.data.slug,
+    title: post.data.title,
+    description: post.data.description,
+    imageUrl: post.data.imageUrl || '',
+    imageAlt: post.data.imageAlt || '',
+    pubDate: post.data.pubDate,
+    author: author?.data.name || 'Unknown Author',
+    avatarUrl: author?.data.avatarUrl || '',
+    authorUrl: author?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
+    category: post.data.category,
+    readTime: post.data.readTime || calculateReadTime(post.body),
+    featured: post.data.featured || false
+  }
+})
 
 // Get previous and next posts
 const { previous: previousPost, next: nextPost } = getPostNavigation(publishedPosts, entry.id)
@@ -68,7 +83,7 @@ const schema = {
   datePublished: entry.data.pubDate,
   author: {
     '@type': 'Person',
-    name: entry.data.author
+    name: authorName
   }
 }
 ---
@@ -79,7 +94,7 @@ const schema = {
   image={entry.data.imageUrl}
   type='article'
   publishedTime={entry.data.pubDate}
-  author={entry.data.author}
+  author={authorName}
   schema={schema}
 >
   <main class='flex flex-col'>
@@ -120,10 +135,18 @@ const schema = {
               <!-- Post Metadata -->
               <div class='flex flex-wrap justify-between gap-4'>
                 <div class='flex flex-wrap items-center gap-3'>
-                  <AuthorMetadata client:load avatarUrl={entry.data.avatarUrl} author={entry.data.author} />
+                  <AuthorMetadata client:load avatarUrl={authorAvatarUrl} author={authorName} />
                   <div class='flex flex-col gap-1'>
                     <span class='text-muted-foreground text-sm'>Written by</span>
-                    <span class='text-foreground text-sm font-medium'>{entry.data.author}</span>
+                    {
+                      authorProfileUrl ? (
+                        <a class='text-foreground text-sm font-medium hover:underline' href={authorProfileUrl}>
+                          {authorName}
+                        </a>
+                      ) : (
+                        <span class='text-foreground text-sm font-medium'>{authorName}</span>
+                      )
+                    }
                   </div>
                 </div>
                 <div class='flex flex-col gap-1.5'>

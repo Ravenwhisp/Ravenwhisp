@@ -1,5 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+
+const people = await getCollection('people')
+const team = people.filter(person => person.data.type === 'team')
+const sortedTeam = team.sort((a, b) => a.data.name.localeCompare(b.data.name))
 
 const pageTitle = 'About Us | Ravenwhisp Studio'
 const pageDescription = 'Learn more about Ravenwhisp Studio and our mission behind Bound By Death.'
@@ -10,12 +15,34 @@ const pageDescription = 'Learn more about Ravenwhisp Studio and our mission behi
     <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
       <h1 class='text-foreground text-4xl font-bold'>About Us</h1>
       <p class='text-muted-foreground text-lg'>
-        Ravenwhisp Studio is an indie game studio focused on crafting atmospheric and memorable gameplay experiences.
+        Ravenwhisp Studio is an indie game studio formed within the UPC School (Universitat Politècnica de Catalunya).
       </p>
       <p class='text-muted-foreground'>
         We are currently building <strong class='text-foreground'>Bound By Death</strong>, a dark fantasy co-op
         hack-and-slash for two players.
       </p>
+
+      <div class='space-y-4 pt-6'>
+        <h2 class='text-foreground text-2xl font-semibold'>Team</h2>
+        <div class='grid gap-6 sm:grid-cols-2'>
+          {
+            sortedTeam.map(person => (
+              <a
+                href={`/about-us/team/${person.id}`}
+                class='border-border bg-card hover:bg-muted/30 block rounded-xl border p-5 transition-colors'
+              >
+                <div class='flex items-start gap-4'>
+                  <img src={person.data.avatarUrl} alt={person.data.name} class='size-14 rounded-full object-cover' />
+                  <div class='space-y-1'>
+                    <h3 class='text-foreground text-lg font-semibold'>{person.data.name}</h3>
+                    <p class='text-muted-foreground text-sm'>{person.data.bio}</p>
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </section>
 </Layout>

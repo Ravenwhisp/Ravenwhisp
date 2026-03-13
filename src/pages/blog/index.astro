@@ -5,23 +5,33 @@ import { getCollection } from 'astro:content'
 import Blog from '@/components/blocks/blog-component/blog-component'
 
 const allPosts = await getCollection('blog')
+const allPeople = await getCollection('people')
 const publishedPosts = allPosts
 
+const peopleById = new Map(allPeople.map(person => [person.id, person]))
+const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
+
 const allBlogPosts = publishedPosts
-  .map((post, index) => ({
-    id: post.data.id || index + 1,
-    slug: post.data.slug || post.id,
-    title: post.data.title,
-    description: post.data.description,
-    imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
-    imageAlt: post.data.imageAlt || post.data.title,
-    pubDate: post.data.pubDate,
-    category: post.data.category,
-    author: post.data.author,
-    avatarUrl: post.data.avatarUrl || '/images/avatars/post-1.webp',
-    readTime: post.data.readTime || 5,
-    featured: post.data.featured || false
-  }))
+  .map((post, index) => {
+    const authorId = getAuthorId(post.data.author)
+    const authorPerson = peopleById.get(authorId)
+
+    return {
+      id: post.data.id || index + 1,
+      slug: post.data.slug || post.id,
+      title: post.data.title,
+      description: post.data.description,
+      imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
+      imageAlt: post.data.imageAlt || post.data.title,
+      pubDate: post.data.pubDate,
+      category: post.data.category,
+      author: authorPerson?.data.name || 'Unknown Author',
+      avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
+      authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
+      readTime: post.data.readTime || 5,
+      featured: post.data.featured || false
+    }
+  })
   .sort((a, b) => b.pubDate.localeCompare(a.pubDate))
 
 const pageTitle = 'Blog | Bound By Death'

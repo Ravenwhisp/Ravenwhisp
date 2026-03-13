@@ -61,7 +61,19 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                   <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
                   <p className='text-muted-foreground line-clamp-2'>{post.description}</p>
                   <div className='flex items-center justify-between'>
-                    <span className='text-sm font-medium'>{post.author}</span>
+                    {post.authorUrl ? (
+                      <a
+                        href={post.authorUrl}
+                        className='text-sm font-medium hover:underline'
+                        onClick={e => {
+                          e.stopPropagation()
+                        }}
+                      >
+                        {post.author}
+                      </a>
+                    ) : (
+                      <span className='text-sm font-medium'>{post.author}</span>
+                    )}
                     <Button
                       size='icon'
                       className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
