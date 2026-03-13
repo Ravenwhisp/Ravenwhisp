@@ -1,8 +1,9 @@
-import { FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon } from 'lucide-react'
+import { GithubIcon, InstagramIcon, LinkedinIcon, Music2Icon, TwitterIcon, YoutubeIcon } from 'lucide-react'
 
 import { Separator } from '@/components/ui/separator'
 
 import Logo from '@/components/logo'
+import { SOCIAL_LINKS } from '@/consts'
 
 const Footer = () => {
   return (
@@ -35,16 +36,52 @@ const Footer = () => {
         </div>
 
         <div className='flex items-center gap-4'>
-          <a href='#' className='text-muted-foreground hover:text-foreground'>
-            <FacebookIcon className='size-5' />
+          <a
+            href={SOCIAL_LINKS.github}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
+            <GithubIcon className='size-5' />
           </a>
-          <a href='#' className='text-muted-foreground hover:text-foreground'>
+          <a
+            href={SOCIAL_LINKS.instagram}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
             <InstagramIcon className='size-5' />
           </a>
-          <a href='#' className='text-muted-foreground hover:text-foreground'>
+          <a
+            href={SOCIAL_LINKS.twitter}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
             <TwitterIcon className='size-5' />
           </a>
-          <a href='#' className='text-muted-foreground hover:text-foreground'>
+          <a
+            href={SOCIAL_LINKS.linkedin}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
+            <LinkedinIcon className='size-5' />
+          </a>
+          <a
+            href={SOCIAL_LINKS.tiktok}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
+            <Music2Icon className='size-5' />
+          </a>
+          <a
+            href={SOCIAL_LINKS.youtube}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
             <YoutubeIcon className='size-5' />
           </a>
         </div>
@@ -57,10 +94,10 @@ const Footer = () => {
           <span>
             {`©${new Date().getFullYear()}`}{' '}
             <a className='hover:underline' href='/#'>
-              INK,
+              Ravenwhisp Studio -
             </a>
           </span>
-          <span> Made with ❤️ for better web.</span>
+          <span> Made with ❤️ by indie developers</span>
         </p>
       </div>
     </footer>
