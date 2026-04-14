@@ -2,7 +2,5 @@
 name: 'David Varo Martínez'
 avatarUrl: '/images/avatars/avatar-placeholder.jpg'
 type: 'team'
-bio: 'David Varo Martínez'
+portfolio: 'https://drive.google.com/file/d/1PQ5xDWKBWW_dJK6UhvmetxosKKWHdt_z/view?usp=sharing'
 ---
-
-This is my bio

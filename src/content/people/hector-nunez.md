@@ -2,7 +2,5 @@
 name: 'Héctor Núñez Carpio'
 avatarUrl: '/images/avatars/avatar-placeholder.jpg'
 type: 'team'
-bio: "When I'm bored I read books on graph theory type shi"
+portfolio: 'https://github.com/henukk/2DRetroEngine'
 ---
-
-This is my bio

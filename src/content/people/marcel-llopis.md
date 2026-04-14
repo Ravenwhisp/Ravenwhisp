@@ -2,7 +2,5 @@
 name: 'Marcel Llopis Balanyà'
 avatarUrl: '/images/avatars/avatar-placeholder.jpg'
 type: 'team'
-bio: 'Marcel Llopis Balanyà'
+portfolio: 'https://thellopis16.itch.io/strange-realms'
 ---
-
-This is my bio

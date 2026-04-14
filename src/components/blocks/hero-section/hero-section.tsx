@@ -6,10 +6,7 @@ import { withBasePath } from '@/lib/paths'
 
 const HeroSection = () => {
   return (
-    <section
-      id='home'
-      className='relative -mt-16 min-h-screen overflow-hidden pt-32 pb-12 sm:pb-16 md:overflow-visible lg:pb-24'
-    >
+    <section id='home' className='relative z-20 h-[calc(100vh-4rem)] overflow-visible'>
       <div className='absolute inset-0'>
         <HeroScene />
       </div>
@@ -17,10 +14,10 @@ const HeroSection = () => {
       <img
         src={withBasePath('/images/DeathAndLyriel.png')}
         alt='Death and Lyriel'
-        className='pointer-events-none absolute right-0 -bottom-8 z-10 h-4/5 w-auto object-contain object-bottom lg:-bottom-24'
+        className='pointer-events-none absolute right-0 -bottom-4 z-30 h-auto w-2/3 object-contain object-bottom md:-bottom-16 md:h-[calc((100%-4rem)*2/3)] md:w-auto'
       />
 
-      <div className='pointer-events-none relative z-10 mx-auto flex h-full max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <div className='pointer-events-none relative z-20 mx-auto flex h-full max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex max-w-3xl flex-col gap-4 self-center text-center lg:text-left'>
           <h1 className='text-primary-foreground text-3xl leading-[1.29167] font-semibold text-balance sm:text-4xl lg:text-5xl'>
             Bound by Death

@@ -23,8 +23,12 @@ const people = defineCollection({
   schema: z.object({
     name: z.string(),
     avatarUrl: z.string(),
+    avatarTransparentUrl: z.string().optional(),
+    avatarFullUrl: z.string().optional(),
     type: z.enum(['team', 'guest']).default('team'),
-    bio: z.string()
+    bio: z.string().optional(),
+    portfolio: z.string().optional(),
+    linkedin: z.string().optional()
   })
 })
 
