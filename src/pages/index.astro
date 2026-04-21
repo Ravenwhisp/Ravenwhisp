@@ -30,7 +30,7 @@ const allBlogPosts = publishedPosts.map((post, index) => {
     pubDate: post.data.pubDate,
     category: post.data.category,
     author: authorPerson?.data.name || 'Unknown Author',
-    avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
+    avatarUrl: authorPerson?.data.avatarFullUrl || '/images/avatars/post-1.webp',
     authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
     readTime: post.data.readTime || 5,
     featured: post.data.featured || false
