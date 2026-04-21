@@ -41,7 +41,7 @@ const getAuthorId = (author: { id: string } | string) => (typeof author === 'str
 const entryAuthorId = getAuthorId(entry.data.author)
 const authorPerson = peopleById.get(entryAuthorId)
 const authorName = authorPerson?.data.name || 'Unknown Author'
-const authorAvatarUrl = authorPerson?.data.avatarUrl
+const authorAvatarUrl = authorPerson?.data.avatarFullUrl
 const authorProfileUrl =
   authorPerson?.data.type === 'team' ? withBasePath(`/about-us/team/${entryAuthorId}`) : undefined
 
