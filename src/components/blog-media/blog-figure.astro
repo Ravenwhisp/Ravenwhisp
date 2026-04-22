@@ -1,0 +1,19 @@
+---
+import { withBasePath } from '@/lib/paths'
+
+type Props = {
+  src: string
+  alt: string
+  caption?: string
+  fullWidth?: boolean
+}
+
+const { src, alt, caption, fullWidth = true } = Astro.props as Props
+---
+
+<figure class:list={[fullWidth ? 'my-8' : 'my-6 lg:mx-auto lg:max-w-[50%]']}>
+  <div class='border-border bg-card overflow-hidden rounded-2xl border shadow-sm'>
+    <img src={withBasePath(src)} alt={alt} class='h-auto w-full object-cover' loading='lazy' decoding='async' />
+  </div>
+  {caption && <figcaption class='text-muted-foreground mt-3 text-sm leading-6'>{caption}</figcaption>}
+</figure>

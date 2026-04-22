@@ -119,8 +119,10 @@ const Blog = ({ blogData = [] }: BlogProps) => {
   const [selectedTab, setSelectedTab] = useState('All')
 
   // Filter out featured posts to avoid duplication with hero section
-  // Sort posts by ID in descending order (newest first)
-  const nonFeaturedPosts = blogData.filter(post => !post.featured).sort((a, b) => b.id - a.id)
+  // Sort posts by date (newest first) for better user experience
+  const nonFeaturedPosts = blogData
+    .filter(post => !post.featured)
+    .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
 
   // Dynamically generate categories from the available data
   const uniqueCategories = [...new Set(nonFeaturedPosts.map(post => post.category))]

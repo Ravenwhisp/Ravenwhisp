@@ -276,6 +276,22 @@
   }
 }
 
+.blog-swiper .swiper-pagination {
+  position: static;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.blog-swiper .swiper-pagination-bullet {
+  background: var(--muted-foreground);
+  opacity: 0.35;
+}
+
+.blog-swiper .swiper-pagination-bullet-active {
+  background: var(--primary);
+  opacity: 1;
+}
+
 button {
   @apply cursor-pointer;
 }

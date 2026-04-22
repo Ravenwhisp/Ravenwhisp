@@ -1,0 +1,11 @@
+---
+import BlogSwiperClient, { type BlogSwiperSlide } from './blog-swiper-client'
+
+type Props = {
+  slides: BlogSwiperSlide[]
+}
+
+const { slides } = Astro.props as Props
+---
+
+<BlogSwiperClient client:only='react' slides={slides} />
