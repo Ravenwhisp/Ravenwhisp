@@ -1,0 +1,97 @@
+---
+id: 1
+slug: 'template'
+title: 'Blog Template'
+description: 'Blog description'
+imageUrl: '/images/placeholder.png'
+imageAlt: 'Product analytics dashboard'
+pubDate: 'May 22, 2025'
+categories:
+  - 'Level Design'
+  - 'Game Design'
+authors:
+  - 'kevin-qiu'
+  - 'meritxell-alguero'
+relatedPosts:
+  - 'assets-importance-game-design'
+visible: false
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+
+## Main Post Title
+
+### Section Header
+
+Write your introductory paragraph here. This should explain what the post is about and why it matters.
+
+### Subsection Header
+
+Write supporting content here. Keep paragraphs short and readable.
+
+- Use bullet points for clarity
+- Highlight key ideas with **bold text**
+- Keep lists concise
+
+## Adding an Image (Full Width)
+
+<BlogFigure
+  src='/images/placeholder-2.png'
+  alt='Describe the image clearly'
+  caption='Optional caption explaining the image'
+/>
+
+## Adding a Smaller Centered Image
+
+<BlogFigure src='/images/placeholder-3.png' alt='Describe the image' caption='Optional caption' fullWidth={false} />
+
+## Adding an Image Gallery
+
+<BlogGallery
+  images={[
+    {
+      src: '/images/placeholder-2.png',
+      alt: 'Describe image 1',
+      caption: 'Optional caption'
+    },
+    {
+      src: '/images/placeholder-3.png',
+      alt: 'Describe image 2',
+      caption: 'Optional caption'
+    }
+  ]}
+/>
+
+## Adding a Swiper / Carousel
+
+<BlogSwiper
+  slides={[
+    {
+      src: '/images/placeholder-2.png',
+      alt: 'Describe slide 1'
+    },
+    {
+      src: '/images/placeholder-3.png',
+      alt: 'Describe slide 2'
+    }
+  ]}
+/>
+
+## Section for Lists or Key Points
+
+### Example: Key Takeaways
+
+- Point one explanation
+- Point two explanation
+- Point three explanation
+
+## Writing Guidelines
+
+- Keep paragraphs between 2–4 lines
+- Use headings every ~2–3 paragraphs
+- Avoid walls of text
+- Prefer clarity over cleverness
+- Write for scanning (most users skim)

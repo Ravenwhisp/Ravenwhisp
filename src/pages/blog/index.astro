@@ -7,14 +7,35 @@ import Blog from '@/components/blocks/blog-component/blog-component'
 
 const allPosts = await getCollection('blog')
 const allPeople = await getCollection('people')
-const publishedPosts = allPosts
+const publishedPosts = allPosts.filter(post => post.data.visible !== false)
 
 const peopleById = new Map(allPeople.map(person => [person.id, person]))
 const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
+const getPostAuthorIds = (post: {
+  data: { author?: { id: string } | string; authors?: Array<{ id: string } | string> }
+}) => {
+  if (post.data.authors?.length) {
+    return post.data.authors.map(getAuthorId)
+  }
+
+  return post.data.author ? [getAuthorId(post.data.author)] : []
+}
+
+const getCategories = (post: { data: { category?: string; categories?: string[] } }): string[] => {
+  if (post.data.categories?.length) return post.data.categories
+  if (post.data.category) return [post.data.category]
+  return ['General']
+}
 
 const allBlogPosts = publishedPosts.map((post, index) => {
-  const authorId = getAuthorId(post.data.author)
-  const authorPerson = peopleById.get(authorId)
+  const authorIds = getPostAuthorIds(post)
+  const authorNames = authorIds
+    .map(authorId => peopleById.get(authorId)?.data.name)
+    .filter((name): name is string => Boolean(name))
+  const primaryAuthorId = authorIds[0]
+  const primaryAuthor = primaryAuthorId ? peopleById.get(primaryAuthorId) : undefined
+  const authorLabel = authorNames.length > 0 ? authorNames.join(', ') : 'Unknown Author'
+  const categories = getCategories(post)
 
   return {
     id: post.data.id || index + 1,
@@ -24,11 +45,11 @@ const allBlogPosts = publishedPosts.map((post, index) => {
     imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
     imageAlt: post.data.imageAlt || post.data.title,
     pubDate: post.data.pubDate,
-    category: post.data.category,
-    author: authorPerson?.data.name || 'Unknown Author',
-    avatarUrl: authorPerson?.data.avatarUrl || '/images/avatars/post-1.webp',
-    authorUrl: authorPerson?.data.type === 'team' ? `/about-us/team/${authorId}` : undefined,
-    readTime: post.data.readTime || 5,
+    categories: categories,
+    author: authorLabel,
+    avatarUrl: primaryAuthor?.data.avatarUrl || '/images/avatars/post-1.webp',
+    authorUrl:
+      authorIds.length === 1 && primaryAuthor?.data.type === 'team' ? `/about-us/team/${primaryAuthorId}` : undefined,
     featured: post.data.featured || false
   }
 })

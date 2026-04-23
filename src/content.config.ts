@@ -12,9 +12,12 @@ const blog = defineCollection({
     imageUrl: z.string().optional(),
     imageAlt: z.string().optional(),
     pubDate: z.string(),
-    author: reference('people'),
-    category: z.string().default('General'),
-    readTime: z.number().optional(),
+    author: reference('people').optional(),
+    authors: z.array(reference('people')).optional(),
+    category: z.string().optional(),
+    categories: z.array(z.string()).optional(),
+    relatedPosts: z.array(z.string()).optional(),
+    visible: z.boolean().default(true),
     featured: z.boolean().default(false)
   })
 })

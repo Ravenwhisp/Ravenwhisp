@@ -10,22 +10,30 @@ export async function GET(context) {
     const people = await getCollection('people')
     const peopleById = new Map(people.map(person => [person.id, person]))
     const getAuthorId = author => (typeof author === 'string' ? author : author.id)
+    const getPostAuthorIds = post => {
+      if (post.data.authors?.length) {
+        return post.data.authors.map(getAuthorId)
+      }
 
-    const publishedPosts = posts.filter(post => !post.data.featured)
+      return post.data.author ? [getAuthorId(post.data.author)] : []
+    }
+
+    const publishedPosts = posts.filter(post => !post.data.featured && post.data.visible !== false)
 
     return rss({
       title: SITE_TITLE,
       description: SITE_DESCRIPTION,
       site: context.site,
       items: publishedPosts.map(post => {
-        const authorId = getAuthorId(post.data.author)
+        const authorIds = getPostAuthorIds(post)
+        const authorNames = authorIds.map(authorId => peopleById.get(authorId)?.data.name).filter(Boolean)
 
         return {
           title: post.data.title,
           description: post.data.description,
           pubDate: post.data.pubDate,
           link: `/blog/${post.id}/`,
-          author: peopleById.get(authorId)?.data.name || 'Unknown Author',
+          author: authorNames.length > 0 ? authorNames.join(', ') : 'Unknown Author',
           categories: post.data.tags || []
         }
       }),

@@ -25,12 +25,10 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
       <div className='mx-auto max-w-7xl space-y-16 px-4 py-8 sm:px-6 lg:px-8'>
         {/* Header */}
         <div className='space-y-4'>
-          <Badge variant='outline'>Trending</Badge>
-
-          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>Related Post</h2>
+          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>Related Posts</h2>
 
           <p className='text-muted-foreground text-lg md:text-xl'>
-            Expand your knowledge with these hand-picked posts.
+            Learn more about the behind-the-scenes of Ravenwhisp's development.
           </p>
         </div>
 
@@ -57,7 +55,13 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                       <CalendarDaysIcon className='size-5' />
                       <span>{post.pubDate}</span>
                     </div>
-                    <Badge className='bg-primary/10 text-primary border-0 text-sm'>{post.category}</Badge>
+                    <div className='flex flex-wrap gap-1.5 justify-end'>
+                      {post.categories.map(category => (
+                        <Badge key={category} className='bg-primary/10 text-primary border-0 text-sm'>
+                          {category}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                   <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
                   <p className='text-muted-foreground line-clamp-2'>{post.description}</p>

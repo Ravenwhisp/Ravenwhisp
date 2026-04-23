@@ -2,12 +2,11 @@
 
 import { useState } from 'react'
 
-import { SearchIcon, ArrowRightIcon, CalendarDaysIcon } from 'lucide-react'
+import { ArrowRightIcon, CalendarDaysIcon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { withBasePath } from '@/lib/paths'
@@ -23,8 +22,7 @@ export type BlogPost = {
   author: string
   avatarUrl: string
   authorUrl?: string
-  category: string
-  readTime: number
+  categories: string[]
   featured: boolean
 }
 
@@ -64,16 +62,21 @@ const BlogGrid = ({ posts, onCategoryClick }: { posts: BlogPost[]; onCategoryCli
                   <CalendarDaysIcon className='size-5' />
                   <p>{post.pubDate}</p>
                 </div>
-                <Badge
-                  className='bg-primary/10 text-primary badge rounded-full border-0 text-sm'
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    onCategoryClick(post.category)
-                  }}
-                >
-                  {post.category}
-                </Badge>
+                <div className='flex flex-wrap gap-1.5'>
+                  {post.categories.map(category => (
+                    <Badge
+                      key={category}
+                      className='bg-primary/10 text-primary badge rounded-full border-0 text-sm'
+                      onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        onCategoryClick(category)
+                      }}
+                    >
+                      {category}
+                    </Badge>
+                  ))}
+                </div>
               </div>
               <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
               <p className='text-muted-foreground line-clamp-2'>{post.description}</p>
@@ -117,7 +120,7 @@ const Blog = ({ blogData = [] }: BlogProps) => {
     .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
 
   // Dynamically generate categories from the available data
-  const uniqueCategories = [...new Set(nonFeaturedPosts.map(post => post.category))]
+  const uniqueCategories = [...new Set(nonFeaturedPosts.flatMap(post => post.categories))]
   const categories = ['All', ...uniqueCategories.sort()]
 
   const handleTabChange = (tab: string) => {
@@ -149,18 +152,6 @@ const Blog = ({ blogData = [] }: BlogProps) => {
               </TabsList>
               <ScrollBar orientation='horizontal' />
             </ScrollArea>
-
-            <div className='relative max-md:w-full'>
-              <div className='text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-3 peer-disabled:opacity-50'>
-                <SearchIcon className='size-4' />
-                <span className='sr-only'>Search</span>
-              </div>
-              <Input
-                type='search'
-                placeholder='Search (WIP)'
-                className='peer h-10 px-9 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none'
-              />
-            </div>
           </div>
 
           {/* All Posts Tab */}
@@ -172,7 +163,7 @@ const Blog = ({ blogData = [] }: BlogProps) => {
           {categories.slice(1).map((category, index) => (
             <TabsContent key={index} value={category}>
               <BlogGrid
-                posts={nonFeaturedPosts.filter(post => post.category === category)}
+                posts={nonFeaturedPosts.filter(post => post.categories.includes(category))}
                 onCategoryClick={handleTabChange}
               />
             </TabsContent>

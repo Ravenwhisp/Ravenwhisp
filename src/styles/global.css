@@ -272,7 +272,7 @@
     @apply border-border border px-4 py-2;
   }
   img {
-    @apply my-6 rounded-lg;
+    @apply rounded-lg;
   }
 }
 

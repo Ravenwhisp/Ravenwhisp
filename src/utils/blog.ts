@@ -1,19 +1,6 @@
 // Utility functions for blog posts
 import type { CollectionEntry } from 'astro:content'
 
-/**
- * Calculate read time based on word count
- * Average reading speed: 200 words per minute
- */
-export function calculateReadTime(text: string | undefined): number {
-  if (!text) return 1
-  const wordsPerMinute = 200
-  const words = text.trim().split(/\s+/).length
-  const readTime = Math.ceil(words / wordsPerMinute)
-
-  return readTime
-}
-
 export function sortPostsByPubDate<T extends { pubDate: string }>(posts: T[]): T[] {
   return [...posts].sort((left, right) => {
     const leftTime = Date.parse(left.pubDate)
@@ -36,8 +23,16 @@ export function getRelatedPosts(
   currentCategory: string,
   limit: number = 3
 ): CollectionEntry<'blog'>[] {
+  const hasCategory = (post: CollectionEntry<'blog'>, category: string) => {
+    if (post.data.categories?.length) {
+      return post.data.categories.includes(category)
+    }
+
+    return post.data.category === category
+  }
+
   // First try to get posts from same category
-  const sameCategoryPosts = posts.filter(post => post.data.category === currentCategory && post.id !== currentSlug)
+  const sameCategoryPosts = posts.filter(post => hasCategory(post, currentCategory) && post.id !== currentSlug)
 
   // If we have enough posts from same category, use them
   if (sameCategoryPosts.length >= limit) {
@@ -45,7 +40,7 @@ export function getRelatedPosts(
   }
 
   // If not enough posts from same category, fill with other posts
-  const otherPosts = posts.filter(post => post.data.category !== currentCategory && post.id !== currentSlug)
+  const otherPosts = posts.filter(post => !hasCategory(post, currentCategory) && post.id !== currentSlug)
 
   return [...sameCategoryPosts, ...otherPosts].slice(0, limit)
 }

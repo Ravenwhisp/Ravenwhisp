@@ -48,8 +48,14 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                         <CalendarDaysIcon className='size-5' />
                         <p>{item.pubDate}</p>
                       </div>
-                      <div className='flex flex-col gap-1.5'>
-                        <Badge className='bg-primary/10 text-primary border-0 text-sm'>{item.category}</Badge>
+                      <div className='flex flex-col items-end gap-1.5'>
+                        <div className='flex flex-wrap gap-1.5'>
+                          {item.categories.map(category => (
+                            <Badge key={category} className='bg-primary/10 text-primary border-0 text-sm'>
+                              {category}
+                            </Badge>
+                          ))}
+                        </div>
                         <Badge className='bg-secondary/10 text-secondary border-0 text-sm'>Featured</Badge>
                       </div>
                     </div>
@@ -120,7 +126,13 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                         <CalendarDaysIcon className='size-5' />
                         <span>{post.pubDate}</span>
                       </div>
-                      <Badge className='bg-primary/10 text-primary border-0 text-sm'>{post.category}</Badge>
+                      <div className='flex flex-wrap justify-end gap-1.5'>
+                        {post.categories.map(category => (
+                          <Badge key={category} className='bg-primary/10 text-primary border-0 text-sm'>
+                            {category}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                     <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
                     <p className='text-muted-foreground line-clamp-2'>{post.description}</p>

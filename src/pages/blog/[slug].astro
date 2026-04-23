@@ -13,12 +13,11 @@ import {
 } from '@/components/ui/breadcrumb'
 import DynamicToc from '@/components/astro/DynamicToc.astro'
 import { AuthorMetadata } from '@/components/AuthorAvatar'
-import { getRelatedPosts, getPostNavigation, calculateReadTime } from '@/utils/blog'
+import { getPostNavigation } from '@/utils/blog'
 import { withBasePath } from '@/lib/paths'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import Blog from '@/components/blocks/blog-related-post/blog-related-post'
-import CTA from '@/components/blocks/cta-section/cta-section'
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog')
@@ -34,24 +33,55 @@ const { Content, headings } = await render(entry)
 // Get all posts for navigation and related posts
 const allPosts = await getCollection('blog')
 const people = await getCollection('people')
-const publishedPosts = allPosts
+const visiblePosts = allPosts.filter(post => post.data.visible !== false)
 
 const peopleById = new Map(people.map(person => [person.id, person]))
 const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
-const entryAuthorId = getAuthorId(entry.data.author)
-const authorPerson = peopleById.get(entryAuthorId)
-const authorName = authorPerson?.data.name || 'Unknown Author'
-const authorAvatarUrl = authorPerson?.data.avatarFullUrl
-const authorProfileUrl =
-  authorPerson?.data.type === 'team' ? withBasePath(`/about-us/team/${entryAuthorId}`) : undefined
+const getEntryAuthorIds = (post: {
+  data: { author?: { id: string } | string; authors?: Array<{ id: string } | string> }
+}) => {
+  if (post.data.authors?.length) {
+    return post.data.authors.map(getAuthorId)
+  }
 
-// Get related posts (same category)
-const relatedPosts = getRelatedPosts(publishedPosts, entry.id, entry.data.category, 3)
+  return post.data.author ? [getAuthorId(post.data.author)] : []
+}
+
+const getCategories = (post: { data: { category?: string; categories?: string[] } }): string[] => {
+  if (post.data.categories?.length) return post.data.categories
+  if (post.data.category) return [post.data.category]
+  return ['General']
+}
+
+const entryAuthorIds = getEntryAuthorIds(entry)
+const entryAuthorPeople = entryAuthorIds
+  .map(authorId => peopleById.get(authorId))
+  .filter((person): person is (typeof people)[number] => Boolean(person))
+const authorNameList = entryAuthorPeople.map(person => person.data.name)
+const authorName = authorNameList.length > 0 ? authorNameList.join(', ') : 'Unknown Author'
+const entryCategories = getCategories(entry)
+
+// Related posts are only shown when explicitly listed in frontmatter.
+const relatedReferenceIds = entry.data.relatedPosts ?? []
+const relatedPosts =
+  relatedReferenceIds.length > 0
+    ? relatedReferenceIds
+        .map(referenceId => visiblePosts.find(post => post.id === referenceId || post.data.slug === referenceId))
+        .filter((post): post is (typeof visiblePosts)[number] => post !== undefined)
+        .filter(post => post.id !== entry.id)
+        .filter((post, index, posts) => posts.findIndex(candidate => candidate.id === post.id) === index)
+    : []
 
 // Map relatedPosts to BlogPost type for the Blog component
 const formattedRelatedPosts = relatedPosts.map(post => {
-  const authorId = getAuthorId(post.data.author)
-  const author = peopleById.get(authorId)
+  const authorIds = getEntryAuthorIds(post)
+  const authorPeople = authorIds
+    .map(authorId => peopleById.get(authorId))
+    .filter((person): person is (typeof people)[number] => Boolean(person))
+  const authorNames = authorPeople.map(person => person.data.name)
+  const primaryAuthorId = authorIds[0]
+  const primaryAuthor = primaryAuthorId ? peopleById.get(primaryAuthorId) : undefined
+  const categories = getCategories(post)
 
   return {
     id: post.data.id,
@@ -61,20 +91,19 @@ const formattedRelatedPosts = relatedPosts.map(post => {
     imageUrl: post.data.imageUrl || '',
     imageAlt: post.data.imageAlt || '',
     pubDate: post.data.pubDate,
-    author: author?.data.name || 'Unknown Author',
-    avatarUrl: author?.data.avatarUrl || '',
-    authorUrl: author?.data.type === 'team' ? withBasePath(`/about-us/team/${authorId}`) : undefined,
-    category: post.data.category,
-    readTime: post.data.readTime || calculateReadTime(post.body),
+    author: authorNames.length > 0 ? authorNames.join(', ') : 'Unknown Author',
+    avatarUrl: primaryAuthor?.data.avatarUrl || '',
+    authorUrl:
+      authorIds.length === 1 && primaryAuthor?.data.type === 'team'
+        ? withBasePath(`/about-us/team/${primaryAuthorId}`)
+        : undefined,
+    categories: categories,
     featured: post.data.featured || false
   }
 })
 
 // Get previous and next posts
-const { previous: previousPost, next: nextPost } = getPostNavigation(publishedPosts, entry.id)
-
-// Calculate read time if not provided
-const readTime = entry.data.readTime || calculateReadTime(entry.body)
+const { previous: previousPost, next: nextPost } = getPostNavigation(visiblePosts, entry.id)
 
 const schema = {
   '@context': 'https://schema.org',
@@ -83,10 +112,13 @@ const schema = {
   description: entry.data.description,
   image: entry.data.imageUrl ? withBasePath(entry.data.imageUrl) : undefined,
   datePublished: entry.data.pubDate,
-  author: {
-    '@type': 'Person',
-    name: authorName
-  }
+  author:
+    authorNameList.length > 1
+      ? authorNameList.map(name => ({ '@type': 'Person', name }))
+      : {
+          '@type': 'Person',
+          name: authorName
+        }
 }
 ---
 
@@ -123,7 +155,7 @@ const schema = {
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>{entry.data.category}</BreadcrumbPage>
+                    <BreadcrumbPage>{entryCategories[0]}</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
@@ -136,24 +168,35 @@ const schema = {
 
               <!-- Post Metadata -->
               <div class='flex flex-wrap justify-between gap-4'>
-                <div class='flex flex-wrap items-center gap-3'>
-                  <AuthorMetadata client:load avatarUrl={authorAvatarUrl} author={authorName} />
-                  <div class='flex flex-col gap-1'>
-                    <span class='text-muted-foreground text-sm'>Written by</span>
+                <div class='flex flex-col gap-1.5 md:flex-1'>
+                  <span class='text-muted-foreground text-sm'>Written by</span>
+                  <div class='flex flex-wrap gap-4'>
                     {
-                      authorProfileUrl ? (
-                        <a class='text-foreground text-sm font-medium hover:underline' href={authorProfileUrl}>
-                          {authorName}
-                        </a>
-                      ) : (
-                        <span class='text-foreground text-sm font-medium'>{authorName}</span>
-                      )
+                      entryAuthorPeople.map((author, index) => {
+                        const authorProfileUrl =
+                          entryAuthorIds.length === 1 && author.data.type === 'team'
+                            ? withBasePath(`/about-us/team/${entryAuthorIds[0]}`)
+                            : author.data.type === 'team'
+                              ? withBasePath(`/about-us/team/${entryAuthorIds[index]}`)
+                              : undefined
+
+                        return (
+                          <div class='flex items-center gap-2'>
+                            <AuthorMetadata client:load avatarUrl={author.data.avatarUrl} author={author.data.name} />
+                            <div class='flex flex-col gap-0.5'>
+                              {authorProfileUrl ? (
+                                <a class='text-foreground text-sm font-medium hover:underline' href={authorProfileUrl}>
+                                  {author.data.name}
+                                </a>
+                              ) : (
+                                <span class='text-foreground text-sm font-medium'>{author.data.name}</span>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })
                     }
                   </div>
-                </div>
-                <div class='flex flex-col gap-1.5'>
-                  <span class='text-muted-foreground text-sm'>Read Time</span>
-                  <span class='text-foreground text-sm font-medium'>{readTime} minute read</span>
                 </div>
                 <div class='flex flex-col gap-1.5'>
                   <span class='text-muted-foreground text-sm'>Posted on</span>
@@ -227,8 +270,6 @@ const schema = {
       </div>
     </section>
 
-    <Blog relatedPosts={formattedRelatedPosts} />
-
-    <CTA />
+    {formattedRelatedPosts.length > 0 && <Blog relatedPosts={formattedRelatedPosts} />}
   </main>
 </Layout>
