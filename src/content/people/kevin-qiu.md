@@ -1,6 +1,5 @@
 ---
 name: 'Kevin Qiu Lo'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/kevin-qiu.png'
 avatarFullUrl: '/images/avatars/full/kevin-qiu.jpg'
 type: 'team'

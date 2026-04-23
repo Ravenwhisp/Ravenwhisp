@@ -1,6 +1,5 @@
 ---
 name: 'Natalia Muñiz Muñoz'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/natalia-muniz.png'
 avatarFullUrl: '/images/avatars/full/natalia-muniz.jpg'
 type: 'team'

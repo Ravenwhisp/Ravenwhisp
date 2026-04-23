@@ -1,6 +1,5 @@
 ---
 name: 'Daniel Bellido Chueco'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/daniel-bellido.png'
 avatarFullUrl: '/images/avatars/full/daniel-bellido.jpg'
 type: 'team'

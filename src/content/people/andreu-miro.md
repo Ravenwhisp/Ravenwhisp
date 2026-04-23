@@ -1,6 +1,5 @@
 ---
 name: 'Andreu Miró Sabaté'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/andreu-miro.png'
 avatarFullUrl: '/images/avatars/full/andreu-miro.jpg'
 type: 'team'

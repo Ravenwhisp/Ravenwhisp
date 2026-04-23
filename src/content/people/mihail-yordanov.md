@@ -1,6 +1,5 @@
 ---
 name: 'Mihail Yordanov Yordanov'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/mihail-yordanov.png'
 avatarFullUrl: '/images/avatars/full/mihail-yordanov.jpg'
 type: 'team'

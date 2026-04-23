@@ -1,6 +1,5 @@
 ---
 name: 'Matheus Ferreira'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/matheus-ferreira.png'
 avatarFullUrl: '/images/avatars/full/matheus-ferreira.jpg'
 type: 'team'

@@ -1,6 +1,5 @@
 ---
 name: 'Mikhaela Escubil'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/mikhaela-escubil.png'
 avatarFullUrl: '/images/avatars/full/mikhaela-escubil.jpeg'
 type: 'team'

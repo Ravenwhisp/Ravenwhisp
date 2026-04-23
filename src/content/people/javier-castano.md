@@ -1,6 +1,5 @@
 ---
 name: 'Javier Castaño Mansilla'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/javier-castano.png'
 avatarFullUrl: '/images/avatars/full/javier-castano.jpg'
 type: 'team'

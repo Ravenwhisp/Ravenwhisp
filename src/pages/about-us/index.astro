@@ -32,7 +32,11 @@ const pageDescription = 'Learn more about Ravenwhisp Studio and our mission behi
                 <div class='border-border bg-card hover:bg-muted/30 relative flex scale-[0.98] gap-x-2 border p-4 saturate-[.4] transition-all duration-300 group-hover:scale-100 group-hover:saturate-100'>
                   <a href={withBasePath(`/about-us/team/${person.id}`)} class='absolute bottom-0 left-0 block'>
                     <img
-                      src={withBasePath(person.data.avatarTransparentUrl ?? person.data.avatarFullUrl)}
+                      src={withBasePath(
+                        person.data.avatarTransparentUrl ||
+                          person.data.avatarFullUrl ||
+                          '/images/avatars/avatar-placeholder.jpg'
+                      )}
                       alt={person.data.name}
                       class='h-36 w-36 object-cover'
                     />

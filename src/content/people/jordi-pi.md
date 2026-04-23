@@ -1,6 +1,5 @@
 ---
 name: 'Jordi Pi i Moreno'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/jordi-pi.png'
 avatarFullUrl: '/images/avatars/full/jordi-pi.jpg'
 type: 'team'

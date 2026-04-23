@@ -17,7 +17,7 @@ export const AuthorMetadata = ({ author, avatarFullUrl }: AuthorMetadataProps) =
 
   return (
     <Avatar className='size-11.5'>
-      <AvatarImage src={avatarFullUrl ? withBasePath(avatarFullUrl) : undefined} alt={author} />
+      <AvatarImage src={withBasePath(avatarFullUrl || '/images/avatars/avatar-placeholder.jpg')} alt={author} />
       <AvatarFallback className='text-xs'>{getInitials(author)}</AvatarFallback>
     </Avatar>
   )

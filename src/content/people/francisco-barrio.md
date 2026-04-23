@@ -1,6 +1,5 @@
 ---
 name: 'Francisco Barrio Morra'
-avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/francisco-barrio.png'
 avatarFullUrl: '/images/avatars/full/francisco-barrio.jpg'
 type: 'team'
