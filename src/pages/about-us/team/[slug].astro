@@ -148,18 +148,17 @@ const sortedPersonPosts = formattedPosts.sort((a, b) => new Date(b.pubDate).getT
       <article class='prose dark:prose-invert max-w-none'>
         <Content />
       </article>
-
-      {
-        sortedPersonPosts.length > 0 && (
-          <section class='space-y-8 border-t pt-12'>
-            <div class='space-y-2'>
-              <h2 class='text-foreground text-3xl font-semibold'>Blog Posts by {person.data.name}</h2>
-              <p class='text-muted-foreground'>Articles and devlogs written by this team member.</p>
-            </div>
-            <Blog blogData={sortedPersonPosts} client:load />
-          </section>
-        )
-      }
     </div>
   </section>
+  {
+    sortedPersonPosts.length > 0 && (
+      <section class='space-y-8 border-t pt-12'>
+        <div class='space-y-2'>
+          <h2 class='text-foreground text-3xl font-semibold'>Blog Posts by {person.data.name}</h2>
+          <p class='text-muted-foreground'>Articles and devlogs written by this team member.</p>
+        </div>
+        <Blog blogData={sortedPersonPosts} client:load />
+      </section>
+    )
+  }
 </Layout>
