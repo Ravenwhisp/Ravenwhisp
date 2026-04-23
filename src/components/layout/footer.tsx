@@ -1,4 +1,4 @@
-import { GithubIcon, InstagramIcon, LinkedinIcon, Music2Icon, TwitterIcon, YoutubeIcon } from 'lucide-react'
+import { siGithub, siInstagram, siTiktok, siX, siYoutube } from 'simple-icons'
 
 import { Separator } from '@/components/ui/separator'
 
@@ -43,7 +43,9 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='text-muted-foreground hover:text-foreground'
           >
-            <GithubIcon className='size-5' />
+            <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
+              <path d={siGithub.path} />
+            </svg>
           </a>
           <a
             href={SOCIAL_LINKS.instagram}
@@ -51,7 +53,9 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='text-muted-foreground hover:text-foreground'
           >
-            <InstagramIcon className='size-5' />
+            <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
+              <path d={siInstagram.path} />
+            </svg>
           </a>
           <a
             href={SOCIAL_LINKS.twitter}
@@ -59,7 +63,9 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='text-muted-foreground hover:text-foreground'
           >
-            <TwitterIcon className='size-5' />
+            <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
+              <path d={siX.path} />
+            </svg>
           </a>
           <a
             href={SOCIAL_LINKS.linkedin}
@@ -67,7 +73,9 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='text-muted-foreground hover:text-foreground'
           >
-            <LinkedinIcon className='size-5' />
+            <svg viewBox='0 0 24 24' fill='currentColor' className='size-5' aria-hidden='true'>
+              <path d='M6.94 8.5A1.56 1.56 0 1 1 6.94 5.4a1.56 1.56 0 0 1 0 3.1zM5.5 9.75h2.88V18H5.5V9.75zM10.1 9.75h2.76v1.12h.04c.38-.72 1.33-1.48 2.74-1.48 2.93 0 3.47 1.93 3.47 4.44V18h-2.88v-3.7c0-.88-.02-2.01-1.22-2.01-1.22 0-1.4.95-1.4 1.95V18H10.1V9.75z' />
+            </svg>
           </a>
           <a
             href={SOCIAL_LINKS.tiktok}
@@ -75,7 +83,9 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='text-muted-foreground hover:text-foreground'
           >
-            <Music2Icon className='size-5' />
+            <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
+              <path d={siTiktok.path} />
+            </svg>
           </a>
           <a
             href={SOCIAL_LINKS.youtube}
@@ -83,7 +93,9 @@ const Footer = () => {
             rel='noopener noreferrer'
             className='text-muted-foreground hover:text-foreground'
           >
-            <YoutubeIcon className='size-5' />
+            <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
+              <path d={siYoutube.path} />
+            </svg>
           </a>
         </div>
       </div>

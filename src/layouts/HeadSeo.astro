@@ -108,9 +108,6 @@ const schemaData = schema || defaultSchema
 {SITE_METADATA.icons.shortcut.map(icon => <link rel='shortcut icon' href={icon.url} />)}
 <link rel='manifest' href={withBasePath('/site.webmanifest')} />
 
-<!-- Sitemap -->
-<link rel='sitemap' href={withBasePath('/sitemap.xml')} />
-
 <!-- RSS Feed -->
 <link
   rel='alternate'
@@ -152,18 +149,7 @@ const schemaData = schema || defaultSchema
 <link rel='preconnect' href='https://fonts.googleapis.com' />
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin='anonymous' />
 <!-- Google Fonts - Optimized Loading -->
-<link
-  rel='preload'
-  as='style'
-  href='https://fonts.googleapis.com/css2?family=Finlandica:wght@400;600;700&display=swap'
-/>
-
-<link
-  rel='stylesheet'
-  media='print'
-  onload="this.media='all'"
-  href='https://fonts.googleapis.com/css2?family=Finlandica:wght@400;600;700&display=swap'
-/>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Finlandica:wght@400;600;700&display=swap' />
 
 <!-- Theme Color -->
 <meta name='theme-color' content={SITE_METADATA.themeColor.light} media='(prefers-color-scheme: light)' />
@@ -171,4 +157,4 @@ const schemaData = schema || defaultSchema
 
 <!-- Structured Data (JSON-LD) -->
 {/* eslint-disable-next-line astro/no-set-html-directive */}
-<script type='application/ld+json' set:html={JSON.stringify(schemaData)} />
+<script is:inline type='application/ld+json' set:html={JSON.stringify(schemaData)} />

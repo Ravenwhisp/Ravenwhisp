@@ -64,22 +64,21 @@ export const SITE_METADATA = {
     description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
     images: [
       {
-        url: withBasePath('/images/og-image.png'),
-        width: 1200,
-        height: 630,
+        url: withBasePath('/images/home/hero/home-hero-background.png'),
+        width: 1920,
+        height: 1080,
         alt: 'Bound By Death | Ravenwhisp Studio',
         type: 'image/png'
       }
     ]
   },
   twitter: {
-    // TODO: Update Twitter handle and card type if needed
     card: 'summary_large_image',
-    site: '@ravenwhispstudio',
-    creator: '@ravenwhispstudio',
+    site: '@Raven_Whisp',
+    creator: '@Raven_Whisp',
     title: 'Bound By Death | Ravenwhisp Studio',
     description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
-    images: [withBasePath('/images/og-image.png')]
+    images: [withBasePath('/images/home/hero/home-hero-background.png')]
   },
   verification: {
     google: '', // Add your Google verification code
