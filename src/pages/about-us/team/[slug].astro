@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import { getCollection, render } from 'astro:content'
 import { withBasePath } from '@/lib/paths'
+import Blog from '@/components/blocks/blog-component/blog-component'
 
 export async function getStaticPaths() {
   const people = await getCollection('people')
@@ -16,8 +17,69 @@ export async function getStaticPaths() {
 const { person } = Astro.props
 const { Content } = await render(person)
 
+// Get all blog posts by this person
+const allPosts = await getCollection('blog')
+const allPeople = await getCollection('people')
+const visiblePosts = allPosts.filter(post => post.data.visible !== false)
+
+const peopleById = new Map(allPeople.map(p => [p.id, p]))
+const getAuthorId = (author: { id: string } | string) => (typeof author === 'string' ? author : author.id)
+const getPostAuthorIds = (post: {
+  data: { author?: { id: string } | string; authors?: Array<{ id: string } | string> }
+}) => {
+  if (post.data.authors?.length) {
+    return post.data.authors.map(getAuthorId)
+  }
+  return post.data.author ? [getAuthorId(post.data.author)] : []
+}
+
+const getCategories = (post: { data: { category?: string; categories?: string[] } }): string[] => {
+  if (post.data.categories?.length) return post.data.categories
+  if (post.data.category) return [post.data.category]
+  return ['General']
+}
+
+// Filter posts by this person
+const personPosts = visiblePosts.filter(post => {
+  const postAuthorIds = getPostAuthorIds(post)
+  return postAuthorIds.includes(person.id)
+})
+
+// Format posts for blog component
+const formattedPosts = personPosts.map((post, index) => {
+  const authorIds = getPostAuthorIds(post)
+  const authorNames = authorIds
+    .map(authorId => peopleById.get(authorId)?.data.name)
+    .filter((name): name is string => Boolean(name))
+  const primaryAuthorId = authorIds[0]
+  const primaryAuthor = primaryAuthorId ? peopleById.get(primaryAuthorId) : undefined
+  const categories = getCategories(post)
+
+  return {
+    id: post.data.id || index + 1,
+    slug: post.data.slug || post.id,
+    title: post.data.title,
+    description: post.data.description,
+    imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
+    imageAlt: post.data.imageAlt || post.data.title,
+    pubDate: post.data.pubDate,
+    categories: categories,
+    author: authorNames.length > 0 ? authorNames.join(', ') : 'Unknown Author',
+    avatarFullUrl:
+      primaryAuthor?.data.avatarFullUrl ||
+      primaryAuthor?.data.avatarTransparentUrl ||
+      '/images/avatars/avatar-placeholder.jpg',
+    authorUrl:
+      authorIds.length === 1 && primaryAuthor?.data.type === 'team' ? `/about-us/team/${primaryAuthorId}` : undefined,
+    featured: post.data.featured || false
+  }
+})
+
 const pageTitle = `${person.data.name} | Team | Ravenwhisp Studio`
 const pageDescription = person.data.bio ?? `${person.data.name} profile at Ravenwhisp Studio`
+
+// Sort by date (newest first)
+const sortedPersonPosts = formattedPosts.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -86,6 +148,18 @@ const pageDescription = person.data.bio ?? `${person.data.name} profile at Raven
       <article class='prose dark:prose-invert max-w-none'>
         <Content />
       </article>
+
+      {
+        sortedPersonPosts.length > 0 && (
+          <section class='space-y-8 border-t pt-12'>
+            <div class='space-y-2'>
+              <h2 class='text-foreground text-3xl font-semibold'>Blog Posts by {person.data.name}</h2>
+              <p class='text-muted-foreground'>Articles and devlogs written by this team member.</p>
+            </div>
+            <Blog blogData={sortedPersonPosts} client:load />
+          </section>
+        )
+      }
     </div>
   </section>
 </Layout>
