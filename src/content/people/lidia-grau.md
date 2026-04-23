@@ -1,6 +1,6 @@
 ---
 name: 'Lídia Grau'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/lidia-grau.png'
 avatarFullUrl: '/images/avatars/full/lidia-grau.jpeg'
 type: 'team'

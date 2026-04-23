@@ -20,7 +20,7 @@ export type BlogPost = {
   imageAlt: string
   pubDate: string
   author: string
-  avatarUrl: string
+  avatarFullUrl: string
   authorUrl?: string
   categories: string[]
   featured: boolean

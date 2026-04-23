@@ -1,6 +1,6 @@
 ---
 name: 'Meritxell Algueró Manrique'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/meritxell-alguero.png'
 avatarFullUrl: '/images/avatars/full/meritxell-alguero.jpg'
 type: 'team'

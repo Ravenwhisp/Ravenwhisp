@@ -26,7 +26,6 @@ const people = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/people' }),
   schema: z.object({
     name: z.string(),
-    avatarUrl: z.string(),
     avatarTransparentUrl: z.string().optional(),
     avatarFullUrl: z.string().optional(),
     type: z.enum(['team', 'guest']).default('team'),

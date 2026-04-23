@@ -1,6 +1,6 @@
 ---
 name: 'Núria Vaquero'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/nuria-vaquero.png'
 avatarFullUrl: '/images/avatars/full/nuria-vaquero.jpg'
 type: 'team'

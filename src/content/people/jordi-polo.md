@@ -1,6 +1,6 @@
 ---
 name: 'Jordi Polo Tormo'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/jordi-polo.png'
 avatarFullUrl: '/images/avatars/full/jordi-polo.jpg'
 type: 'team'

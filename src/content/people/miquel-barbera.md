@@ -1,6 +1,6 @@
 ---
 name: 'Miquel Barbarà Garrido'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/miquel-barbera.png'
 avatarFullUrl: '/images/avatars/full/miquel-barbera.jpg'
 type: 'team'

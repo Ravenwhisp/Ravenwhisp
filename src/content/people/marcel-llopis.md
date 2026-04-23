@@ -1,6 +1,6 @@
 ---
 name: 'Marcel Llopis Balanyà'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/marcel-llopis.png'
 avatarFullUrl: '/images/avatars/full/marcel-llopis.jpg'
 type: 'team'

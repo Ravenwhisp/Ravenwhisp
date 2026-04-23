@@ -92,7 +92,7 @@ const formattedRelatedPosts = relatedPosts.map(post => {
     imageAlt: post.data.imageAlt || '',
     pubDate: post.data.pubDate,
     author: authorNames.length > 0 ? authorNames.join(', ') : 'Unknown Author',
-    avatarUrl: primaryAuthor?.data.avatarUrl || '',
+    avatarFullUrl: primaryAuthor?.data.avatarFullUrl || '',
     authorUrl:
       authorIds.length === 1 && primaryAuthor?.data.type === 'team'
         ? withBasePath(`/about-us/team/${primaryAuthorId}`)
@@ -182,7 +182,11 @@ const schema = {
 
                         return (
                           <div class='flex items-center gap-2'>
-                            <AuthorMetadata client:load avatarUrl={author.data.avatarUrl} author={author.data.name} />
+                            <AuthorMetadata
+                              client:load
+                              avatarFullUrl={author.data.avatarFullUrl}
+                              author={author.data.name}
+                            />
                             <div class='flex flex-col gap-0.5'>
                               {authorProfileUrl ? (
                                 <a class='text-foreground text-sm font-medium hover:underline' href={authorProfileUrl}>

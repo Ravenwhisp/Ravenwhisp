@@ -1,6 +1,6 @@
 ---
 name: 'Laura Libo'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/laura-libo.png'
 avatarFullUrl: '/images/avatars/full/laura-libo.jpg'
 type: 'team'

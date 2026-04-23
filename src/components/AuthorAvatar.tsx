@@ -3,10 +3,10 @@ import { withBasePath } from '@/lib/paths'
 
 interface AuthorMetadataProps {
   author: string
-  avatarUrl?: string
+  avatarFullUrl?: string
 }
 
-export const AuthorMetadata = ({ author, avatarUrl }: AuthorMetadataProps) => {
+export const AuthorMetadata = ({ author, avatarFullUrl }: AuthorMetadataProps) => {
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -17,7 +17,7 @@ export const AuthorMetadata = ({ author, avatarUrl }: AuthorMetadataProps) => {
 
   return (
     <Avatar className='size-11.5'>
-      <AvatarImage src={avatarUrl ? withBasePath(avatarUrl) : undefined} alt={author} />
+      <AvatarImage src={avatarFullUrl ? withBasePath(avatarFullUrl) : undefined} alt={author} />
       <AvatarFallback className='text-xs'>{getInitials(author)}</AvatarFallback>
     </Avatar>
   )

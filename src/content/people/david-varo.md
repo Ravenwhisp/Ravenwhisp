@@ -1,6 +1,6 @@
 ---
 name: 'David Varo Martínez'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/david-varo.png'
 avatarFullUrl: '/images/avatars/full/david-varo.jpg'
 type: 'team'

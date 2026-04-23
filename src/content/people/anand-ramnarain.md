@@ -1,6 +1,6 @@
 ---
 name: 'Anand Ramnarain'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/anand-ramnarain.png'
 avatarFullUrl: '/images/avatars/full/anand-ramnarain.jpg'
 type: 'team'

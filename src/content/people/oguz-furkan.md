@@ -1,6 +1,6 @@
 ---
 name: 'Oğuz Furkan Çelik'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/oguz-furkan.png'
 avatarFullUrl: '/images/avatars/full/oguz-furkan.jpeg'
 type: 'team'

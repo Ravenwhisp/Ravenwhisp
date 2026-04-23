@@ -1,6 +1,6 @@
 ---
 name: 'Victor Campos Navarro'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/victor-campos.png'
 avatarFullUrl: '/images/avatars/full/victor-campos.jpg'
 type: 'team'

@@ -1,6 +1,6 @@
 ---
 name: 'Raúl Rodríguez Trotonda'
-avatarUrl: '/images/avatars/avatar-placeholder.jpg'
+avatarFullUrl: '/images/avatars/avatar-placeholder.jpg'
 avatarTransparentUrl: '/images/avatars/transparent/raul-rodriguez.png'
 avatarFullUrl: '/images/avatars/full/raul-rodriguez.jpg'
 type: 'team'

@@ -50,7 +50,7 @@ const allBlogPosts = publishedPosts.map((post, index) => {
     pubDate: post.data.pubDate,
     categories: categories,
     author: authorLabel,
-    avatarUrl: primaryAuthor?.data.avatarFullUrl || '/images/avatars/post-1.webp',
+    avatarFullUrl: primaryAuthor?.data.avatarFullUrl || '/images/avatars/post-1.webp',
     authorUrl:
       authorIds.length === 1 && primaryAuthor?.data.type === 'team' ? `/about-us/team/${primaryAuthorId}` : undefined,
     featured: post.data.featured || false

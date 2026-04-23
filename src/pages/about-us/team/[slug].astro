@@ -29,7 +29,9 @@ const pageDescription = person.data.bio ?? `${person.data.name} profile at Raven
 
       <div class='flex items-start gap-5'>
         <img
-          src={withBasePath(person.data.avatarFullUrl ?? person.data.avatarTransparentUrl ?? person.data.avatarUrl)}
+          src={withBasePath(
+            person.data.avatarFullUrl ?? person.data.avatarTransparentUrl ?? '/images/avatars/avatar-placeholder.jpg'
+          )}
           alt={person.data.name}
           class='h-48 w-48 rounded-xl object-cover sm:h-56 sm:w-56'
         />
