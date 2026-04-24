@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { ArrowRightIcon, CalendarDaysIcon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -40,11 +39,11 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
   return (
     <div className={`grid gap-6 sm:grid-cols-2 ${columnsMaxTwo ? '' : 'lg:grid-cols-3'}`}>
       {posts.map(post => (
-        <Card className='shadow-none'>
+        <Card className='group shadow-none'>
           <a
             href={withBasePath(`/blog/${post.slug}`)}
             key={post.id}
-            className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
+            className='h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
             onClick={e => {
               const target = e.target as HTMLElement
 
@@ -72,7 +71,7 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
                   {post.categories.map(category => (
                     <Badge
                       key={category}
-                      className='bg-primary/10 text-primary badge rounded-full border-0 text-sm'
+                      className='bg-primary/10 text-primary badge hover:border-primary rounded-full border border-transparent text-sm'
                       onClick={
                         onCategoryClick
                           ? e => {
@@ -107,13 +106,16 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
               ) : (
                 <span className='text-sm font-medium'>{post.author}</span>
               )}
-              <Button
-                size='icon'
-                className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
+              <a
+                href={withBasePath(`/blog/${post.slug}`)}
+                className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground inline-flex h-10 w-10 items-center justify-center rounded-md border group-hover:border-transparent hover:border-transparent'
+                onClick={e => {
+                  e.stopPropagation()
+                }}
               >
                 <ArrowRightIcon className='size-4 -rotate-45' />
                 <span className='sr-only'>Read more: {post.title}</span>
-              </Button>
+              </a>
             </div>
           </CardContent>
         </Card>
