@@ -32,46 +32,24 @@ interface BlogProps {
 
 interface BlogGridProps {
   posts: BlogPost[]
-  onCategoryClick?: (category: string) => void
   columnsMaxTwo?: boolean
 }
 
-export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: BlogGridProps) => {
-  const isInteractiveElement = (target: HTMLElement) => {
-    return Boolean(target.closest('a, button, input, textarea, select, [role="button"], .badge'))
-  }
-
+export const BlogGrid = ({ posts, columnsMaxTwo = false }: BlogGridProps) => {
   return (
     <div className={`grid gap-6 sm:grid-cols-2 ${columnsMaxTwo ? '' : 'lg:grid-cols-3'}`}>
       {posts.map(post => (
-        <div
+        <a
+          href={withBasePath(`/blog/${post.slug}`)}
           key={post.id}
           className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
           onClick={e => {
             const target = e.target as HTMLElement
 
-            if (isInteractiveElement(target)) {
-              return
+            if (target.closest('a')) {
+              e.stopPropagation()
             }
-
-            window.location.href = withBasePath(`/blog/${post.slug}`)
           }}
-          onKeyDown={e => {
-            if (e.key !== 'Enter' && e.key !== ' ') {
-              return
-            }
-
-            const target = e.target as HTMLElement
-            if (isInteractiveElement(target)) {
-              return
-            }
-
-            e.preventDefault()
-            window.location.href = withBasePath(`/blog/${post.slug}`)
-          }}
-          role='link'
-          tabIndex={0}
-          aria-label={`Read post: ${post.title}`}
         >
           <Card className='shadow-none'>
             <CardContent className='space-y-3.5'>
@@ -90,19 +68,7 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
                 </div>
                 <div className='flex flex-wrap gap-1.5'>
                   {post.categories.map(category => (
-                    <Badge
-                      key={category}
-                      className='bg-primary/10 text-primary badge rounded-full border-0 text-sm'
-                      onClick={
-                        onCategoryClick
-                          ? e => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              onCategoryClick(category)
-                            }
-                          : undefined
-                      }
-                    >
+                    <Badge key={category} className='bg-primary/10 text-primary rounded-full border-0 text-sm'>
                       {category}
                     </Badge>
                   ))}
@@ -127,11 +93,6 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
                 <Button
                   size='icon'
                   className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    window.location.href = withBasePath(`/blog/${post.slug}`)
-                  }}
                 >
                   <ArrowRightIcon className='size-4 -rotate-45' />
                   <span className='sr-only'>Read more: {post.title}</span>
@@ -139,7 +100,7 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
               </div>
             </CardContent>
           </Card>
-        </div>
+        </a>
       ))}
     </div>
   )
@@ -191,16 +152,13 @@ const Blog = ({ blogData = [] }: BlogProps) => {
 
           {/* All Posts Tab */}
           <TabsContent value='All'>
-            <BlogGrid posts={nonFeaturedPosts} onCategoryClick={handleTabChange} />
+            <BlogGrid posts={nonFeaturedPosts} />
           </TabsContent>
 
           {/* Category-specific Tabs */}
           {categories.slice(1).map((category, index) => (
             <TabsContent key={index} value={category}>
-              <BlogGrid
-                posts={nonFeaturedPosts.filter(post => post.categories.includes(category))}
-                onCategoryClick={handleTabChange}
-              />
+              <BlogGrid posts={nonFeaturedPosts.filter(post => post.categories.includes(category))} />
             </TabsContent>
           ))}
         </Tabs>
