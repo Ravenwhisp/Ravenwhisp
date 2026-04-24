@@ -37,41 +37,21 @@ interface BlogGridProps {
 }
 
 export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: BlogGridProps) => {
-  const isInteractiveElement = (target: HTMLElement) => {
-    return Boolean(target.closest('a, button, input, textarea, select, [role="button"], .badge'))
-  }
-
   return (
     <div className={`grid gap-6 sm:grid-cols-2 ${columnsMaxTwo ? '' : 'lg:grid-cols-3'}`}>
       {posts.map(post => (
-        <div
+        <a
+          href={withBasePath(`/blog/${post.slug}`)}
           key={post.id}
           className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
           onClick={e => {
             const target = e.target as HTMLElement
 
-            if (isInteractiveElement(target)) {
-              return
+            if (onCategoryClick && target.closest('.badge')) {
+              e.preventDefault()
+              e.stopPropagation()
             }
-
-            window.location.href = withBasePath(`/blog/${post.slug}`)
           }}
-          onKeyDown={e => {
-            if (e.key !== 'Enter' && e.key !== ' ') {
-              return
-            }
-
-            const target = e.target as HTMLElement
-            if (isInteractiveElement(target)) {
-              return
-            }
-
-            e.preventDefault()
-            window.location.href = withBasePath(`/blog/${post.slug}`)
-          }}
-          role='link'
-          tabIndex={0}
-          aria-label={`Read post: ${post.title}`}
         >
           <Card className='shadow-none'>
             <CardContent className='space-y-3.5'>
@@ -127,11 +107,6 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
                 <Button
                   size='icon'
                   className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    window.location.href = withBasePath(`/blog/${post.slug}`)
-                  }}
                 >
                   <ArrowRightIcon className='size-4 -rotate-45' />
                   <span className='sr-only'>Read more: {post.title}</span>
@@ -139,7 +114,7 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
               </div>
             </CardContent>
           </Card>
-        </div>
+        </a>
       ))}
     </div>
   )
