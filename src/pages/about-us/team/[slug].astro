@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import { getCollection, render } from 'astro:content'
 import { withBasePath } from '@/lib/paths'
-import Blog from '@/components/blocks/blog-component/blog-component'
+import { BlogGrid } from '@/components/blocks/blog-component/blog-component'
 
 export async function getStaticPaths() {
   const people = await getCollection('people')
@@ -156,8 +156,10 @@ const sortedPersonPosts = formattedPosts.sort((a, b) => new Date(b.pubDate).getT
           <h2 class='text-foreground text-3xl font-semibold'>Blog Posts by {person.data.name}</h2>
           <p class='text-muted-foreground'>Articles and devlogs written by this team member.</p>
         </div>
+        <div class='py-8 sm:pb-16 lg:pb-24'>
+          <BlogGrid posts={sortedPersonPosts} columnsMaxTwo />
+        </div>
       </div>
-      <Blog blogData={sortedPersonPosts} client:load />
     )
   }
   </section>
