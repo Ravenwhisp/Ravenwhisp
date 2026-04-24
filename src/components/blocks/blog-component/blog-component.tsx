@@ -133,7 +133,7 @@ const Blog = ({ blogData = [] }: BlogProps) => {
 
   return (
     <section className='py-8 sm:pb-16 lg:pb-24' id='categories'>
-      <div className='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <div className='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
         {/* Tabs and Search */}
         <Tabs defaultValue='All' value={selectedTab} onValueChange={handleTabChange} className='gap-8 lg:gap-16'>
           <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
