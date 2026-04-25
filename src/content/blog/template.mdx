@@ -21,6 +21,7 @@ featured: false
 import BlogFigure from '@/components/blog-media/blog-figure.astro'
 import BlogGallery from '@/components/blog-media/blog-gallery.astro'
 import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 
 ## Main Post Title
 
@@ -78,6 +79,28 @@ Write supporting content here. Keep paragraphs short and readable.
       alt: 'Describe slide 2'
     }
   ]}
+/>
+
+## Adding a YouTube Embed
+
+<BlogYouTube url='https://youtu.be/QpmC4oxp2-8?si=gba6LrZ_ak__diZr' title='Example YouTube embed' />
+
+## Adding Code Blocks
+
+Use fenced code blocks directly in MDX when you want to show snippets or examples.
+
+```ts
+type Move = {
+  name: string
+  damage: number
+}
+
+const exampleMove: Move = {
+  name: 'Shadow Step',
+  damage: 12
+}
+```
+
 />
 
 ## Section for Lists or Key Points
