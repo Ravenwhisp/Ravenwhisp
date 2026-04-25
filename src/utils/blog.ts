@@ -1,16 +1,28 @@
 // Utility functions for blog posts
 import type { CollectionEntry } from 'astro:content'
 
-export function sortPostsByPubDate<T extends { pubDate: string }>(posts: T[]): T[] {
+export function sortPostsByPubDate<T extends { pubDate: string; id?: number }>(posts: T[]): T[] {
   return [...posts].sort((left, right) => {
     const leftTime = Date.parse(left.pubDate)
     const rightTime = Date.parse(right.pubDate)
 
     if (Number.isNaN(leftTime) || Number.isNaN(rightTime)) {
-      return right.pubDate.localeCompare(left.pubDate)
+      const fallbackDateCompare = right.pubDate.localeCompare(left.pubDate)
+
+      if (fallbackDateCompare !== 0) {
+        return fallbackDateCompare
+      }
+
+      return (right.id ?? Number.NEGATIVE_INFINITY) - (left.id ?? Number.NEGATIVE_INFINITY)
     }
 
-    return rightTime - leftTime
+    const dateCompare = rightTime - leftTime
+
+    if (dateCompare !== 0) {
+      return dateCompare
+    }
+
+    return (right.id ?? Number.NEGATIVE_INFINITY) - (left.id ?? Number.NEGATIVE_INFINITY)
   })
 }
 

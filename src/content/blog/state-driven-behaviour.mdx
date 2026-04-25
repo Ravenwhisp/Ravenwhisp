@@ -1,0 +1,136 @@
+---
+id: 9
+slug: 'state-driven-behaviour'
+title: 'Scripting: StateMachineScript'
+description: 'Introduce modular state machine behaviour'
+imageUrl: '/images/blog-post/SMscript.jpg'
+imageAlt: 'State pattern UML'
+pubDate: 'April 24, 2026'
+categories:
+  - 'Gameplay'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+After exposing the animation system to gameplay through AnimationAPI, the next step in the engine was introducing a way to attach behaviour directly to animation states.
+
+At that point, gameplay scripts could already trigger transitions, query the active state and control playback. However, all behaviour still had to be written in external scripts, usually centralized in a single controller. That quickly became hard to scale, especially when dealing with multiple states and transitions.
+
+What was missing was a way to define behaviour **per state**, so that logic could live alongside the animation flow itself instead of being handled by a monolithic script.
+
+This task was about adding that missing layer: state machine behaviour scripts.
+
+## What we wanted to achieve
+
+The goal was to introduce a system similar to[ Unity’s StateMachineBehaviour](https://docs.unity3d.com/6000.4/Documentation/ScriptReference/StateMachineBehaviour.html), where each animation state can have its own script.
+
+The system needed to:
+
+- Execute logic when entering, updating and exiting a state
+- Allow behaviour to be defined per state instead of in a single script
+- Reuse shared data without duplicating logic
+- Keep animation control inside the state machine system
+- Remain fully compatible with the existing node graph editor and runtime
+
+In other words, the objective was to move from centralized AI logic to a more modular, state-driven behaviour system.
+
+Related topics:[ https://gameprogrammingpatterns.com/state.html](https://gameprogrammingpatterns.com/state.html)
+
+## Introducing StateMachineScript
+
+The core of the system is a new base class called StateMachineScript.
+
+It defines three main callbacks:
+
+- OnStateEnter()
+- OnStateUpdate()
+- OnStateExit()
+
+These functions are executed automatically by the animation system depending on the active state.
+
+Each animation state in the state machine can now have a script assigned to it. At runtime, the engine instantiates that script and calls the corresponding callbacks when the state becomes active, updates every frame, or is exited.
+
+This keeps the behaviour tightly coupled to the state it belongs to, without mixing logic from different states in a single place.
+
+## Dispatching behaviour from the animation system
+
+A key design decision was where this logic should be executed from.
+
+Instead of placing the behaviour execution in the scripting system or the gameplay layer, the dispatch is handled by AnimationComponent, which already owns the state machine runtime.
+
+This means that:
+
+- The animation system knows which state is active
+- It is responsible for calling OnStateEnter, OnStateUpdate and OnStateExit
+- Gameplay scripts do not need to track state changes manually
+
+This keeps responsibilities clearly separated. The animation system controls the flow, while state scripts only define behaviour.
+
+## Separating shared logic with a controller
+
+While behaviour is defined per state, not all logic belongs inside those scripts.
+
+To avoid duplication, we introduced a shared controller (EnemyController) that stores common data, such as:
+
+- target reference
+- detection and attack ranges
+- navigation and movement logic
+- health and death state
+
+State scripts then act as lightweight decision layers:
+
+- They query the controller
+- They decide what should happen in that state
+- They trigger transitions when needed
+
+This results in a clear separation:
+
+- controller → shared data and utilities
+- state scripts → decision making per state
+- animation system → state execution and transitions
+
+## From monolithic logic to modular states
+
+Before this system, behaviour would typically be implemented as a large update loop with multiple condition checks.
+
+With state machine scripts, behaviour is now distributed across states, such as:
+
+- Idle
+- Chase
+- Attack
+- Death
+
+Each state is responsible only for its own logic, which makes the system easier to read, maintain and extend.
+
+Adding a new behaviour is now as simple as creating a new state and attaching a script, without modifying existing ones.
+
+## Final result
+
+By the end of this phase, the engine supports behaviour scripts per animation state.
+
+Each state can define its own logic through OnStateEnter, OnStateUpdate and OnStateExit, while sharing data through a common controller.
+
+The animation state machine is now responsible not only for playback and transitions, but also for driving gameplay behaviour execution in a structured way.
+
+## Closing thoughts
+
+This task was a key step in making the animation system truly gameplay-driven.
+
+The combination of a visual state machine editor, a runtime API, and per-state behaviour scripts creates a workflow that is both flexible and scalable.
+
+Instead of relying on a single, complex script, behaviour is now distributed across states, which aligns much better with how animation state machines are authored and used.
+
+It also brings the engine closer to industry practices, where state-driven behaviour is a common pattern for character logic, especially in animation-heavy systems.

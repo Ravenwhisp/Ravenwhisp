@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import { getCollection, render } from 'astro:content'
 import { withBasePath } from '@/lib/paths'
+import { sortPostsByPubDate } from '@/utils/blog'
 import { BlogGrid } from '@/components/blocks/blog-component/blog-component'
 
 export async function getStaticPaths() {
@@ -78,12 +79,12 @@ const formattedPosts = personPosts.map((post, index) => {
 const pageTitle = `${person.data.name} | Team | Ravenwhisp Studio`
 const pageDescription = person.data.bio ?? `${person.data.name} profile at Ravenwhisp Studio`
 
-// Sort by date (newest first)
-const sortedPersonPosts = formattedPosts.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+// Sort by date (newest first), then by id (highest first) for ties.
+const sortedPersonPosts = sortPostsByPubDate(formattedPosts)
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class='py-16 sm:py-24 space-y-4'>
+  <section class='space-y-4 py-16 sm:py-24'>
     <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
       <div class='flex'>
         <a href={withBasePath('/about-us')} class='text-muted-foreground text-sm hover:underline'>← Back to About Us</a>
@@ -149,18 +150,18 @@ const sortedPersonPosts = formattedPosts.sort((a, b) => new Date(b.pubDate).getT
         <Content />
       </article>
     </div>
-  {
-    sortedPersonPosts.length > 0 && (
-      <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
-        <div class='space-y-2'>
-          <h2 class='text-foreground text-3xl font-semibold'>Blog Posts by {person.data.name}</h2>
-          <p class='text-muted-foreground'>Articles and devlogs written by this team member.</p>
+    {
+      sortedPersonPosts.length > 0 && (
+        <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
+          <div class='space-y-2'>
+            <h2 class='text-foreground text-3xl font-semibold'>Blog Posts by {person.data.name}</h2>
+            <p class='text-muted-foreground'>Articles and devlogs written by this team member.</p>
+          </div>
+          <div class='py-8 sm:pb-16 lg:pb-24'>
+            <BlogGrid posts={sortedPersonPosts} columnsMaxTwo />
+          </div>
         </div>
-        <div class='py-8 sm:pb-16 lg:pb-24'>
-          <BlogGrid posts={sortedPersonPosts} columnsMaxTwo />
-        </div>
-      </div>
-    )
-  }
+      )
+    }
   </section>
 </Layout>

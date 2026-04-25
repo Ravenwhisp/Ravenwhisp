@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { withBasePath } from '@/lib/paths'
+import { sortPostsByPubDate } from '@/utils/blog'
 
 export type BlogPost = {
   id: number
@@ -128,10 +129,8 @@ const Blog = ({ blogData = [] }: BlogProps) => {
   const [selectedTab, setSelectedTab] = useState('All')
 
   // Filter out featured posts to avoid duplication with hero section
-  // Sort posts by date (newest first) for better user experience
-  const nonFeaturedPosts = blogData
-    .filter(post => !post.featured)
-    .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+  // Sort posts by date (newest first), then by id (highest first) when dates match.
+  const nonFeaturedPosts = sortPostsByPubDate(blogData.filter(post => !post.featured))
 
   // Dynamically generate categories from the available data
   const uniqueCategories = [...new Set(nonFeaturedPosts.flatMap(post => post.categories))]

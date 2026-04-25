@@ -1,0 +1,135 @@
+---
+id: 6
+slug: 'basic-state-machine'
+title: 'Animation State Machine'
+description: 'Create states and transitions through Animation Component'
+imageUrl: '/images/blog-post/AC_StateMachineResources.jpg'
+imageAlt: 'StateMachine Resource'
+pubDate: 'April 24, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+  - '4'
+  - '5'
+  - '7'
+  - '8'
+  - '9'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+<BlogYouTube url='https://www.youtube.com/watch?v=fQPhk4SO7L0&t=2s' />
+
+After building animation playback and skinning, the next step in the engine was moving from “playing a single clip” to actually controlling animation flow through a state machine.
+
+In the previous stages, the engine could already import animation clips from glTF, reproduce them at runtime, and deform the character correctly through skinning. That was enough for isolated playback, but not for real gameplay logic. Characters do not just play one animation forever: they need to switch between idle, movement and other actions in a controlled way.
+
+This task was about introducing that missing layer of control.
+
+## What we wanted to achieve
+
+The goal was to make the animation system capable of:
+
+- grouping imported animation clips into a state machine resource
+- defining states and transitions between them
+- selecting a default state
+- triggering transitions by name
+- blending smoothly between states using fade time
+- and supporting playback speed per state
+
+In other words, the objective was to move from simple clip playback to a more reusable and gameplay-oriented animation workflow.
+
+## Building the state machine resource
+
+The first step was extending the asset pipeline with a dedicated resource to represent animation state machines.
+
+For that we added:
+
+- **AnimationStateMachineAsset**, to store:
+  - clips
+  - states
+  - transitions
+  - default state
+- **ImporterAnimationStateMachine**, to serialize and deserialize that resource
+- support in the asset system to save edited state machines back into the engine library
+
+We also updated the glTF import flow so that, besides exporting animation clips as sub-assets, it could automatically generate a default animation state machine resource linked to the imported model.
+
+That meant the engine no longer imported only “raw animations”, but also a higher-level animation control asset ready to be used at runtime.
+
+## Upgrading runtime playback into a real state machine
+
+Once the asset side was ready, the runtime side had to evolve as well.
+
+Previously, the animation component only knew how to play one clip at a time. We reworked it so it could:
+
+- load an AnimationStateMachineAsset
+- enter the default state on startup
+- resolve the clip associated with the active state
+- react to trigger-based transitions
+- switch between states at runtime
+- and apply the resulting transforms to the hierarchy as before
+
+This was the key architectural shift of the task: instead of thinking in terms of “play clip X”, the engine started thinking in terms of “the character is in state X, and a trigger moves it to state Y”.
+
+## Adding transition blending
+
+A hard state switch works, but it usually looks too abrupt. Because of that, another important part of the task was introducing interpolation between states.
+
+To support that, we extended the animation runtime so transitions could keep track of both the currently active animation and the previous one that is fading out.
+
+During a transition, both are sampled and blended over time using the transition’s fade duration. This allowed the engine to move from one animation to another more smoothly instead of instantly snapping between poses.
+
+That made the state machine much more useful in practice, because even very simple transitions like _Idle → Move_ or _Move → Idle_ started to feel much more natural.
+
+## Speed control per state
+
+Another useful improvement in this phase was adding a playback speed parameter.
+
+We extended the animation controller with a speed multiplier so animation time could advance at different rates. On top of that, each state in the state machine could define its own speed value.
+
+That means the same imported clip can be reused in different states with different playback speeds, which gives the system more flexibility without needing duplicate animation resources.
+
+## Basic editor workflow and testing tools
+
+Besides runtime logic, we also needed a way to inspect and test the state machine inside the engine.
+
+For that we added a basic editor workflow that allowed us to:
+
+- Inspect clips, states, and transitions
+- Change the default state
+- Preview states manually
+- Send trigger names directly from the inspector
+- Edit transitions and fade times
+- Save the edited state machine resource
+
+This was especially useful for debugging the runtime before moving into more advanced editor features, because it made it possible to validate the system directly inside the engine without depending on gameplay code first.
+
+## Final result
+
+By the end of this phase, the engine could:
+
+- import animation clips from glTF
+- generate a dedicated animation state machine resource
+- define states, transitions and a default state
+- trigger transitions by name at runtime
+- blend smoothly between states with fade interpolation
+- control playback speed per state
+- and edit and save the state machine from the engine side
+
+In short, this task turned the animation system into something much closer to what a gameplay character actually needs: not just animation playback, but animation control.
+
+## Closing thoughts
+
+This task felt like the point where the animation system became significantly more practical.
+
+Playback and skinning were necessary foundations, but the state machine was what started to turn them into a real character animation workflow. It introduced structure, transitions and reusable control logic on top of the lower-level animation system we had already built.
+
+It was also interesting because it touched several areas at once: asset import, runtime playback, transition blending, editor tooling and persistence. Compared to earlier animation tasks, this one was less about a single isolated feature and more about connecting many parts into a coherent system.

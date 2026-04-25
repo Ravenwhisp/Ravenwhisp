@@ -1,0 +1,103 @@
+---
+id: 5
+slug: 'skinning'
+title: 'Animation II'
+description: 'Deforming meshes to run more complex animations'
+imageUrl: '/images/blog-post/anim2.jpg'
+imageAlt: 'Lyriel basic animations'
+pubDate: 'April 24, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+  - '4'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+After completing basic runtime playback for glTF animations, the next milestone in the engine was skinning.
+
+In the previous phase, we could already import animation clips, play them back at runtime, and apply them correctly to the node hierarchy. The skeleton moved as expected, but the mesh itself still stayed frozen in its bind pose.
+
+This task was about solving that missing step: deforming the mesh according to the animated skeleton.
+
+## What we wanted to achieve
+
+The goal was to make the engine capable of:
+
+- importing skin data from glTF
+- loading per-vertex joint indices and weights
+- resolving joints against the runtime hierarchy
+- building the matrix palette every frame
+- and deforming the mesh correctly during animation
+
+The final target defined by the assignment was GPU skinning using a compute shader, but we also used a temporary CPU path first to validate the system more easily.
+
+## Importing skinning data
+
+The first step was extending the asset pipeline so skins could be imported as engine resources.
+
+For that we added:
+
+- **SkinAsset**, to store skin joints and inverse bind matrices
+- **ImporterSkin**, to serialize and deserialize those resources
+
+we also updated the glTF importer so it could export skins as sub-assets and load JOINTS_0 and WEIGHTS_0 from mesh primitives. To support that, the engine’s Vertex format was extended with four joint indices and four weights per vertex.
+
+## Runtime skinning
+
+Once the skinning data could be imported, the runtime side had to connect it to the instantiated hierarchy.
+
+We updated MeshRenderer so it could:
+
+- store a skin reference
+- resolve skin joints against runtime Transform objects
+- and build the skinning matrix palette every frame
+
+That palette is what finally connects animated bone transforms with the mesh deformation itself.
+
+Before moving to the GPU path, we also implemented a CPU skinning version as a validation step. That made debugging much easier and helped confirm that the matrix palette and vertex weights were working correctly. The assignment itself explicitly recommended CPU skinning as a valid first debugging step before the final GPU implementation.
+
+## Moving skinning to the GPU
+
+After validating the system on CPU, we implemented the final solution using a compute shader.
+
+For that we added a new render pass:
+
+- **SkinningComputePass**
+
+This pass dispatches the compute shader, reads the original mesh data in bind pose, applies the skinning transform on the GPU, and writes the result into an output buffer that is later used for rendering. This matches the intended approach of the assignment and avoids recomputing skinning inside the graphics pipeline every time the mesh is drawn.
+
+We also updated the mesh rendering path so skinned meshes could be drawn from the generated output buffer correctly.
+
+## Final result
+
+By the end of this phase, the engine could:
+
+- import skinned glTF models
+- store skins as engine resources
+- load per-vertex joints and weights
+- generate the matrix palette at runtime
+- and deform the mesh correctly during animation
+
+In short, this was the step that turned my animation system from “moving bones” into actual animated characters.
+
+<BlogYouTube url='https://www.youtube.com/watch?v=iSH54NOs1GE' />
+
+## Closing thoughts
+
+This task felt like a major leap forward compared to the previous playback-only phase.
+
+Animation playback gave us moving hierarchies. Skinning finally made the rendered character follow that motion visually, which made the whole system feel much more complete.
+
+It also forced us to connect several parts of the engine at once: asset import, runtime hierarchy evaluation, vertex data, GPU resources and rendering. That made it one of the most technical but also most rewarding animation tasks so far.

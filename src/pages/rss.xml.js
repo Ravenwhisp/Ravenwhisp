@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts'
+import { sortPostsByPubDate } from '@/utils/blog'
 
 export async function GET(context) {
   let posts = []
@@ -18,7 +19,15 @@ export async function GET(context) {
       return post.data.author ? [getAuthorId(post.data.author)] : []
     }
 
-    const publishedPosts = posts.filter(post => !post.data.featured && post.data.visible !== false)
+    const publishedPosts = sortPostsByPubDate(
+      posts
+        .filter(post => !post.data.featured && post.data.visible !== false)
+        .map(post => ({
+          ...post,
+          pubDate: post.data.pubDate,
+          id: post.data.id
+        }))
+    )
 
     return rss({
       title: SITE_TITLE,

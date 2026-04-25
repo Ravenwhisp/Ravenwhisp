@@ -1,0 +1,118 @@
+---
+id: 7
+slug: 'state-machine-tool'
+title: 'State Machine Tool'
+description: 'Create states and transitions through Node Graph Editor'
+imageUrl: '/images/blog-post/burnout.jpg'
+imageAlt: 'Node Graph Editor'
+pubDate: 'April 24, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+  - '4'
+  - '5'
+  - '6'
+  - '8'
+  - '9'
+visible: true
+featured: false
+---
+
+After getting the animation state machine working at runtime, the next step in the engine was improving the editor workflow around it.
+
+At that point, the engine could already load an animation state machine resource, start from a default state, react to triggers, and blend transitions at runtime. That was enough to validate the system technically, but editing the resource through inspector fields alone was still too limited and not very comfortable once the number of states and transitions started to grow.
+
+This task was about adding a proper visual graph editor so the state machine could be edited in a more natural way inside the engine.
+
+## What I wanted to achieve
+
+The goal was to build a dedicated node-based editor for animation state machines that could:
+
+- Visualize states and transitions in graph form
+- Highlight the default state
+- Create new states directly from the graph
+- Create transitions by connecting nodes
+- Edit state and transition properties in context menus
+- Delete states and transitions safely
+- Save changes from the editor window
+- preserve graph layout per state machine resource.
+
+In other words, the objective was to move from a purely inspector-based editing flow to a more practical visual workflow.
+
+## Creating a dedicated editor window
+
+The first step was separating the graph editor from the runtime animation component.
+
+For that we added a dedicated editor window called WindowAnimationStateMachine. This window is responsible for loading an AnimationStateMachineAsset by UID, creating and destroying its own imgui-node-editor context, and drawing the visual graph independently from the runtime side of the system.
+
+This separation was important architecturally. The AnimationComponent remained focused on playback, transitions and runtime testing, while the graph window became the place for visual editing and resource authoring. The component inspector only needs to open the editor window and pass the selected state machine UID.
+
+## Representing the state machine as a graph
+
+Once the window existed, the next step was translating the resource data into a node graph.
+
+Each state is drawn as its own node, showing its state name, assigned clip, and whether it is the default state. Input and output pins are created for every node so transitions can be represented visually as links between them. Transition links are drawn based on the source and target state names stored in the resource.
+
+The graph is initialized with a simple automatic layout for new resources, and the editor can focus the camera on the graph content when the resource is opened. That made the editor immediately usable even before adding more advanced layout control.
+
+## Editing states and transitions directly in the graph
+
+After basic visualization was working, we expanded the graph into a real editing tool.
+
+From the graph background menu, new states can be created directly in the editor. New transitions can be created by connecting pins between nodes. Links and nodes both expose context menus, allowing state and transition data to be edited without going back to the inspector.
+
+From those context menus, the editor supports:
+
+- renaming states
+- changing the clip assigned to a state
+- editing state speed
+- setting the default state
+- editing transition trigger names
+- editing transition blend times
+- deleting transitions
+- and deleting states while also cleaning up related references safely.
+
+That was the key usability improvement of this task: the state machine stopped being just a list of fields and became something that could be authored visually.
+
+## Keeping the asset valid while editing
+
+Another important part of the task was making sure the graph editor did not leave the resource in an invalid state.
+
+To handle that, we added a sanitization step after structural edits. This ensures that deleted states remove invalid transitions, missing clips are cleared from states, negative speed and blend values are clamped, and the default state is kept valid if possible.
+
+This was especially important because visual editors are much more interactive than plain inspectors. Once users can create, rename and delete nodes directly, the system needs to repair or reject inconsistent data automatically.
+
+## Save workflow and persistent layout
+
+Besides editing itself, the window also needed a practical workflow for persistence.
+
+For that we added a dirty/save flow directly inside the editor window. The graph editor tracks whether the resource has changed, exposes save controls in the window UI, and writes the updated AnimationStateMachineAsset back through the engine asset system.
+
+We also added a persistent editor layout per state machine resource. The graph window stores editor settings separately for each asset, so node positions and graph layout can be preserved between sessions instead of resetting every time the resource is reopened. The window also supports resetting the saved graph layout when needed.
+
+## Final result
+
+By the end of this phase, the engine had a dedicated visual editor for animation state machines.
+
+It could:
+
+- Open a state machine resource in its own graph window
+- Draw states as nodes and transitions as links
+- Highlight the default state
+- Create and delete states directly from the graph
+- Create and edit transitions visually
+- Edit state names, assigned clips, speeds, trigger names and blend times
+- Save the edited resource
+- and preserve graph layout per state machine.
+
+In short, this task turned the state machine editor from a basic inspector workflow into a much more usable visual authoring tool.
+
+## Closing thoughts
+
+This task felt like an important editor-side milestone for the animation system.
+
+The runtime state machine was already functional before this phase, but the node graph editor made it much easier to work with in practice. It improved readability, made transitions easier to reason about, and brought the workflow closer to how animation state machines are usually authored in production tools.
+
+It was also one of those tasks that combined several concerns at once: editor UI, graph interaction, data validation, persistence and asset saving. Compared to the previous animation step, this one was less about runtime behaviour itself and more about making the system practical to edit and maintain inside the engine.

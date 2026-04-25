@@ -1,0 +1,120 @@
+---
+id: 8
+slug: 'expanding-the-engine-api'
+title: 'Scripting: AnimationAPI'
+description: 'Adding the missing scripting layer for animation state machines'
+imageUrl: '/images/blog-post/AnimationAPI.jpg'
+imageAlt: 'Basic functions exposing the animation system to gameplay scripts'
+pubDate: 'April 24, 2026'
+categories:
+  - 'Engine'
+  - 'Gameplay'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '9'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+After building the visual state machine editor, the next step in the engine was exposing that runtime animation system to gameplay scripts.
+
+At that point, the engine could already load animation state machines, evaluate transitions, react to triggers, and blend correctly at runtime. That made the system usable from the animation side, but gameplay code still had no clean way to interact with it. Scripts needed a proper runtime API layer so they could trigger transitions, query the current state, and control playback without depending directly on engine internals.
+
+AnimationComponent already contained most of the runtime functionality, and EngineAPI already acted as the bridge between scripts and the engine, so this task was about connecting both sides properly.
+
+This task was about adding that missing scripting layer for animation state machines.
+
+**What we wanted to achieve**
+
+The goal was to expose animation runtime control to gameplay scripts so they could:
+
+- Access the AnimationComponent from script code
+- Query whether a state machine was assigned and whether a state was active
+- Read the current active state name
+- Trigger transitions from gameplay logic
+- Play, pause and stop animation playback
+- Query playback time and duration
+- Control runtime speed independently from authored state speed.
+
+In other words, the objective was to move from an animation system that only the engine itself could drive to one that gameplay scripts could use in a controlled and reusable way.
+
+**Expanding AnimationComponent with runtime control**
+
+The first step was extending AnimationComponent itself.
+
+The component already knew how to load an AnimationStateMachineAsset, start from the default state, activate states, send triggers, and blend transitions. What it was missing was a clean public runtime API that gameplay code could call directly. To solve that, we added functions such as playState, playDefaultState, sendTrigger, play, pause, stop, playback time accessors, duration queries and runtime speed multiplier support. That kept the actual state machine logic inside the animation system instead of duplicating it somewhere else.
+
+This was an important architectural step. The gameplay layer should not know how the state machine activates clips internally or how blending is performed. It should only call a stable runtime interface and let the animation component remain responsible for state activation and playback logic.
+
+**Separating authored state speed from gameplay speed**
+
+One of the important details of this task was speed handling.
+
+The state machine asset already stored a speed value per state, which worked well as an authored default. However, gameplay also needed the possibility of scaling animation speed at runtime, for example depending on movement speed or other systems. To support that, we introduced a runtime speed multiplier on top of the existing per-state authored speed.
+
+That means the effective playback speed became the combination of: the speed authored in the state machine state and a multiplier applied at runtime by gameplay code.
+
+This separation made the system more flexible. State speed remained useful as part of the animation asset authoring, while scripts could still adapt playback dynamically without rewriting the state machine itself.
+
+**Exposing the animation system through EngineAPI**
+
+Once the runtime functionality existed in AnimationComponent, the next step was making it accessible to scripts.
+
+For that we added a new AnimationAPI namespace inside EngineAPI, following the same style already used for transforms, scene access, input and navigation. This API exposes helpers such as:
+
+- **getAnimationComponent**
+- **hasStateMachine**
+- **hasActiveState**
+- **getActiveStateName**
+- **playState**
+- **playDefaultState**
+- **sendTrigger**
+-
+
+and playback control functions like **play**, **pause**, **stop**, **getPlaybackTime**, **getPlaybackDuration **and speed multiplier access.
+
+The implementation itself stays very small on purpose. EngineAPI is not the place where animation behaviour should be implemented. Instead, it acts as a scripting facade that forwards requests safely to the actual engine systems.
+
+**Trigger-driven scripting vs direct state forcing**
+
+While exposing the API, another important distinction appeared: scripts can interact with the system in different ways.
+
+On one side, playState and playDefaultState allow direct manual control over the active state. On the other side, sendTrigger respects the transitions defined in the state machine graph and lets the runtime follow the logic authored in the editor.
+
+That distinction became especially relevant when starting to use the API from gameplay scripts. Direct state forcing is useful for debugging, previewing or explicit overrides, while trigger-based interaction is the more natural way of respecting the state machine graph itself.
+
+This task therefore was not only about exposing functions, but also about clarifying how gameplay code should ideally communicate with the animation system.
+
+**Final result**
+
+By the end of this phase, the engine had a dedicated scripting API for runtime animation control.
+
+Scripts could:
+
+- Retrieve the AnimationComponent from a GameObject
+- Query the active state and state machine availability
+- Send triggers into the animation state machine
+- Force playback when needed
+- Pause, stop and resume animation playback
+- Read playback time and duration
+- Scale playback speed dynamically at runtime.
+
+In short, this task added the missing bridge between animation runtime and gameplay scripting.
+
+**Closing thoughts**
+
+This task felt like an important step in turning the animation system into something gameplay code could actually use.
+
+The runtime state machine and the visual graph editor were already there, but without a scripting layer the system still felt isolated inside the engine. Adding AnimationAPI made it possible to connect animation with real gameplay behaviour, while still keeping the runtime logic inside AnimationComponent instead of scattering it across scripts.
+
+Compared to the graph editor task, this phase was less about authoring and more about integration. It was the step that made the animation system usable from outside its own module, and that opened the door for character controllers, enemies and gameplay-specific animation behaviour to start interacting with the state machine in a structured way.

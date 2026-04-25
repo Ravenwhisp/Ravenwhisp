@@ -1,0 +1,277 @@
+---
+id: 10
+slug: 'how-to-implement-enemy-behaviour'
+title: 'Scripting: Enemy Behaviour with StateMachineScript'
+description: 'Guideline to follow the same state pattern'
+imageUrl: '/images/blog-post/RangedEnemy.png'
+imageAlt: 'Ranged Enemy'
+pubDate: 'April 25, 2026'
+categories:
+  - 'Gameplay'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+  - '9'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+After implementing the animation state machine and per-state behaviour scripts, the next step is defining a **clear workflow for building enemies** on top of this system.
+
+This post explains the **intended pattern** for implementing enemy behaviour so that all gameplay code follows the same structure.
+
+## **Overview**
+
+Enemy behaviour is built using three main pieces:
+
+- StateMachineScript (per state)
+- EnemyController (shared logic)
+- Animation State Machine (transitions & flow)
+
+Each one has a clear responsibility:
+
+- **State scripts** → decide what happens in a specific state
+- **Controller** → stores data and exposes reusable logic
+- **State machine** → drives execution and transitions
+
+## **The core idea**
+
+Instead of writing one large AI script, behaviour is **distributed per state**.
+
+Each state:
+
+- runs its own logic
+- queries shared data from the controller
+- triggers transitions when needed
+
+The animation system:
+
+- decides which state is active
+- calls the corresponding state script
+
+## **Step 1 — Create the EnemyController**
+
+The controller is the **shared context** for all states.
+
+It should contain:
+
+- target handling (player reference)
+- distance checks (detection / attack / lose range)
+- movement (navigation / chasing)
+- health and death logic
+- reusable helpers
+
+Example responsibilities:
+
+```cpp
+bool HasTarget();
+float GetDistanceToTarget();
+bool IsTargetInAttackRange();
+bool MoveTowardsTarget();
+void ApplyDamage(float damage);
+bool IsDead();
+bool TrySendDeathTrigger();
+```
+
+### **Important rule**
+
+The controller should **not decide states**. It only provides **data and utilities**.
+
+## **Step 2 — Create State Scripts**
+
+Each state is a separate class inheriting from StateMachineScript.
+
+Example:
+
+- EnemyIdleState
+- EnemyChaseState
+- EnemyAttackState
+- EnemyDeathState
+
+Each state implements:
+
+```cpp
+    OnStateEnter()OnStateUpdate()OnStateExit()
+```
+
+## **Step 3 — Access the controller from states**
+
+Each state should retrieve the controller:
+
+```cpp
+    EnemyController* controller = getController();if (!controller) return;
+```
+
+This gives access to all shared logic.
+
+## **Step 4 — Handle death first (always)**
+
+Every state should begin with:
+
+```cpp
+    if (controller->TrySendDeathTrigger()){    return;}
+```
+
+### Why?
+
+- death is a **global interrupt**
+- it must work from any state
+- avoids duplicating transitions everywhere
+
+## **Step 5 — Write state-specific logic**
+
+Each state should be **focused and simple**.
+
+### Example: Idle
+
+```cpp
+    if (controller->IsTargetDetected()){    AnimationAPI::sendTrigger(anim, "Chase");}
+```
+
+### Example: Chase
+
+```cpp
+    controller->MoveTowardsTarget();if (controller->IsTargetInAttackRange()){    AnimationAPI::sendTrigger(anim, "Attack");}else if (controller->IsTargetLost()){    AnimationAPI::sendTrigger(anim, "Idle");}
+```
+
+### Example: Attack
+
+```cpp
+    if (!controller->IsTargetInAttackRange()){    AnimationAPI::sendTrigger(anim, "Chase");}
+```
+
+## **Step 6 — Define transitions in the graph**
+
+The state machine graph defines:
+
+- states
+- transitions
+- triggers
+
+Example:
+
+<table>
+  <tr>
+    <td>From</td>
+    <td>To</td>
+    <td>Trigger</td>
+  </tr>
+  <tr>
+    <td>Idle</td>
+    <td>Chase</td>
+    <td>“Chase”</td>
+  </tr>
+  <tr>
+    <td>Chase</td>
+    <td>Attack</td>
+    <td>“Attack”</td>
+  </tr>
+  <tr>
+    <td>Attack</td>
+    <td>Chase</td>
+    <td>“Chase”</td>
+  </tr>
+  <tr>
+    <td>Any</td>
+    <td>Death</td>
+    <td>“Die”</td>
+  </tr>
+</table>
+
+### **Important rule**
+
+States should **not force transitions manually. They** should only **send triggers**.
+
+## **Step 7 — Handle death properly**
+
+Death flow:
+
+1. ApplyDamage() reduces health
+2. If health ≤ 0 → Kill()
+3. States call TrySendDeathTrigger()
+4. State machine transitions to DEATH
+5. EnemyDeathState:
+   - plays animation
+   - destroys object after delay
+
+## **Final architecture**
+
+```
+[ EnemyController ]
+        ↑
+        │ (shared data & logic)
+        │
+[ StateMachineScript ]
+        ↑
+        ├── IdleState
+        ├── ChaseState
+        ├── AttackState
+        └── DeathState
+    (Animation State Machine controls execution)
+```
+
+## **Key guidelines**
+
+### **1. Keep states simple**
+
+States should:
+
+- read data
+- make decisions
+- trigger transitions
+
+Not:
+
+- store complex data
+- duplicate logic
+
+### **2. Use the controller for everything shared**
+
+If multiple states need it → it belongs in the controller.
+
+### **3. Always use triggers**
+
+Do not force states manually unless debugging.
+
+### **4. Death is global**
+
+Always check death first.
+
+### **5. Think in states, not conditions**
+
+Don’t write:
+
+```cpp
+    if (a && b && c && d)
+```
+
+Instead:
+
+- split logic into states
+- let transitions handle flow
+
+## **Why this pattern works**
+
+- modular → each state is independent
+- scalable → easy to add new states
+- readable → no giant AI script
+- aligned with animation → behaviour follows state machine
+
+## **Closing**
+
+This system is the foundation for all enemies in the gameplay phase.
+
+Following this pattern ensures that:
+
+- behaviour stays consistent across the team
+- state machines remain the source of truth
+- logic remains clean and maintainable
+
+## **Example [WORK IN PROGRESS]**
+
+<BlogYouTube url='https://www.youtube.com/watch?v=-pWazW4R3Ew' />
