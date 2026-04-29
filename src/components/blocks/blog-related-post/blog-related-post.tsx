@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { withBasePath } from '@/lib/paths'
+import { AuthorMetadata } from '@/components/AuthorAvatar'
 
 import type { BlogPost } from '@/components/blocks/blog-component/blog-component'
 
@@ -55,7 +56,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                       <CalendarDaysIcon className='size-5' />
                       <span>{post.pubDate}</span>
                     </div>
-                    <div className='flex flex-wrap gap-1.5 justify-end'>
+                    <div className='flex flex-wrap justify-end gap-1.5'>
                       {post.categories.map(category => (
                         <Badge key={category} className='bg-primary/10 text-primary border-0 text-sm'>
                           {category}
@@ -66,19 +67,30 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                   <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
                   <p className='text-muted-foreground line-clamp-2'>{post.description}</p>
                   <div className='flex items-center justify-between'>
-                    {post.authorUrl ? (
-                      <a
-                        href={withBasePath(post.authorUrl)}
-                        className='text-sm font-medium hover:underline'
-                        onClick={e => {
-                          e.stopPropagation()
-                        }}
-                      >
-                        {post.author}
-                      </a>
-                    ) : (
-                      <span className='text-sm font-medium'>{post.author}</span>
-                    )}
+                    <div className='flex flex-wrap gap-4'>
+                      {post.authors &&
+                        post.authors.length > 0 &&
+                        post.authors.map((author, index) => (
+                          <div key={index} className='flex items-center gap-2'>
+                            <AuthorMetadata avatarFullUrl={author.avatarUrl} author={author.name} />
+                            <div className='flex flex-col gap-0.5'>
+                              {author.url ? (
+                                <a
+                                  href={withBasePath(author.url)}
+                                  className='text-foreground text-sm font-medium hover:underline'
+                                  onClick={e => {
+                                    e.stopPropagation()
+                                  }}
+                                >
+                                  {author.name}
+                                </a>
+                              ) : (
+                                <span className='text-foreground text-sm font-medium'>{author.name}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
                     <Button
                       size='icon'
                       className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'

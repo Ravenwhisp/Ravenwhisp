@@ -19,9 +19,11 @@ export type BlogPost = {
   imageUrl: string
   imageAlt: string
   pubDate: string
-  author: string
-  avatarFullUrl: string
-  authorUrl?: string
+  authors: Array<{
+    name: string
+    avatarUrl: string
+    url?: string
+  }>
   categories: string[]
   featured: boolean
 }
@@ -94,19 +96,27 @@ export const BlogGrid = ({ posts, onCategoryClick, columnsMaxTwo = false }: Blog
           </a>
           <CardContent className='pt-0'>
             <div className='flex items-center justify-between'>
-              {post.authorUrl ? (
-                <a
-                  href={withBasePath(post.authorUrl)}
-                  className='text-sm font-medium hover:underline'
-                  onClick={e => {
-                    e.stopPropagation()
-                  }}
-                >
-                  {post.author}
-                </a>
-              ) : (
-                <span className='text-sm font-medium'>{post.author}</span>
-              )}
+              <div className='flex flex-wrap gap-4'>
+                {post.authors &&
+                  post.authors.length > 0 &&
+                  post.authors.map((author, index) => (
+                    <div key={index} className='flex items-center gap-2'>
+                      {author.url ? (
+                        <a
+                          href={withBasePath(author.url)}
+                          className='text-foreground text-sm font-medium hover:underline'
+                          onClick={e => {
+                            e.stopPropagation()
+                          }}
+                        >
+                          {author.name}
+                        </a>
+                      ) : (
+                        <span className='text-foreground text-sm font-medium'>{author.name}</span>
+                      )}
+                    </div>
+                  ))}
+              </div>
               <a
                 href={withBasePath(`/blog/${post.slug}`)}
                 className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground inline-flex h-10 w-10 items-center justify-center rounded-md border group-hover:border-transparent hover:border-transparent'
