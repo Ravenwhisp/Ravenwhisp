@@ -119,10 +119,7 @@ const HeroScene = () => {
   }, [isMobile])
 
   return (
-    <div
-      ref={containerRef}
-      className='relative h-full w-full overflow-hidden bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.92),rgba(226,201,233,0.48)_36%,rgba(58,27,66,0.16)_100%)]'
-    >
+    <div ref={containerRef} className='bg-background relative h-full w-full overflow-hidden'>
       {/* Background Image with Scale and Parallax */}
       <div
         ref={backgroundRef}
