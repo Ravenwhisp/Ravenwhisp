@@ -154,7 +154,6 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                           post.authors.length > 0 &&
                           post.authors.map((author, index) => (
                             <div key={index} className='flex items-center gap-2'>
-                              <AuthorMetadata avatarFullUrl={author.avatarUrl} author={author.name} />
                               <div className='flex flex-col gap-0.5'>
                                 {author.url ? (
                                   <a
