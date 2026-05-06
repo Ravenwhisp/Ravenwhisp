@@ -1,0 +1,160 @@
+---
+id: 13
+slug: 'strategy-design-pattern'
+title: 'Using the Strategy Design Pattern for Exported Script Fields'
+description: 'Refactoring exported script fields so each field type owns its own editor and serialization behavior'
+imageUrl: '/images/blog-post/strategy1.png'
+imageAlt: 'Exported script fields refactor diagram'
+pubDate: 'May 06, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'jordi-pi'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+In our engine, gameplay scripts can expose variables so they can be edited directly from the inspector. This is what we refer to as the exported field system: the layer that lets scripts define editable data such as floats, booleans, vectors, strings, enums or component references, and makes that data work correctly in the editor and at runtime.
+
+After adding more exported field types to the engine, the exported field system started to reveal a clear opportunity for improvement from an architectural point of view.
+
+At first, the approach was simple and worked well: **ScriptComponent** knew how to draw, serialize, deserialize, clone and fix references for every supported field type. For the number of field types we had at that moment, this solution was completely valid and easy to work with.
+
+As the system expanded, however, it became more centralized. Every time a new field type was added, ScriptComponent needed to be updated again. The system still worked, but the responsibility of ScriptComponent kept growing, and more field-specific behavior was accumulating in the same place.
+
+This post explains that situation, introduces the Strategy Design Pattern in a simple way, and shows how we applied it to our exported field system as an architectural improvement.
+
+## The initial exported field system
+
+The exported field system is what allows scripts to expose editable data in the editor.
+
+For example, a script may expose fields such as:
+
+- floats
+- booleans
+- vectors
+- strings
+- enums
+- component references
+- lists of any type
+
+Originally, all of those field types were handled directly inside **ScriptComponent**.
+
+That meant ScriptComponent needed to know:
+
+- how each field type should be drawn in the editor
+- how it should be serialized
+- how it should be deserialized
+- how it should be cloned
+- how references should be fixed after cloning or loading
+
+This worked, but it created a very centralized design. Every time a new field type was added, the same class had to be modified again.
+
+A simplified version of how ScriptComponent looked like this:
+
+```cpp
+switch (field.type)
+{
+case ScriptFieldType::Float:
+// draw / serialize / clone float
+break;
+
+case ScriptFieldType::Bool:
+// draw / serialize / clone bool
+break;
+
+case ScriptFieldType::Vec3:
+// draw / serialize / clone vec3
+break;
+
+case ScriptFieldType::ComponentReference:
+// custom logic for references
+break;
+}
+```
+
+The more field types we added, the more responsibilities ScriptComponent accumulated.
+
+At that point, the problem was not that the system was broken. The problem was that it was becoming harder to extend cleanly.
+
+<BlogFigure
+  src='/images/blog-post/strategy2.png'
+  alt='Diagram of initial exported field system design'
+  caption='Diagram of initial exported field system design'
+/>
+
+## The Strategy Design Pattern
+
+The Strategy Design Pattern is a way of separating behavior so that different variants can provide their own implementation without a central class having to know every detail.
+
+Instead of one class deciding how every possible case should work, each case provides its own behavior and the main system just delegates to it.
+
+This maps very well to exported fields. A float, a string, a component reference or a list of references all belong to the same system, but they do not behave in the same way. They share a common purpose, but each one has its own rules for how it should be shown in the editor, serialized, cloned and restored.
+
+Because of that, the Strategy Design Pattern was a good fit for this system since it allowed us to keep the common structure of exported fields while moving the specific behavior of each field type to its own implementation.
+
+To better understand the pattern before applying it to our own system, I found the following video by **Mike Shah** very useful. It explains the Strategy Design Pattern in a clear and practical way, and it was a good reference before adapting the idea to our exported field system.
+
+Youtube Embed:
+
+<BlogYouTube
+  url='https://www.youtube.com/watch?v=hcVHiw8_vi4&t=1s'
+  title='C++ Strategy Design Pattern - Part 1 of 2 - Changing Algorithmic Behavior'
+/>
+
+## Applying Strategy to exported fields
+
+We applied this idea by introducing **ScriptFieldHandler**.
+
+Instead of keeping all field-specific behavior inside ScriptComponent, each field type now has its own handler that defines how that field should:
+
+- draw its UI
+- serialize
+- deserialize
+- clone
+- fix references if needed
+
+The handler is just a small table of function pointers:
+
+```cpp
+struct ScriptFieldHandler
+{
+void (*drawUi)(field, data, ...);
+void (*serialize)(field, data, ...);
+void (*deserialize)(field, data, ...);
+void (*clone)(field, data, ...);
+void (*fixReferences)(field, data, ...);
+};
+```
+
+### With this structure in place, ScriptComponent no longer needs to own the detailed behavior of every field type. Instead, it only delegates the operation to the handler assigned to that field.
+
+```cpp
+field.handler->drawUi(field, data, …);
+field.handler->serialize(field, data, …);
+field.handler->deserialize(field, data, …);
+field.handler->clone(field, data, …);
+field.handler->fixReferences(field, data, …);
+```
+
+<BlogFigure
+  src='/images/blog-post/strategy1.png'
+  alt='Diagram with Strategy applied'
+  caption='Diagram with Strategy applied'
+  fullWidth={false}
+/>
+
+## Why this was useful for us
+
+This refactor made the exported field system easier to extend. ScriptComponent no longer needs to know how every field type works internally, and new field types can define their behavior in their own handler.
+
+This became especially useful when adding **ComponentRefList**, since it has more custom behavior than simpler field types. Rather than adding more special cases into the central system, the new functionality could be implemented in its own handler and fit naturally into the same structure.
+
+The exported field system was already working before this refactor, but applying the Strategy Design Pattern gave it a cleaner architecture and made future extensions easier to manage.
+
+In our case, this was a good example of using a design pattern not because the previous solution was wrong, but because a different structure made the system easier to maintain as it continued to grow.
