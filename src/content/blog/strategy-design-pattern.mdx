@@ -132,7 +132,7 @@ void (*fixReferences)(field, data, ...);
 };
 ```
 
-### With this structure in place, ScriptComponent no longer needs to own the detailed behavior of every field type. Instead, it only delegates the operation to the handler assigned to that field.
+With this structure in place, ScriptComponent no longer needs to own the detailed behavior of every field type. Instead, it only delegates the operation to the handler assigned to that field.
 
 ```cpp
 field.handler->drawUi(field, data, …);
