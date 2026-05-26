@@ -1,0 +1,192 @@
+---
+id: 17
+slug: 'quadtree-spatial-partitioning'
+title: 'Quadtree-Based Spatial Partitioning for Frustum Culling'
+description: 'How we implemented a dynamic Quadtree to efficiently cull geometry outside the camera frustum and improve rendering performance'
+imageUrl: '/images/blog-post/quadtree-header.png'
+imageAlt: 'Quadtree spatial partitioning diagram'
+pubDate: 'May 15, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'miquel-barbara'
+relatedPosts:
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+Rendering every object in a scene every frame is wasteful. Most of the time, a large portion of your scene is outside the camera's view and doesn't need to be drawn at all. The technique of skipping those invisible objects is called **frustum culling**, and to do it efficiently you need a way to quickly determine which objects overlap the visible region without checking every single one.
+
+This post explains the Quadtree spatial partitioning structure we implemented in our engine, why it was necessary, and how its core operations work.
+
+## Why a Quadtree?
+
+The naive approach is a brute-force loop: every frame, iterate over all active GameObjects and test each one against the camera frustum. For small scenes this is perfectly fine. As the number of objects grows, however, this **O(n)** test becomes expensive — every object pays the cost regardless of where it sits in the world.
+
+A **Quadtree** solves this by dividing the world's XZ plane into a hierarchy of rectangular cells. Objects are placed into the smallest cell that fully contains them. At query time the tree is descended and only cells that actually overlap the frustum are visited. Objects in cells that miss the frustum are skipped entirely, with no per-object test needed.
+
+<BlogFigure
+  src='/images/blog-post/quadtree.png'
+  alt='Quadtree dividing the scene into cells'
+  caption='The world XZ plane divided into quadrants. Red cells are culled; green cells are queried.'
+/>
+
+## Structure
+
+The implementation is split between two classes: **Quadtree** acts as the public interface and owns the root node, while **QuadNode** is the recursive building block that makes up every cell in the hierarchy.
+
+Each QuadNode stores:
+
+- a BoundingRect describing its XZ region
+- a list of GameObjects whose bounding boxes fit fully inside it
+- up to four child QuadNodes (TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT)
+- a depth value and a reference to its parent for upward traversal
+
+The tree has two hard limits: **MAX_OBJECTS = 1** (a node will try to subdivide as soon as it holds more than one object) and **MAX_DEPTH = 5** (no further subdivision below this level). These values control the trade-off between tree depth and leaf size.
+
+## Building the tree
+
+The tree is constructed in **Quadtree::build()**. It first iterates all active GameObjects that have a MeshRenderer and computes the world-space XZ extents of the whole scene, using the eight corner points of each bounding box to find the global min and max. A small configurable padding is added on each side so objects near the boundary are fully contained.
+
+A single root QuadNode is created from that bounding rectangle and every object is then inserted from the root downward.
+
+```cpp
+void Quadtree::build()
+{
+    // 1. Compute scene-wide XZ bounds from all mesh bounding boxes
+    for (const auto& go : objects)
+    {
+        // expand minX, minZ, maxX, maxZ from each corner point
+    }
+
+    // 2. Create root node with padded bounds
+    BoundingRect rect(minX - padding, minZ - padding,
+                      (maxX - minX) + padding * 2,
+                      (maxZ - minZ) + padding * 2);
+
+    m_root = std::make_unique<QuadNode>(rect, 0, *this, nullptr);
+
+    // 3. Insert every active object
+    for (const auto& go : objects)
+        insert(*go);
+
+    isBuilded = true;
+}
+```
+
+## Inserting objects
+
+Insertion in **QuadNode::insert()** follows a straightforward rule: if the object's bounding box fits fully inside a child cell, let that child handle it. Otherwise the object stays in the current node.
+
+Once an object lands in a leaf node, the node checks whether it exceeds MAX_OBJECTS and is still above MAX_DEPTH. If both conditions hold, the node subdivides into four equal children and redistributes all its objects downward.
+
+```cpp
+void QuadNode::insert(GameObject& object)
+{
+    if (!m_bounds.containsFully(box)) return;
+
+    // Try to push down to a child that fully contains the object
+    if (!isLeaf())
+    {
+        if (QuadNode* child = findBestFitChild(box))
+        {
+            child->insert(object);
+            return;
+        }
+    }
+
+    // Object stays here
+    m_objects.push_back(&object);
+    m_tree.m_objectLocationMap[&object] = this;
+
+    // Subdivide if over capacity and not too deep
+    if (isLeaf() &&
+        m_objects.size() > Quadtree::MAX_OBJECTS &&
+        m_depth < Quadtree::MAX_DEPTH)
+    {
+        subdivide();
+    }
+}
+```
+
+The **m_objectLocationMap** in Quadtree is a hash map from each GameObject pointer to the QuadNode currently holding it. This makes removal O(1) rather than a tree search.
+
+## Querying with the frustum
+
+Every frame, **Quadtree::query()** asks the camera for its frustum and traverses the tree starting from the root.
+
+The frustum intersection test in **QuadNode::intersects()** is intentionally conservative: it computes the AABB of the frustum's eight corner points in XZ and checks for a simple 2D overlap with the node's rectangle. A false positive (a cell reported as visible when it isn't) wastes a little time descending further; a false negative would cause objects to disappear incorrectly. The conservative test guarantees no false negatives.
+
+```cpp
+void QuadNode::gatherObjects(const Frustum& frustum,
+                             std::vector<GameObject*>& out) const
+{
+    // Cull entire subtree if this cell doesn't overlap the frustum
+    if (!intersects(frustum, m_bounds))
+    {
+        m_bounds.m_debugIsCulled = true;
+        return;
+    }
+
+    // Test objects stored in this node individually
+    for (GameObject* obj : m_objects)
+    {
+        if (model->getBoundingBox().test(frustum))
+            out.push_back(obj);
+        else
+            model->setIsCulled(true);
+    }
+
+    // Recurse into children
+    if (!isLeaf())
+        for (const auto& child : m_children)
+            child->gatherObjects(frustum, out);
+}
+```
+
+Objects that pass the cell-level test are still checked individually against the full frustum so that objects partially overlapping a cell boundary are handled correctly.
+
+## Handling dynamic objects
+
+A static tree only works if objects never move. Our engine supports moving GameObjects, so the tree needs to stay consistent when an object's bounding box changes.
+
+**Quadtree::move()** is called when an object's transform updates. It looks up the object's current node in the location map and calls **QuadNode::refit()** on it:
+
+- If the object still fits inside the current node, just mark the node dirty.
+- If it no longer fits, walk up the ancestor chain to find the lowest node that contains the new bounds, remove the object from its old node, and re-insert from there.
+
+Marking a node dirty registers it in a pending list. At the start of the next frame, the dirty list is sorted deepest-first and each node checks whether its subtree can be merged back into a single leaf — keeping the tree compact as objects move out of regions.
+
+```cpp
+void Quadtree::resolveDirtyNodes()
+{
+    // Process deepest nodes first so parents see merged children
+    std::sort(m_dirtyNodes.begin(), m_dirtyNodes.end(),
+        [](QuadNode* a, QuadNode* b) {
+            return a->getDepth() > b->getDepth();
+        });
+
+    for (QuadNode* node : m_dirtyNodes)
+    {
+        if (node->canMerge())
+            node->merge();
+
+        node->clearDirty();
+    }
+
+    m_dirtyNodes.clear();
+}
+```
+
+## Summary
+
+The Quadtree gives the engine a fast path for frustum culling by letting entire regions of the scene be discarded with a single bounds test rather than checking every object individually.
+
+The location map keeps the cost of moving objects low by making removal and reinsertion direct operations rather than tree searches, and the dirty-node system avoids redundant restructuring by batching merge decisions to the end of the frame.
+
+The tree is rebuilt from scratch on scene load and maintained incrementally as objects move, making it a practical fit for both static levels and scenes with dynamic content.
