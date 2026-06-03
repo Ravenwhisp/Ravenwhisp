@@ -1,0 +1,134 @@
+---
+id: 24
+slug: 'navmesh-areas-and-agent-filters'
+title: 'Custom NavMesh Areas and Agent Filters'
+description: 'Adding support for different traversal rules through custom NavMesh areas and agent-specific navigation filters.'
+imageUrl: '/images/blog-post/NavMeshArea1.png'
+imageAlt: 'Custom navigation areas visualized through the NavMesh debug view.'
+pubDate: 'June 02, 2026'
+categories:
+  - 'Engine'
+  - 'Gameplay'
+authors:
+  - 'mihail-yordanov'
+relatedPosts:
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+## Introduction
+
+As part of our navigation system improvements, we implemented support for custom NavMesh area types and agent-specific traversal filters.
+
+The goal was to allow different gameplay entities to traverse different parts of the same NavMesh while keeping a single navigation data set. This enables mechanics such as spectral paths, restricted traversal zones and future navigation-based gameplay features without maintaining multiple NavMeshes.
+
+## NavModifier Volumes
+
+To support custom navigation areas, we introduced a new **NavModifierVolume **component.
+
+Small Centered Image
+
+<BlogFigure
+  src='/images/blog-post/NavMeshArea2.png'
+  alt='Image showing NavModiferVolume put over geometry.'
+  caption='NavModifierVolume configured to assign a Spectral area during NavMesh baking.'
+  fullWidth={false}
+/>
+
+During the NavMesh baking process, modifier volumes assign area types to the generated navigation polygons based on their position and priority.
+
+```cpp
+enum class NavAreaType
+{
+     Default,
+     Spectral,
+     Blocked
+};
+```
+
+This allows level designers to define navigation behavior directly inside the editor without modifying geometry or navigation settings manually.
+
+Small Centered Image
+
+<BlogFigure
+  src='/images/blog-post/NavMeshArea3.png'
+  alt='Image showing navigation profiles exposed to gameplay scripts in the editor.'
+  caption='Navigation profiles exposed to gameplay scripts through the editor.'
+  fullWidth={false}
+/>
+
+## Polygon Flags and Runtime Filtering
+
+After baking, area types are converted into polygon flags used by the Detour navigation runtime.
+
+```cpp
+enum class NavPolyFlags
+{
+     Default = 1 << 0,
+     Spectral = 1 << 1
+};
+```
+
+Navigation queries use these flags through Detour query filters to determine which polygons are traversable for a specific agent.
+
+This approach separates navigation authoring from runtime traversal logic while keeping the filtering system lightweight and efficient.
+
+## Agent Profiles
+
+To expose the system to gameplay, navigation profiles were added to the scripting layer.
+
+```cpp
+enum class NavAgentProfile
+{
+     PlayerNormal,
+     PlayerSpectral,
+     EnemyGround
+};
+```
+
+Each profile maps to a different set of traversal flags:
+
+```cpp
+if (profile == NavAgentProfile::PlayerNormal)
+    return defaultFlag;
+if (profile == NavAgentProfile::PlayerSpectral)
+    return defaultFlag | spectralFlag;
+if (profile == NavAgentProfile::EnemyGround)
+    return defaultFlag;
+```
+
+As a result, multiple gameplay behaviors can coexist on top of the same NavMesh.
+
+## Gameplay Integration
+
+The movement system was updated to use navigation profiles when performing pathfinding and movement queries.
+
+A normal player can only traverse Default navigation areas, while a spectral player can access both Default and Spectral paths.
+
+This allows designers to create character-specific traversal routes without requiring additional navigation meshes or special-case gameplay logic.
+
+Small Centered Image
+
+<BlogFigure
+  src='/images/blog-post/NavMeshArea4.png'
+  alt='Image showing different agent profiles traversing different area types.'
+  caption='PlayerNormal is restricted to Default navigation areas, while PlayerSpectral can traverse both Default and Spectral navigation areas.'
+  fullWidth={false}
+/>
+
+## Debug Visualization
+
+To simplify debugging and level iteration, custom navigation areas are visualized directly through the NavMesh debug view.
+
+Different colors are used to quickly identify traversal regions and verify area assignments after baking.
+
+## Conclusion
+
+The new NavMesh Area Type and Agent Filter system provides a flexible foundation for navigation-driven gameplay mechanics while maintaining a single NavMesh representation.
+
+In addition to enabling spectral traversal paths, the system establishes the groundwork for future features such as advanced traversal restrictions, dynamic navigation behaviors and agent-specific pathfinding rules.
