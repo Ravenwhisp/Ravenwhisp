@@ -63,18 +63,22 @@ const entryCategories = getCategories(entry)
 const hasToc = headings.some(heading => heading.depth === 2 || heading.depth === 3)
 
 // Related posts are only shown when explicitly listed in frontmatter.
-const relatedReferenceIds = entry.data.relatedPosts ?? []
+const relatedReferenceIds: string[] = entry.data.relatedPosts ?? []
 const relatedPosts =
   relatedReferenceIds.length > 0
     ? relatedReferenceIds
-        .map(referenceId => visiblePosts.find(post => post.id === referenceId || post.data.slug === referenceId))
+        .map((referenceId: string) =>
+          visiblePosts.find(
+            post => String(post.data.id) === referenceId || post.id === referenceId || post.data.slug === referenceId
+          )
+        )
         .filter((post): post is (typeof visiblePosts)[number] => post !== undefined)
         .filter(post => post.id !== entry.id)
         .filter((post, index, posts) => posts.findIndex(candidate => candidate.id === post.id) === index)
     : []
 
 // Map relatedPosts to BlogPost type for the Blog component
-const formattedRelatedPosts = relatedPosts.map(post => {
+const formattedRelatedPosts = relatedPosts.map((post: (typeof visiblePosts)[number]) => {
   const authorIds = getEntryAuthorIds(post)
   const authorPeople = authorIds
     .map(authorId => peopleById.get(authorId))
