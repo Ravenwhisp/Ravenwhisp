@@ -1,0 +1,210 @@
+---
+id: 3
+slug: 'death-ability-taunt'
+title: 'Scripting: Death Taunt'
+description: 'One of the abilities of Deaths’ character. As Death is a character who’s style is for crowd control this one was a must to have, come see how it was done.'
+imageUrl: '/images/blog-post/Script_TauntPortada.png'
+imageAlt: 'Taunt ability in use, we can see the area affected by it.'
+pubDate: 'May 29, 2026'
+categories:
+  - 'Gameplay'
+authors:
+  - 'meritxell-alguero'
+relatedPosts:
+  - '10'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+## Overview
+
+The Taunt ability forces enemies to redirect their focus toward the caster instead of their current target. In this case, enemies switch their focus to Death, who has more health than Lýriel, for a short period of time while Lýriel can focus on attacking safely.
+
+This behaviour is built using three main pieces:
+
+- Ability casting script
+- Enemy detection & aggro system
+
+Each part has a clear responsibility:
+
+- Ability script → triggers the taunt effect
+- Aggro system → updates enemy targeting
+
+### The core idea
+
+Instead of embedding targeting logic directly inside the ability, the system reuses the existing aggro infrastructure to minimise duplicated logic and keep everything more centralised.
+
+When Taunt is cast:
+
+- Affected enemies are detected
+- Their current target is overridden
+- They switch focus to the caster (Death) instead of the other character (Lýriel)
+- After a set duration, enemies return to targeting the closest character
+- The ability cooldown begins
+
+This keeps the system modular and avoids duplicating logic.
+
+### Step 1 — Ability casting script
+
+A dedicated script, _DeathTaunt_, was created to handle the casting of Taunt.
+
+Its responsibilities are:
+
+- Detect enemies hit by the ability
+- Call the aggro system for each affected enemy
+- Store the ability stats
+
+This script acts only as a trigger layer and does not manage targeting directly.
+
+Inside this script, multiple classes handle different responsibilities. Some classes check the aiming direction of the ability, others verify whether enemies are inside the designated area and whether the Taunt can be applied, while others generate the detection areas themselves.
+
+Here is a sneak peek of one of the methods responsible for checking whether Taunt can be applied:
+
+```cpp
+void DeathTaunt::applyTauntToEnemiesInCone(const Vector3& ownerForward) const
+{
+    Transform* ownerTransform = GameObjectAPI::getTransform(m_owner);
+    if (ownerTransform == nullptr)
+    {
+        return;
+    }
+    const Vector3 ownerPosition = TransformAPI::getPosition(ownerTransform);
+    const std::vector<GameObject*> enemies = SceneAPI::findAllGameObjectsByTag(Tag::ENEMY);
+    Debug::log("[DeathTaunt] Enemies with Tag::ENEMY found: %d", (int)enemies.size());
+    int taunted = 0;
+    for (GameObject* enemy : enemies)
+    {
+        if (!isEnemyInsideTauntCone(enemy, ownerPosition, ownerForward))
+{
+    Debug::log("[DeathTaunt] Enemy '%s' outside cone.", GameObjectAPI::getName(enemy));
+    continue;
+}
+
+EnemyDetectionAggro* enemyAggro = GameObjectAPI::findScript<EnemyDetectionAggro>(enemy);
+if (enemyAggro == nullptr)
+{
+    Debug::log("[DeathTaunt] Enemy '%s' in cone but no EnemyDetectionAggro.", GameObjectAPI::getName(enemy));
+    continue;
+}
+        enemyAggro->applyTaunt(ownerTransform, m_TauntDurationSeconds);
+        Debug::log("[DeathTaunt] Taunt applied to '%s' for %.1fs.", GameObjectAPI::getName(enemy), m_TauntDurationSeconds);
+}
+```
+
+### Step 2 — Integrating with EnemyDetectionAggro
+
+To apply the effect, the casting script calls the existing _EnemyDetectionAggro_ system, which was originally implemented by a teammate.
+
+However, the original system did not support externally forcing a target, so support for overriding targets had to be added.
+
+Required changes:
+
+- Add a method to override the current target
+- Allow external systems, such as abilities, to request aggro changes
+
+The _EnemyDetectionAggro_ script, responsible for enemy interactions with player characters, required an additional check to determine whether an enemy was currently taunted. This was handled using a simple _isTaunted_ boolean.
+
+If the enemy was taunted and not downed, the target switched to Death and the taunt timer began. Otherwise, no changes were applied.
+
+Once the taunt duration ended, the taunt state was cleared and enemy detection returned to its original behaviour: selecting the closest detected character and attacking them.
+
+Here are two important methods involved in applying and clearing the Taunt effect:
+
+```cpp
+
+void EnemyDetectionAggro::applyTaunt(Transform* playerTransform, float durationSeconds)
+{
+	if (playerTransform == nullptr || durationSeconds <= 0.0f)
+	{
+		return;
+	}
+	m_tauntTargetTransform = playerTransform;
+	m_tauntTimer = durationSeconds;
+	m_currentTargetLockTimer = 0.0f;
+	enterAggro(playerTransform);
+	AggroEntry* entry = getAggroEntry(playerTransform);
+	if (entry != nullptr)
+	{
+		entry->lastAttackTime = m_currentTime;
+	}
+}
+void EnemyDetectionAggro::clearTaunt(Transform* playerTransform)
+{
+	if (playerTransform != nullptr && playerTransform != m_tauntTargetTransform)
+	{
+		return;
+	}
+	const bool wasCurrentTarget = (m_currentTargetTransform == m_tauntTargetTransform);
+	m_tauntTargetTransform = nullptr;
+	m_tauntTimer = 0.0f;
+	if (!wasCurrentTarget)
+	{
+		return;
+	}
+
+	Transform* fallbackTarget = selectClosestDetectedPlayer();
+	if (fallbackTarget != nullptr)
+	{
+		m_currentTargetTransform = fallbackTarget;
+		m_lastKnownTargetPosition = TransformAPI::getPosition(fallbackTarget);
+		m_canSeeTarget = true;
+		m_isAggro = true;
+	}
+	else
+	{
+		resetAggro();
+	}
+}
+
+```
+
+This enables abilities to interact cleanly with enemy AI without breaking encapsulation.
+
+### Step 3 — Target override behaviour
+
+Once triggered:
+
+- Enemies replace their current target
+- Their behaviour naturally follows the existing state logic (chase, attack, etc.)
+- No additional AI changes are required
+
+This works because the AI states already query the controller for the current target. By changing the target, enemy behaviour is automatically redirected.
+
+An important rule of this implementation is that the ability itself does not directly control enemy behaviour.
+
+Instead, it only modifies shared data (the target), allowing:
+
+- The *EnemyController *to remain the single source of truth
+- State scripts to continue working without modification
+
+### Final result
+
+The Taunt ability integrates seamlessly into the system by:
+
+- Reusing the existing aggro logic
+- Avoiding duplicated behaviour code
+- Keeping responsibilities clearly separated
+
+This approach ensures that future abilities affecting enemy targeting can follow the same pattern with minimal additional changes.
+
+<BlogSwiper
+  slides={[
+    {
+      src: '/images/Script_Taunt_1.png',
+      alt: 'Image of the variables of the taunt that can be modified from the inspector: Ability Cooldown, duration, range and angle'
+    },
+    {
+      src: '/images/Script_Taunt_1.png',
+      alt: 'Image of the 2D cone like area where the enemies are affected by the ability, we can see the enemies detect the character in front.'
+    },
+    {
+      src: '/images/Script_Taunt_3.png',
+      alt: 'We can see how the target has changed and now they are detecting the caster.'
+    }
+  ]}
+/>
