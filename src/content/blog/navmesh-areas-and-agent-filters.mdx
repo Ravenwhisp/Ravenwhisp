@@ -30,8 +30,6 @@ The goal was to allow different gameplay entities to traverse different parts of
 
 To support custom navigation areas, we introduced a new **NavModifierVolume **component.
 
-Small Centered Image
-
 <BlogFigure
   src='/images/blog-post/NavMeshArea2.png'
   alt='Image showing NavModiferVolume put over geometry.'
@@ -51,8 +49,6 @@ enum class NavAreaType
 ```
 
 This allows level designers to define navigation behavior directly inside the editor without modifying geometry or navigation settings manually.
-
-Small Centered Image
 
 <BlogFigure
   src='/images/blog-post/NavMeshArea3.png'
@@ -110,8 +106,6 @@ The movement system was updated to use navigation profiles when performing pathf
 A normal player can only traverse Default navigation areas, while a spectral player can access both Default and Spectral paths.
 
 This allows designers to create character-specific traversal routes without requiring additional navigation meshes or special-case gameplay logic.
-
-Small Centered Image
 
 <BlogFigure
   src='/images/blog-post/NavMeshArea4.png'
