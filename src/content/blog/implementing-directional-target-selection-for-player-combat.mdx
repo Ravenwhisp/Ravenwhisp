@@ -9,7 +9,8 @@ pubDate: 'June 12, 2026'
 categories:
   - 'Gameplay'
 authors:
-  - 'jordi-pi'
+  - 'jordi_pi'
+relatedPosts:
 visible: true
 featured: false
 ---
@@ -23,7 +24,7 @@ In our game, the players basic attacks are not manually aimed in the traditional
 Because of that, the targeting system becomes an important part of how combat feels. If the player clearly aims toward another enemy, the selected target should react quickly. However, if several targets are close together, the selection should remain stable and avoid constantly switching between them.
 This post explains how that selection algorithm works and how those steps are combined to make targeting feel responsive without becoming unstable.
 
-## Finding valid targets
+## **Finding valid targets**
 
 Before deciding which enemy should become the current target, the controller first builds a list of possible candidates.
 Not every enemy in the scene should be considered by the algorithm, a target is only valid if it is inside the determined target range and is still alive.
@@ -40,7 +41,7 @@ for each enemy:
 This keeps the selection algorithm focused only on enemies that are relevant at that moment. Dead enemies or enemies outside the targeting range are ignored before any scoring happens.
 At this point, the system does not know yet which enemy is the best one. It only knows which enemies are possible candidates.
 
-## Computing the aim direction
+## **Computing the aim direction**
 
 Once the controller has a list of valid enemies, the next step is to know where the player is aiming.
 The targeting system uses the right stick as the player’s intention. However, the right stick gives us a 2D input, while enemies exist in the 3D world. Because of that, the input needs to be converted into a world space direction.
@@ -59,6 +60,7 @@ cameraRight.y = 0.0f;
 aimDirection = -cameraRight * lookAxis.x - cameraForward * lookAxis.y;
 
 normalize(aimDirection);
+
 ```
 
 This gives the controller a direction in the world that represents where the player is trying to aim.
@@ -83,8 +85,8 @@ Then it compares that direction with the aim direction using a dot product.
 
 ```cpp
 dot = aimDirection.Dot(toTarget);
-```
 
+```
 The dot product tells us how aligned both directions are. If the value is close to 1, the enemy is almost directly in the direction the player is aiming. If the value is lower, the enemy is more to the side.
 Enemies outside the cone are rejected before the scoring step.
 
@@ -101,7 +103,7 @@ if (dot < minDot)
 
 At this point, the algorithm has already removed enemies that are out of range, dead, or too far from the aim direction. The remaining enemies are the ones that make sense as possible targets.
 
-## Scoring Targets
+## ""Scoring Targets""
 
 After filtering enemies with the aim cone, there may still be more than one valid candidate.
 At this point, the controller needs to decide which enemy is the best target. Instead of simply selecting the closest enemy, each candidate receives a score. The enemy with the lowest score becomes the best candidate.
@@ -129,7 +131,7 @@ In our case, the aim direction has more weight than the distance. This means tha
 Distance is still useful, but mostly as a secondary factor. If two enemies are similarly aligned with the aim direction, the closer one will usually get a better score.
 This gives us a softer and more intentional selection than only choosing the nearest enemy.
 
-## Making target switching stable
+## **Making target switching stable**
 
 The scoring system gives us the best candidate for the current frame, but changing the target immediately every time a slightly better score appears can feel unstable.
 This is especially noticeable when several enemies are close to each other. Small changes in stick direction, player position or enemy movement could make the selected target flicker between multiple enemies.
@@ -158,7 +160,7 @@ if (switchCooldownTimer > 0.0f)
 This prevents rapid target changes when the player is aiming between enemies or when multiple enemies are grouped together.
 Both rules are small, but they make a big difference in how the system feels. The algorithm still reacts quickly when the player clearly aims at another enemy, but it avoids constantly switching target because of tiny score differences.
 
-## Final result
+## **Final result**
 
 The result is a targeting system that reacts to the player’s aim direction while still feeling controlled during combat.
 The most important part is not only which enemy the algorithm selects, but how the selection feels while playing. The target should change when the player clearly aims somewhere else, but it should not flicker between enemies because of small input or movement changes.
