@@ -2,9 +2,9 @@
 id: 26
 slug: 'shadows’
 title: 'Shadow Mapping I'
-description: 'enhancing the scene with shadows'
+description: 'Enhancing the scene with shadows'
 imageUrl: '/images/blog-post/shadow.jpg'
-imageAlt: 'Animated drone model'
+imageAlt: 'Image of stairs with shadows'
 pubDate: 'June 12, 2026'
 categories:
   - 'Engine'
@@ -23,18 +23,6 @@ import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 One of the rendering milestones we tackled in the engine was implementing the first version of real-time shadows using shadow mapping.
 At this stage, the goal was not to build an advanced shadow system with cascades, soft shadows, or complex filtering. The objective was much more focused: get the engine to render a shadow map from a directional light, use it during the lighting pass, and produce hard shadows in the scene.
 In other words: build the foundation first.
-
-
-<BlogFigure
-
-src='/images/blog-post/shadow.png'
-
-alt='Button inspector showing default, hover and pressed texture slots'
-
-caption='Each button state has an optional texture slot; unset states fall back to the default'
-
-/>
-
 
 ## What we wanted to achieve
 
