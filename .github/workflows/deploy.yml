@@ -20,21 +20,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2 # Minor bump handles Node 24 better
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        uses: pnpm/action-setup@v4.4.0 # Upgraded to v4.4.0 for Node 24 compatibility
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.2.0 # Updated to latest v4 point release
         with:
-          node-version: 24
+          node-version: 22 # Recommended: Use Node 22 (LTS) or 24 instead of 20
           cache: pnpm
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v5.0.0
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -56,4 +54,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4.0.0
