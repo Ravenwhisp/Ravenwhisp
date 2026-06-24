@@ -1,0 +1,162 @@
+---
+id: 29
+slug: 'SSAO'
+title: 'Screen Space Ambient Occlusion'
+description: 'Enhancing the scene with SSAO'
+imageUrl: '/images/blog-post/shadow.jpg'
+imageAlt: 'Stairs with shadows'
+pubDate: 'June 22, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'daniel-bellido'
+  relatedPosts:
+  - '26'
+  - '28'
+
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+
+After implementing directional shadow mapping and improving shadow controls in the editor, the nextstep was to add another important lighting feature to the engine: Screen Space Ambient Occlusion.
+
+
+The goal of this update was to improve contact shadows and depth perception in the scene by darkening small creases, intersections and areas where geometry is close together.
+
+
+Unlike shadow mapping, SSAO is not generated from a light source. Instead, it works in screen spaceusing the camera depth and normal information. This makes it a good complement to the existinglighting system, especially for adding subtle occlusion around objects, corners and concave shapes.
+
+
+<BlogYouTube
+  url='https://www.youtube.com/watch?v=JbKP1FUOFG4'
+  title='SSAO: Screen Space Ambient Occlusion'
+/>
+
+## What I Added
+
+For this first SSAO implementation, I added a full rendering path dedicated to ambient occlusion.
+
+The system now includes:
+
+- SSAO geometry pass
+- SSAO depth buffer
+- SSAO normal buffer
+- SSAO raw occlusion texture
+- SSAO blur pass
+- SSAO integration in the lighting shader
+- Scene-level SSAO settings
+- Editor controls in Scene Configuration
+- Serialization support for SSAO settings
+
+This turns SSAO into a proper configurable scene feature instead of a hardcoded renderer experiment.
+
+## SSAO Geometry Pass
+
+The first step was to create a dedicated geometry pass for SSAO.
+
+This pass renders the visible scene into two separate buffers:
+
+- Depth
+- View-space normals
+
+The depth buffer is used to reconstruct the position of each pixel in view space. The normal buffer isused to orient the SSAO sampling hemisphere around the surface direction.
+
+The pass supports both static meshes and skinned meshes, following the same vertex buffer selection logic used by the main mesh rendering pass.
+
+This is important because animated characters and CPU/GPU skinned meshes also need to contribute correctly to the ambient occlusion result.
+
+## SSAO Sampling
+
+Once depth and normals are available, the SSAO pass runs as a fullscreen pass.
+
+For each pixel, the shader reconstructs its view-space position using the depth value and the inverse projection matrix. Then it samples a small kernel of points around that position, oriented around thepixel normal.
+
+If nearby samples are found to be closer than expected, the pixel receives more occlusion.
+
+The result is written into an SSAO texture where:
+
+- White means no occlusion
+- Grey or black means stronger occlusion
+
+This gives the renderer a screen-space mask that can later be used in the lighting pass.
+
+## Noise Reduction and Randomized Sampling
+
+A basic SSAO kernel can easily produce visible banding or repeated patterns.
+
+To reduce this, I added per-pixel randomization using Interleaved Gradient Noise. This rotates thetangent space used by the sample kernel and helps break up visible patterns across the screen.
+
+The SSAO shader also includes range checking and bias controls to reduce false occlusion and avoidexcessive darkening on unrelated surfaces.
+
+The main tunable values are:
+
+- Radius
+- Bias
+- Strength
+- Sample Count
+
+These values have a strong impact on the final look. A larger radius makes the effect visible over a widerarea, while a smaller bias makes contact occlusion easier to detect.
+
+## SSAO Blur Pass
+
+The raw SSAO result is intentionally noisy because it uses a limited number of samples per pixel.
+
+To clean it up, I added a separate blur pass.
+
+The blur pass reads from the raw SSAO texture and writes into a blurred SSAO texture. The lighting passthen uses the blurred version by default.
+
+This makes the final result much smoother and more stable while keeping the SSAO pass relatively simple.
+
+For debugging, it is still possible to disable the blur and inspect the raw SSAO result directly.
+
+## Lighting Integration
+
+After generating the SSAO texture, I connected it to the main lighting shader.
+
+The SSAO value is sampled using screen-space coordinates and is applied to the ambient or indirectlighting contribution.
+
+This means SSAO does not behave like a normal shadow from a light. Instead, it reduces indirectlighting in areas where nearby geometry blocks ambient light.
+
+This makes the effect more physically reasonable and avoids treating SSAO as if it belonged to a specificlight component.
+
+## Result
+
+This update adds a complete first version of Screen Space Ambient Occlusion.
+<BlogSwiper
+  slides={[
+    {
+      src: '/images/blog-post/SSAO_1.jpg',
+      alt: 'Ambient Oclusion of the stairs'
+    },
+    {
+      src: '/images/blog-post/SSAO_2.jpg',
+      alt: 'Ambient Oclusion of fire columns'
+    },
+    {
+      src: '/images/blog-post/SSAO_3.jpg',
+      alt: 'Ambient Oclusion of the first mini boss Arthur the Bear'
+    }
+  ]}
+/>
+
+The engine can now:
+
+- Generate SSAO depth and normal buffers
+- Compute a screen-space ambient occlusion mask
+- Apply randomized hemisphere sampling
+- Blur the SSAO result
+- Use SSAO in the main lighting shader
+- Enable or disable SSAO from the editor
+- Toggle debug view
+- Tune radius, bias, strength and sample count
+
+This makes the lighting pipeline more complete and gives scenes better contact definition, especially around intersections, corners and small concave areas.
+
+The next improvements would likely be a bilateral blur, half-resolution SSAO, and depth-linearized comparisons.
+
