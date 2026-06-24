@@ -3,8 +3,8 @@ id: 29
 slug: 'SSAO'
 title: 'Screen Space Ambient Occlusion'
 description: 'Enhancing the scene with SSAO'
-imageUrl: '/images/blog-post/shadow.jpg'
-imageAlt: 'Stairs with shadows'
+imageUrl: '/images/blog-post/SSAO_1.jpg'
+imageAlt: 'Stairs with Screen Space Ambient Occlusion'
 pubDate: 'June 22, 2026'
 categories:
   - 'Engine'
@@ -103,6 +103,7 @@ The main tunable values are:
 
 These values have a strong impact on the final look. A larger radius makes the effect visible over a widerarea, while a smaller bias makes contact occlusion easier to detect.
 
+
 ## SSAO Blur Pass
 
 The raw SSAO result is intentionally noisy because it uses a limited number of samples per pixel.
@@ -115,6 +116,7 @@ This makes the final result much smoother and more stable while keeping the SSAO
 
 For debugging, it is still possible to disable the blur and inspect the raw SSAO result directly.
 
+
 ## Lighting Integration
 
 After generating the SSAO texture, I connected it to the main lighting shader.
@@ -124,6 +126,7 @@ The SSAO value is sampled using screen-space coordinates and is applied to the a
 This means SSAO does not behave like a normal shadow from a light. Instead, it reduces indirectlighting in areas where nearby geometry blocks ambient light.
 
 This makes the effect more physically reasonable and avoids treating SSAO as if it belonged to a specificlight component.
+
 
 ## Result
 
