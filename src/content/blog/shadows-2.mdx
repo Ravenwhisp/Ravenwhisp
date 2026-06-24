@@ -1,0 +1,146 @@
+---
+id: 28
+slug: 'shadows-2'
+title: 'Shadow Mapping II: PCF and Per-Light ShadowSettings'
+description: 'Enhancing the shadowmap'
+imageUrl: '/images/blog-post/shadow.jpg'
+imageAlt: 'Stairs with shadows'
+pubDate: 'June 22, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'daniel-bellido'
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+
+After implementing the first version of directional shadow mapping in our custom DX12 engine, the next step was to improve how shadows are controlled and filtered.
+
+The first implementation gave us working hard shadows for directional lights, including support for static and skinned mesh shadow casters. However, the system was still very rigid: shadow settings were hard-coded in the renderer, and every directional light was treated in the same way.
+
+For this second iteration, I focused on making shadows more flexible and easier to control from the editor.
+
+<BlogYouTube
+  url='https://www.youtube.com/watch?v=EC9qxwpDZc8'
+  title='Optional'
+/>
+
+## What I Added
+
+The main goal of this update was to move shadow configuration from hardcoded renderer values into the light component itself.
+
+Each light now has its own shadow settings:
+
+- Cast Shadows
+- Shadow Map Size
+- PCF Enabled
+- PCF Kernel Size
+- Shadow Bias
+- Shadow Strength
+
+
+At the moment, only directional lights actually render shadows, but the settings are already exposed in the light component, so the system can be extended later to spot lights and point lights.
+
+## Per-Light Shadow Control
+
+Previously, the shadow pass simply looked for the first active directional light and used it to generate the shadow map.
+
+Now, the renderer only selects a directional light if Cast Shadows is enabled on that light. This makes the behaviour much more explicit from the editor.
+
+If no directional light has shadow casting enabled, the shadow pass is disabled for that frame.
+
+This also makes the system safer for future scenes with multiple lights, since shadow generation is nolonger automatic for every directional light.
+
+## Configurable Shadow Map Resolution
+
+
+The shadow map size can now be selected from the light inspector.
+
+The supported sizes are:
+
+- 1024
+- 2048
+- 4096
+- 8192
+
+
+Changing the shadow map size recreates the shadow map resource and updates the viewport, scissorrect and texel size used by the shader.
+This makes it much easier to test the quality and cost of different resolutions directly in-engine.
+Lower resolutions make aliasing more visible, while higher resolutions improve shadow quality at ahigher GPU memory and rendering cost.
+
+## Percentage-Closer Filtering
+
+
+I also added a first version of PCF, or Percentage-Closer Filtering.
+
+Without filtering, shadow map edges can look very hard and pixelated. PCF softens the result bysampling several nearby texels around the current shadow lookup and averaging the result.
+
+The current implementation supports:
+
+- No PCF
+- 3x3 PCF
+- 5x5 PCF
+
+
+A 3x3 kernel uses 9 samples per shadow lookup, while a 5x5 kernel uses 25 samples. Because of that,5x5 is noticeably more expensive and should only be used when the visual improvement is worth the extra cost.
+
+<BlogSwiper
+  slides={[
+    {
+      src:/images/blog-post/PCF_3x3.jpg',
+      alt: 'Floor texture using Kernel 3x3'
+    },
+    {
+      src:/images/blog-post/PCF_5x5.jpg',
+      alt: 'Floor texture using Kernel 5x5'
+    }
+  ]}
+
+For now, 3x3 is the most reasonable default.
+
+## Shadow Bias and Shadow Strength
+
+The light inspector now also exposes shadow bias and shadow strength.
+
+Shadow bias is used to reduce shadow acne caused by precision issues when comparing the currentfragment depth against the shadow map depth.
+
+Shadow strength controls how dark the shadow appears in the lighting shader.
+
+This makes debugging and tuning much faster, because these values no longer need to be changeddirectly in code.
+
+## Current Limitations
+
+
+This is still not a complete shadow system.
+
+The current implementation still has several limitations:
+
+- Only directional lights can cast shadows.
+- Spot light shadows are not implemented yet.
+- Point light cubemap shadows are not implemented yet.
+- There are no cascaded shadow maps yet.
+- The light frustum is still based on visible mesh bounds, not depth-buffer fitting.
+
+Even with these limitations, this update makes the shadow system much more usable from an editorand scene workflow point of view.
+
+## Result
+
+This iteration turns the shadow system from a hardcoded renderer feature into something that can becontrolled per light from the editor.
+
+The engine can now:
+
+- Enable or disable shadows per light
+- Change shadow map resolution from the inspector
+- Switch PCF on or off
+- Choose between 3x3 and 5x5 PCF
+- Tune bias and strength per light
+- Save and reload all shadow settings with the scene
+
+This is a useful step towards a more complete lighting and shadow pipeline.
+The next improvements would likely be depth-buffer-based fitting, cascaded shadow maps, andeventually support for spot light and point light shadows.
