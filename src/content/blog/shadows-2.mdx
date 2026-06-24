@@ -55,7 +55,7 @@ Now, the renderer only selects a directional light if Cast Shadows is enabled on
 
 If no directional light has shadow casting enabled, the shadow pass is disabled for that frame.
 
-This also makes the system safer for future scenes with multiple lights, since shadow generation is nolonger automatic for every directional light.
+This also makes the system safer for future scenes with multiple lights, since shadow generation is no longer automatic for every directional light.
 
 ## Configurable Shadow Map Resolution
 
@@ -70,16 +70,16 @@ The supported sizes are:
 - 8192
 
 
-Changing the shadow map size recreates the shadow map resource and updates the viewport, scissorrect and texel size used by the shader.
+Changing the shadow map size recreates the shadow map resource and updates the viewport, scissor rect and texel size used by the shader.
 This makes it much easier to test the quality and cost of different resolutions directly in-engine.
-Lower resolutions make aliasing more visible, while higher resolutions improve shadow quality at ahigher GPU memory and rendering cost.
+Lower resolutions make aliasing more visible, while higher resolutions improve shadow quality at a higher GPU memory and rendering cost.
 
 ## Percentage-Closer Filtering
 
 
 I also added a first version of PCF, or Percentage-Closer Filtering.
 
-Without filtering, shadow map edges can look very hard and pixelated. PCF softens the result bysampling several nearby texels around the current shadow lookup and averaging the result.
+Without filtering, shadow map edges can look very hard and pixelated. PCF softens the result by sampling several nearby texels around the current shadow lookup and averaging the result.
 
 The current implementation supports:
 
@@ -88,19 +88,20 @@ The current implementation supports:
 - 5x5 PCF
 
 
-A 3x3 kernel uses 9 samples per shadow lookup, while a 5x5 kernel uses 25 samples. Because of that,5x5 is noticeably more expensive and should only be used when the visual improvement is worth the extra cost.
+A 3x3 kernel uses 9 samples per shadow lookup, while a 5x5 kernel uses 25 samples. Because of that, 5x5 is noticeably more expensive and should only be used when the visual improvement is worth the extra cost.
 
 <BlogSwiper
   slides={[
     {
-      src:'/images/blog-post/PCF_3x3.jpg',
+      src: '/images/blog-post/PCF_3x3.jpg',
       alt: 'Floor texture using Kernel 3x3'
     },
     {
-      src:'/images/blog-post/PCF_5x5.jpg',
+      src: '/images/blog-post/PCF_5x5.jpg',
       alt: 'Floor texture using Kernel 5x5'
     }
   ]}
+/>
 
 For now, 3x3 is the most reasonable default.
 
@@ -108,11 +109,11 @@ For now, 3x3 is the most reasonable default.
 
 The light inspector now also exposes shadow bias and shadow strength.
 
-Shadow bias is used to reduce shadow acne caused by precision issues when comparing the currentfragment depth against the shadow map depth.
+Shadow bias is used to reduce shadow acne caused by precision issues when comparing the current fragment depth against the shadow map depth.
 
 Shadow strength controls how dark the shadow appears in the lighting shader.
 
-This makes debugging and tuning much faster, because these values no longer need to be changeddirectly in code.
+This makes debugging and tuning much faster, because these values no longer need to be changed directly in code.
 
 ## Current Limitations
 
@@ -127,11 +128,11 @@ The current implementation still has several limitations:
 - There are no cascaded shadow maps yet.
 - The light frustum is still based on visible mesh bounds, not depth-buffer fitting.
 
-Even with these limitations, this update makes the shadow system much more usable from an editorand scene workflow point of view.
+Even with these limitations, this update makes the shadow system much more usable from an editor and scene workflow point of view.
 
 ## Result
 
-This iteration turns the shadow system from a hardcoded renderer feature into something that can becontrolled per light from the editor.
+This iteration turns the shadow system from a hardcoded renderer feature into something that can be controlled per light from the editor.
 
 The engine can now:
 
@@ -143,4 +144,4 @@ The engine can now:
 - Save and reload all shadow settings with the scene
 
 This is a useful step towards a more complete lighting and shadow pipeline.
-The next improvements would likely be depth-buffer-based fitting, cascaded shadow maps, andeventually support for spot light and point light shadows.
+The next improvements would likely be depth-buffer-based fitting, cascaded shadow maps, and eventually support for spot light and point light shadows.
