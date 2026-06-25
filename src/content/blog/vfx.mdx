@@ -1,0 +1,88 @@
+---
+id: 19
+slug: 'creation-vfx'
+title: 'VFX: The Key to Making the Scene Flourish'
+description: 'How we design and implement cohesive visual effects within our custom-built engine to improve gameplay feedback and immersion.'
+imageUrl: '/images/blog-post/vfx_cover.png'
+imageAlt: 'A dynamic scene showcasing custom engine particle effects and environment interactions.'
+pubDate: 'June 25, 2026'
+categories:
+  - 'Design'
+  - 'Art'
+authors:
+  - 'meritxell-alguero'
+relatedPosts:
+  - '27'
+visible: true
+featured: false
+---
+
+Visual Effects (VFX) serve as a cornerstone of game development, bridging the gap between static assets and a living world. By introducing motion and dynamic feedback, VFX transform a virtual space into an interactive experience. Whether a character activates an ability or an item pulses on the ground, these visual cues communicate critical gameplay data while making every interaction feel impactful.
+
+For our project, our core philosophy prioritizes **harmony over mere spectacle**. Rather than cluttering the screen with flashy, disconnected effects, our goal is to establish a cohesive visual language where each effect naturally complements the environment, character designs, and overall gameplay.
+
+---
+
+## Bringing Gameplay to Life
+
+Throughout production, we implement VFX across a wide range of scenarios to optimize both mechanical readability and player immersion.
+
+Our current implementation pipeline focuses on several key areas:
+* **Combat Feedback:** Distinct visual warnings that signal upcoming enemy abilities, damage zones, and enemy repositioning, alongside directional hit sparks upon impact.
+* **Character Expression:** Enhancing the clarity and visual impact of Lyriel and Death’s unique abilities, while embedding subtle micro-effects into their core animations.
+* **Environmental Interaction:** Reactive elements, such as explosive barrels and destructible hazards.
+* **Game State Feedback:** Clear visual loops and bursts for health pickups and power-up collections.
+* **Ambient Polish:** Subtle environmental details—like dust motes, wind currents, and weather patterns—that make the scenery feel alive.
+
+By treating VFX as a functional gameplay tool rather than just aesthetic polish, we ensure that players can intuitively read the action on screen and react with split-second precision.
+
+---
+
+## Organizing Our VFX Workflow
+
+As the scope of our project expanded, the growing volume of planned visual effects demanded a structured, scalable management approach. To streamline development, we established a centralized VFX planning matrix to track every asset from initial concept to final implementation.
+
+We categorize the asset pipeline into four primary domains:
+1. **Characters** (Player abilities and locomotion states)
+2. **Enemies** (Attacks, hit reactions, and defeat animations)
+3. **Interactive Objects** (Destructibles, items, and loot)
+4. **Environment** (Weather systems and ambient lighting accents)
+
+Within this matrix, every individual effect is tracked using specific metrics: **Priority tiers, Technical difficulty, Reference art, Assigned developers,** and **Implementation notes.** This organized workflow allows our team to prioritize core gameplay feedback systems before dedicating time to minor background details.
+
+### Character and Boss Asset Tracking
+To maintain a high level of detail, we separate our pipelines into dedicated tracking sheets for both player mechanics and unique boss encounters.
+
+For example, on the protagonist side (**Death**), player actions require highly detailed micro-expressions. We track everything from baseline locomotion—such as "smoky" trails behind his run animation and multi-directional dash indicators—to technical states like the desaturated, grayish pulse shader used during his downed state.
+
+Similarly, complex encounters like our Level 1 Mini-Boss (**Arthur**) demand tight documentation. We map out everything from his phase transitions (including visual cues for armor shedding and ground dust on heavy step impacts) to "Threshold Lock" defensive shield flashes that instantly let the player know when their attacks are being blocked.
+
+Below, you can see an implementation showcase demonstrating Lyriel's custom arrow effects alongside our active health system updates:
+
+
+<BlogYouTube
+  url='https://www.youtube.com/watch?v=5wLJ5166210'
+  title='VFX Implementation: Lyriel Arrow and Health Effects'
+/>
+
+
+
+---
+
+## The Technical Challenge: Building a Custom Engine
+
+One of the most rewarding—yet technically demanding—aspects of this project is that we are developing our game using our **own proprietary game engine**.
+
+> **Developer Note:** Unlike commercial engines like Unity or Unreal, which provide fully developed, out-of-the-box VFX suites, our creation tools must be built from scratch and evolve concurrently with the game itself.
+
+This architectural constraint means that as our gameplay mechanics grow in complexity, we must continuously upgrade our engine tools to support more advanced visual behaviors.
+
+Currently, our rendering framework relies heavily on a custom architecture of **particle systems** (which control thousands of individual, dynamic textures for elements like smoke and sparks) and **ribbon trails** (used to define motion paths, such as weapon slashes). Because we code these systems ourselves, we retain complete, low-level control over the engine. This allows us to optimize performance directly for our game's technical requirements, adjusting memory allocation and rendering behaviors in ways a commercial engine wouldn't easily permit.
+
+---
+
+## Looking Ahead
+
+By focusing on refining particle behaviors and tuning the mathematical curves of our trails, we are building a versatile toolkit. This system allows us to accurately translate our unique art style into clear, real-time gameplay feedback.
+
+As development progresses, our focus will shift toward expanding this foundational VFX library, optimizing our custom engine tools, and polishing existing assets. Ultimately, our goal is to deliver a cohesive experience where technology and art blend seamlessly together.
