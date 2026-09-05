@@ -36,6 +36,11 @@ The physical model is based on the interaction of light with a participating med
   alt='Volumetric Fog Settings in engine: We can enable it and change, density, scattering, extinsion, the distance and anisotropy.'
 />
 
+
+## Establishing the Volumetric Fog Framework
+
+The implementation is built as a sequence of GPU-driven stages, starting with the volumetric representation and density setup, then progressively adding lighting, shadows, integration and final scene composition.
+
 ### 1. Scene-level Volumetric Fog settings
 
 A new 'VolumetricFogSettings' configuration was added to the Scene. It exposes the main artistic and physical parameters of the effect, including density, scattering coefficient, extinction coefficient, anisotropy and maximum fog distance. The settings are serialized with the Scene, restored correctly when entering and leaving Play Mode, and exposed through the Scene Configuration panel.
