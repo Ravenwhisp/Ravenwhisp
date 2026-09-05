@@ -1,0 +1,143 @@
+---
+id: 33
+slug: 'dynamic_transparency_system'
+title: 'Dynamic Transparency System'
+description: 'Target-Driven Occluder Transparency'
+imageUrl: '/images/blog-post/dynamic-transparency-system/dynamic_transparency_cover.PNG'
+imageAlt: 'We can see both characters through the wall.'
+pubDate: 'Aug 20, 2026'
+categories:
+  - 'Engine'
+authors:
+  - 'daniel-bellido'
+relatedPosts:
+
+visible: true
+featured: false
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
+## Overview
+
+<BlogYouTube url='https://www.youtube.com/watch?v=3_DHFQwKAD0' title='Dynamic Transparency System' />
+
+The Dynamic Transparency system was implemented to improve player visibility when a shared camera becomes blocked by walls or other large environment objects.
+The implementation is inspired by the **Dynamic Transparency technique described by Elmqvist, Assarsson and Tsigas**, where occluding geometry is selectively made transparent around important targets instead of fading the entire object.
+
+The main goal is simple:
+    If a player is hidden behind an eligible occluder, only the region of that occluder around the player becomes transparent.
+
+
+This preserves most of the environment visually while keeping the player readable at all times.
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/dynamic_transparency_system.PNG'
+  alt='Dynamic Transparency System'
+/>
+
+### 1. Targets and Occluders
+
+The system introduces two new scene components.
+OcclusionTargetComponent marks objects that should remain visible, normally the players.
+It exposes two parameters:
+- **Falloff Scale** — controls the size of the transparency region.
+- **Falloff Softness** — controls how gradually the transparency transitions back to the opaque wall.
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/occlusion_target_settings.PNG'
+  alt='Occlusion Target Component, you can change The fallof scale and softness'
+  fullWidth={false}
+/>
+
+OcclusionOccluderComponent marks environment geometry that is allowed to participate in Dynamic Transparency.
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/occlusion_occluder_settings.PNG'
+  alt='Occlusion Ocluder Component'
+  fullWidth={false}
+/>
+
+This distinction is important because only explicitly tagged occluders are affected. Other objects between the camera and the player continue behaving normally.
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/outline_oclusion.PNG'
+  alt='How oclusion works in game. The colum is normal geometry but the wall will have the Occlusion Occluder'
+  fullWidth={false}
+/>
+
+The wall may become transparent, but the column can still occlude the player normally.
+
+
+### 2. Occlusion Target Depth
+
+The first dedicated render pass, OcclusionTargetDepthPass, renders only active occlusion targets into a separate depth texture.
+This depth buffer is independent from the normal scene depth and therefore keeps track of where the players are on screen even when they are hidden behind environment geometry.
+It provides the information required to determine whether an occluder fragment is actually in front of a target.
+
+### 3. Dynamic Transparency Mask
+
+DynamicTransparencyMaskPass combines the target depth with the projected bounds of each target to create a screen-space transparency influence.
+
+Conceptually, the resulting region contains three areas:
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/dynamic_transparency_mask_pass.PNG'
+  alt='Areas of the dynamic transparency mask. The center is whiter and fades out.'
+/>
+
+The exact target silhouette forms the **CORE**, ensuring that the player remains fully visible.
+A larger region around it forms the **FALLOFF**, producing a smooth transition between the clear area and the original opaque wall.
+
+The mask does not contain the wall itself. It only describes **where and how strongly an eligible occluder should become transparent**.
+
+### 4. Removing the Occluder from the Opaque Scene
+
+Dynamic Transparency is integrated directly into the existing GeometryPass.
+When an OcclusionOccluder is rendered, its fragments are compared against the transparency mask and target depth.
+Eligible wall fragments that are inside the reveal region and in front of a player are removed from the opaque pass.
+Because those fragments no longer write color or depth, the **real scene behind the wall renders normally**.
+
+This is an important difference from simply drawing the player on top of the environment: objects behind the wall still preserve their normal depth relationships.
+
+### 5. Transparent Falloff Reconstruction
+
+Once the opaque scene has been rendered, 'DynamicTransparencyFalloffPass' renders the occluder geometry again.
+This time, only wall fragments whose screen-space positions fall inside the **FALLOFF** region are kept and blended transparently with the already rendered scene.
+The final behaviour is therefore:
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/fallof_reconstruction.PNG'
+  alt='We can see Death and how the occlusion is showing it trhough a wall.'
+/>
+
+The transparent falloff keeps the original wall material and integrates with the existing **PBR lighting**, **shadows** and **volumetric fog**, helping the transition remain visually consistent with the rest of the environment.
+
+### 6. Multiple Targets and Occluders
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/occluding_multiple_targets.PNG'
+  alt='We can see two distinct areas where the wall is being occluded, representing both characters.'
+/>
+
+The system supports both players independently.
+
+Each target keeps its own transparency influence and depth information, allowing overlapping transparency regions to be evaluated correctly.
+Multiple transparent occluders are also composed back-to-front to preserve the expected transparency result when several eligible objects overlap.
+
+
+## Final Result
+
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/RenderPipeline_DynamicTransparency.PNG'
+  alt='Render pipeline of the dynamic transparency.'
+/>
+
+The result is a selective visibility system where players remain readable without making entire walls disappear.
+Only explicitly marked environment geometry participates, the player silhouette remains completely clear, the surrounding wall fades progressively, and normal scene objects continue preserving their original depth and occlusion behaviour.
+It also provides a flexible foundation for future improvements such as more advanced occluder selection, better handling of very close target/occluder intersections, or additional transparency shapes.
+
+
