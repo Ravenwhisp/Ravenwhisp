@@ -48,7 +48,7 @@ It exposes two parameters:
 - **Falloff Softness** — controls how gradually the transparency transitions back to the opaque wall.
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/occlusion_target_settings.PNG'
+  src='/images/blog-post/dynamic-transparency-system/occlusion_target_settings.png'
   alt='Occlusion Target Component, you can change The falloff scale and softness'
   fullWidth={false}
 />
@@ -56,7 +56,7 @@ It exposes two parameters:
 OcclusionOccluderComponent marks environment geometry that is allowed to participate in Dynamic Transparency.
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/occlusion_occluder_settings.PNG'
+  src='/images/blog-post/dynamic-transparency-system/occlusion_occluder_settings.png'
   alt='Occlusion Ocluder Component'
   fullWidth={false}
 />
@@ -64,7 +64,7 @@ OcclusionOccluderComponent marks environment geometry that is allowed to partici
 This distinction is important because only explicitly tagged occluders are affected. Other objects between the camera and the player continue behaving normally.
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/outline_oclusion.PNG'
+  src='/images/blog-post/dynamic-transparency-system/outline_oclusion.png'
   alt='How oclusion works in game. The colum is normal geometry but the wall will have the Occlusion Occluder'
   fullWidth={false}
 />
@@ -85,7 +85,7 @@ DynamicTransparencyMaskPass combines the target depth with the projected bounds 
 Conceptually, the resulting region contains three areas:
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/dynamic_transparency_mask_pass.PNG'
+  src='/images/blog-post/dynamic-transparency-system/dynamic_transparency_mask_pass.png'
   alt='Areas of the dynamic transparency mask. The center is whiter and fades out.'
 />
 
@@ -110,7 +110,7 @@ This time, only wall fragments whose screen-space positions fall inside the **FA
 The final behaviour is therefore:
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/fallof_reconstruction.PNG'
+  src='/images/blog-post/dynamic-transparency-system/fallof_reconstruction.png'
   alt='We can see Death and how the occlusion is showing it trhough a wall.'
 />
 
@@ -119,7 +119,7 @@ The transparent falloff keeps the original wall material and integrates with the
 ### 6. Multiple Targets and Occluders
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/occluding_multiple_targets.PNG'
+  src='/images/blog-post/dynamic-transparency-system/occluding_multiple_targets.png'
   alt='We can see two distinct areas where the wall is being occluded, representing both characters.'
 />
 
@@ -132,7 +132,7 @@ Multiple transparent occluders are also composed back-to-front to preserve the e
 ## Final Result
 
 <BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/RenderPipeline_DynamicTransparency.PNG'
+  src='/images/blog-post/dynamic-transparency-system/RenderPipeline_DynamicTransparency.png'
   alt='Render pipeline of the dynamic transparency.'
 />
 
