@@ -19,6 +19,11 @@ visible: true
 featured: false
 ---
 
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+import BlogGallery from '@/components/blog-media/blog-gallery.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+
 ## Overview
 
 After implementing Depth Buffer Fitting, the directional shadow system was able to concentrate the shadow map around the geometry actually visible by the camera. However, perspective aliasing was still noticeable because a single shadow map distributed the same amount of resolution across the entire visible depth range. Objects close to the camera therefore received the same shadow-map density as distant geometry, even though near shadows require significantly more detail.
