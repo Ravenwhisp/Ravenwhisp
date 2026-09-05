@@ -25,7 +25,7 @@ import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 
 ## Overview
 
-The Volumetric Fog system was implemented following the main architecture presented by Bart Wronski in “**Volumetric Fog: Unified Compute Shader Based Solution to Atmospheric Scattering**” at **SIGGRAPH 2014**. The core idea is to represent the participating medium inside a camera-aligned 3D volume, evaluate density and lighting per volumetric cell, integrate scattering along the view direction, and finally composite the accumulated result with the rendered scene. Wronski describes this as a sequence of volumetric lighting/shadowing, medium-density estimation, a 2D raymarch through the volume, and final screen application.
+The Volumetric Fog system was implemented following the main architecture presented by Bart Wronski in '**Volumetric Fog: Unified Compute Shader Based Solution to Atmospheric Scattering**' at **SIGGRAPH 2014**. The core idea is to represent the participating medium inside a camera-aligned 3D volume, evaluate density and lighting per volumetric cell, integrate scattering along the view direction, and finally composite the accumulated result with the rendered scene. Wronski describes this as a sequence of volumetric lighting/shadowing, medium-density estimation, a 2D raymarch through the volume, and final screen application.
 
 
 The physical model is based on the interaction of light with a participating medium. Light travelling through fog can be scattered into the camera, scattered away from it, or absorbed. In particular, the implementation uses Beer-Lambert transmittance to model the exponential loss of light with distance through the medium.
@@ -49,7 +49,7 @@ This separates fog authoring from individual lights and makes Volumetric Fog a g
 ### 2. 3D volumetric texture infrastructure
 
 Wronski's solution stores intermediate atmospheric information in **3D textures**, allowing compute shaders to process the participating medium volumetrically.
-The engine's texture system was extended with proper Texture3D UAV support, and three 160 × 90 × 64 floating-point volumes were introduced:
+The engine's texture system was extended with proper Texture3D UAV support, and three 160 x 90 x 64 floating-point volumes were introduced:
 
 - VolumetricFog_Medium
 - VolumetricFog_Lighting
@@ -71,7 +71,7 @@ Instead of representing the fog using a world-aligned volume, the 3D texture is 
 Wronski specifically recommends this layout and uses an **exponential depth distribution**, concentrating more slices near the camera where precision is most important.
 
 The implementation therefore uses:
-**160 × 90 × 64 froxels**
+**160 x 90 x 64 froxels**
 With exponentially distributed depth slices between the camera near plane and the artist-defined Max Distance.
 
 The exact exponential mapping function used by the engine is an implementation choice; Wronski defines the principle of near-camera-concentrated exponential distribution but not a mandatory formula.
@@ -86,8 +86,8 @@ The exact exponential mapping function used by the engine is an implementation c
 
 The first real compute stage fills VolumetricFog_Medium.
 For every froxel, the shader calculates effective scattering and extinction coefficients:
-scattering = density × scattering coefficient
-extinction = density × extinction coefficient
+scattering = density x scattering coefficient
+extinction = density x extinction coefficient
 RGB stores the effective scattering coefficient and alpha stores extinction.
 
 This stage corresponds to Wronski's **participating-media density estimation**. His implementation combined density and lighting for bandwidth reasons, but explicitly states that both calculations can be separated and fully decoupled. Separating them in this engine makes the data flow clearer and leaves room for future density sources such as local fog volumes.
@@ -131,7 +131,7 @@ Unlike the previous 3D dispatches, this stage uses a **2D compute dispatch**. Ea
 
 This directly follows Wronski's integration strategy, where a 2D compute group marches through the 3D volume while accumulating in-scattered lighting and extinction.
 For each segment, Beer-Lambert is evaluated:
-Tsegment = exp(-extinction × segmentLength)
+Tsegment = exp(-extinction x segmentLength)
 and both scattering and transmittance are accumulated from the camera toward increasing depth.
 
 
@@ -156,7 +156,7 @@ The full-resolution scene depth is used to determine how far along the volumetri
 This follows another important property of Wronski's approach: although volumetric calculations are performed at low resolution, full-resolution fragments use their own depth when sampling the 3D volume, allowing 3D interpolation without the severe depth-discontinuity problems associated with conventional low-resolution 2D fog buffers.
 
 The final HDR composition is:
-FinalColor = SceneHDR × Transmittance + AccumulatedScattering
+FinalColor = SceneHDR x Transmittance + AccumulatedScattering
 
 The fog is applied after the Skybox and before Particles, Trails and Post Processing, so all opaque HDR scene lighting and the sky receive volumetric attenuation before tone mapping.
 
@@ -193,7 +193,7 @@ Designers can control:
 - Wind Speed
 
 Because the noise is evaluated in **world space**, the fog remains spatially stable when the camera moves; only the simulated wind transports the density field.
-Animation is completely optional. With Animate Density disabled—or Noise Strength set to zero—the system returns to the original homogeneous medium.
+Animation is completely optional. With Animate Density disabled -or Noise Strength set to zero- the system returns to the original homogeneous medium.
 
 ## Final Result
 
@@ -201,19 +201,13 @@ Animation is completely optional. With Animate Density disabled—or Noise Stren
 
 The completed system follows the main structure of Wronski's SIGGRAPH 2014 technique while adapting it to the existing DirectX 12 Game Engine:
 
-Frustum-aligned 3D froxel grid
-    	↓
-Medium Injection
-    	↓
-Directional Lighting + HG + CSM
-    	↓
-2D depth integration
-    	↓
-Accumulated Scattering + Transmittance
-    	↓
-Full-resolution depth lookup
-    	↓
-HDR Composition
+1. Frustum-aligned 3D froxel grid
+2. Medium Injection
+3. Directional Lighting + HG + CSM
+4. 2D depth integration
+5. Accumulated Scattering + Transmittance
+6. Full-resolution depth lookup
+7. HDR Composition
 
 
 The most significant implementation difference from Wronski's Assassin's Creed IV solution is the shadowing path: the existing Cascaded Shadow Map is sampled directly instead of generating the filtered Exponential Shadow Map representation used in the original implementation. Density and lighting are also stored in separate volumes, a separation explicitly supported by Wronski's architecture.
