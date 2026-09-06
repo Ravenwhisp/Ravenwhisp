@@ -34,7 +34,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
         </div>
 
         {/* Tabs and Search */}
-        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 [&>*]:col-auto [&>*]:row-auto [&>*]:m-0 [&>*]:transform-none'>
           {relatedPosts.map(post => (
             <a
               href={withBasePath(`/blog/${post.slug}`)}
