@@ -23,8 +23,10 @@ import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 ## Overview
 
 A **Particle System** is a system used to create visual effects by simulating a large number of small elements called particles. Each particle has its own position, lifetime, movement, size, rotation, colour and other properties that can change over time.
-At their core, particles are usually just **textures rendered in the 3D world**. A very common technique is to use them as **billboards**, meaning that the particle always faces the camera. Although each particle is only a flat 2D image, the combination of its movement, animation, scaling, rotation, transparency and blending can create the illusion of volume and depth.
+At their core, particles are usually just **textures rendered in the 3D world**.A very common technique is to use them as **billboards**, meaning that the particle always faces the camera. Although each particle is only a **flat 2D image**, the combination of its movement, animation, scaling, rotation, transparency and blending can create the illusion of volume and depth.
+
 This simple technique is one of the reasons particle systems are so useful for creating the visual effects we see constantly in video games. Fire, smoke, sparks, dust, explosions, magic effects and many other effects can be represented using relatively simple textured planes. When hundreds or thousands of these particles are combined and updated over time, they can create a much more complex and convincing visual result.
+
 Instead of manually creating every part of an effect, a particle system allows us to define a set of rules that control how particles are created, updated and rendered. By combining these rules, we can create many different effects while reusing the same underlying system.
 
 For example, a fire effect can be represented by particles that are spawned continuously from a small area, move upwards, change their size and colour over time, and disappear after a short lifetime. Each individual particle is very simple, but when many of them are combined, they create the illusion of a dynamic flame.
@@ -146,7 +148,8 @@ The general lifecycle is:
 <BlogFigure
   src='/images/blog-post/particle-system-pt1/lifecycle_particles.jpg'
   alt='Lyfecycle Particles'
-fullWidth={false}
+  fullWidth={false}
+  halfHeight={true}
 />
 
 
