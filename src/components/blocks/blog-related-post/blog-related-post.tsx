@@ -46,7 +46,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
             >
               <Card className='h-full w-full shadow-none transition-all duration-300'>
 
-                <CardContent className='space-y-3.5'>
+                <CardContent className='flex h-full flex-col space-y-3.5'>
 
                   {/* Image */}
                   <div className='mb-6 overflow-hidden rounded-lg sm:mb-12'>
@@ -88,7 +88,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                   </p>
 
                   {/* Author + Read More */}
-                  <div className='flex items-center justify-between'>
+                  <div className='mt-auto flex items-center justify-between pt-6'>
 
                     {/* Authors */}
                     <div className='flex flex-wrap gap-4'>
@@ -113,7 +113,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                         ))}
                     </div>
 
-                    {/* Read more */}
+                    {/* Read More */}
                     <Button
                       size='icon'
                       className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
