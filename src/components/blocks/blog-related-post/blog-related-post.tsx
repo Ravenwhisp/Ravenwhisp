@@ -34,14 +34,14 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
         </div>
 
         {/* Tabs and Search */}
-          <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {relatedPosts.map(post => (
             <a
               href={withBasePath(`/blog/${post.slug}`)}
               key={post.id}
-              className='group block h-full w-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
+              className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
             >
-              <Card className='h-full shadow-none'>
+              <Card className='shadow-none'>
                 <CardContent className='space-y-3.5'>
                   <div className='mb-6 overflow-hidden rounded-lg sm:mb-12'>
                     <img
