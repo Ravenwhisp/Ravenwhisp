@@ -89,12 +89,13 @@ export const SITE_METADATA = {
 
 // Social media links
 export const SOCIAL_LINKS = {
-  github: GITHUB_URL,
+  github: 'https://github.com/Ravenwhisp',
   twitter: 'https://x.com/Raven_Whisp',
-  linkedin: 'https://www.linkedin.com/company/ravenwhisp',
+  linkedin: 'https://www.linkedin.com/in/ravenwhisp-studios/',
   instagram: 'https://www.instagram.com/ravenwhisp_studios',
   tiktok: 'https://www.tiktok.com/@ravenwhisp.studio',
-  youtube: 'https://www.youtube.com/@Ravenwhisp'
+  youtube: 'https://www.youtube.com/@Ravenwhisp',
+  itchio: 'https://ravenwhisp-studios.itch.io'
 }
 
 // Company information for structured data
