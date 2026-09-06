@@ -24,25 +24,31 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
   return (
     <section className='py-8 sm:py-16 lg:py-24'>
       <div className='mx-auto max-w-7xl space-y-16 px-4 py-8 sm:px-6 lg:px-8'>
+
         {/* Header */}
         <div className='space-y-4'>
-          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>Related Posts</h2>
+          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>
+            Related Posts
+          </h2>
 
           <p className='text-muted-foreground text-lg md:text-xl'>
             Learn more about the behind-the-scenes of Ravenwhisp's development.
           </p>
         </div>
 
-        {/* Tabs and Search */}
-        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+        {/* Related Posts Grid */}
+        <div className='grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {relatedPosts.map(post => (
             <a
               href={withBasePath(`/blog/${post.slug}`)}
               key={post.id}
-              className='group block h-full w-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
+              className='group block h-full w-full'
             >
-              <Card className='h-full w-full shadow-none'>
+              <Card className='h-full w-full shadow-none transition-all duration-300'>
+
                 <CardContent className='space-y-3.5'>
+
+                  {/* Image */}
                   <div className='mb-6 overflow-hidden rounded-lg sm:mb-12'>
                     <img
                       src={withBasePath(post.imageUrl)}
@@ -51,54 +57,76 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                       loading='lazy'
                     />
                   </div>
+
+                  {/* Date and Categories */}
                   <div className='flex items-center justify-between gap-1.5'>
                     <div className='text-muted-foreground flex items-center gap-1.5'>
                       <CalendarDaysIcon className='size-5' />
                       <span>{post.pubDate}</span>
                     </div>
+
                     <div className='flex flex-wrap justify-end gap-1.5'>
                       {post.categories.map(category => (
-                        <Badge key={category} className='bg-primary/10 text-primary border-0 text-sm'>
+                        <Badge
+                          key={category}
+                          className='bg-primary/10 text-primary border-0 text-sm'
+                        >
                           {category}
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
-                  <p className='text-muted-foreground line-clamp-2'>{post.description}</p>
+
+                  {/* Title */}
+                  <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>
+                    {post.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className='text-muted-foreground line-clamp-2'>
+                    {post.description}
+                  </p>
+
+                  {/* Author + Read More */}
                   <div className='flex items-center justify-between'>
+
+                    {/* Authors */}
                     <div className='flex flex-wrap gap-4'>
                       {post.authors &&
                         post.authors.length > 0 &&
                         post.authors.map((author, index) => (
-                          <div key={index} className='flex items-center gap-2'>
-                            <AuthorMetadata avatarFullUrl={author.avatarUrl} author={author.name} />
+                          <div
+                            key={index}
+                            className='flex items-center gap-2'
+                          >
+                            <AuthorMetadata
+                              avatarFullUrl={author.avatarUrl}
+                              author={author.name}
+                            />
+
                             <div className='flex flex-col gap-0.5'>
-                              {author.url ? (
-                                <a
-                                  href={withBasePath(author.url)}
-                                  className='text-foreground text-sm font-medium hover:underline'
-                                  onClick={e => {
-                                    e.stopPropagation()
-                                  }}
-                                >
-                                  {author.name}
-                                </a>
-                              ) : (
-                                <span className='text-foreground text-sm font-medium'>{author.name}</span>
-                              )}
+                              <span className='text-foreground text-sm font-medium'>
+                                {author.name}
+                              </span>
                             </div>
                           </div>
                         ))}
                     </div>
+
+                    {/* Read more */}
                     <Button
                       size='icon'
                       className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
                     >
                       <ArrowRightIcon className='size-4 -rotate-45' />
-                      <span className='sr-only'>Read more: {post.title}</span>
+
+                      <span className='sr-only'>
+                        Read more: {post.title}
+                      </span>
                     </Button>
+
                   </div>
+
                 </CardContent>
               </Card>
             </a>
@@ -110,3 +138,4 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
 }
 
 export default Blog
+
