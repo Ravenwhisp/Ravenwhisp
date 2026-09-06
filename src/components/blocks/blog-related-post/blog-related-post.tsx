@@ -3,12 +3,14 @@
 import { ArrowRightIcon, CalendarDaysIcon } from 'lucide-react'
 
 import { getCollection } from 'astro:content'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { withBasePath } from '@/lib/paths'
-import { AuthorMetadata } from '@/components/AuthorAvatar'
 
+import { withBasePath } from '@/lib/paths'
+
+import { AuthorMetadata } from '@/components/AuthorAvatar'
 import type { BlogPost } from '@/components/blocks/blog-component/blog-component'
 
 export async function getStaticPaths() {
@@ -88,27 +90,25 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                   </p>
 
                   {/* Author + Read More */}
-                  <div className='mt-auto flex items-center justify-between pt-6'>
+                  <div className='mt-auto flex items-center justify-between gap-4 pt-6'>
 
-                    {/* Authors */}
-                    <div className='flex flex-wrap gap-4'>
+                    {/* Author */}
+                    <div className='flex min-w-0 items-center gap-2'>
                       {post.authors &&
                         post.authors.length > 0 &&
                         post.authors.map((author, index) => (
                           <div
                             key={index}
-                            className='flex items-center gap-2'
+                            className='flex min-w-0 items-center gap-2'
                           >
                             <AuthorMetadata
                               avatarFullUrl={author.avatarUrl}
                               author={author.name}
                             />
 
-                            <div className='flex flex-col gap-0.5'>
-                              <span className='text-foreground text-sm font-medium'>
-                                {author.name}
-                              </span>
-                            </div>
+                            <span className='text-foreground truncate text-sm font-medium'>
+                              {author.name}
+                            </span>
                           </div>
                         ))}
                     </div>
@@ -116,7 +116,7 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                     {/* Read More */}
                     <Button
                       size='icon'
-                      className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
+                      className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground shrink-0 border group-hover:border-transparent hover:border-transparent'
                     >
                       <ArrowRightIcon className='size-4 -rotate-45' />
 
@@ -138,4 +138,3 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
 }
 
 export default Blog
-
