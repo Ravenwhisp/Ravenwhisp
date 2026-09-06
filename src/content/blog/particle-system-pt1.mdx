@@ -145,12 +145,7 @@ The order is important because a particle must first be created before the other
 
 The general lifecycle is:
 
-<BlogFigure
-  src='/images/blog-post/particle-system-pt1/lifecycle_particles.jpg'
-  alt='Lyfecycle Particles'
-  fullWidth={false}
-  halfHeight={true}
-/>
+| SPAWN -> REQUEST POOL SLOT -> m_newParticles -> INITIALIZATION -> m_aliveParticles -> UPDATE -> LIFETIME REACHES 0 -> RELEASE POOL SLOT
 
 
 ### Spawn
@@ -370,11 +365,7 @@ Particles are grouped by texture and layer.
 The animation module provides the UV scale and offset, while the render module provides the orientation, layer and blend mode.
 The system then creates **ParticleEmitterCommands** that contain the information required by the renderer.
 
-<BlogFigure
-  src='/images/blog-post/particle-system-pt1/particle_emitter_commands.jpg'
-  alt='Lyfecycle Particles'
-fullWidth={false}
-/>
+| ALIVE PARTICLES -> GROUP BY TEXTURE -> GET ANIMATION UVs -> APPLY RENDER SETTINGS -> SORT BY LAYER -> ParticleEmitterCommand -> RENDER
 
 Sorting by layer allows us to control the order in which particle groups are rendered.
 The system also keeps track of each particle's distance to the camera.
