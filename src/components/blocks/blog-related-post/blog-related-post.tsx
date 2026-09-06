@@ -10,7 +10,6 @@ import { Card, CardContent } from '@/components/ui/card'
 
 import { withBasePath } from '@/lib/paths'
 
-import { AuthorMetadata } from '@/components/AuthorAvatar'
 import type { BlogPost } from '@/components/blocks/blog-component/blog-component'
 
 export async function getStaticPaths() {
@@ -101,11 +100,6 @@ const Blog = ({ relatedPosts }: { relatedPosts: BlogPost[] }) => {
                             key={index}
                             className='flex min-w-0 items-center gap-2'
                           >
-                            <AuthorMetadata
-                              avatarFullUrl={author.avatarUrl}
-                              author={author.name}
-                            />
-
                             <span className='text-foreground truncate text-sm font-medium'>
                               {author.name}
                             </span>
