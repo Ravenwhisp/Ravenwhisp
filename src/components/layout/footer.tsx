@@ -1,4 +1,4 @@
-import { siGithub, siInstagram, siTiktok, siX, siYoutube } from 'simple-icons'
+import { siGithub, siInstagram, siItchdotio, siTiktok, siX, siYoutube } from 'simple-icons'
 
 import { Separator } from '@/components/ui/separator'
 
@@ -55,6 +55,16 @@ const Footer = () => {
           >
             <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
               <path d={siInstagram.path} />
+            </svg>
+          </a>
+          <a
+            href={SOCIAL_LINKS.itchio}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-muted-foreground hover:text-foreground'
+          >
+            <svg viewBox='0 0 24 24' aria-hidden='true' className='size-5 fill-current'>
+              <path d={siItchdotio.path} />
             </svg>
           </a>
           <a
