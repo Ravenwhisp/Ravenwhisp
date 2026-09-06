@@ -323,6 +323,11 @@ The Bezier curve controls how quickly the particle moves through the colour grad
 This provides more control than a simple linear interpolation.
 For example, a particle can start transparent, quickly become visible, remain bright for most of its lifetime and then fade out near the end.
 
+<BlogFigure
+src='/images/blog-post/particle-system-pt1/particle_system_color.jpg'
+alt='Particle System final result'
+/>
+
 ### Animation
 
 **EmitterAnimation** allows particles to use animated sprite sheets.
@@ -335,6 +340,9 @@ Each particle stores its current texture frame.
 During the update, the frame advances according to the configured FPS and **deltaTime**.
 The corresponding UV scale and offset are then calculated for rendering.
 This allows us to create animated effects such as explosions, fire or smoke using a single texture.
+
+<BlogYouTube url='https://youtu.be/1Cz8cb4-9UA' title='Particles animation' />
+
 
 ### Render
 
@@ -371,3 +379,29 @@ fullWidth={false}
 Sorting by layer allows us to control the order in which particle groups are rendered.
 The system also keeps track of each particle's distance to the camera.
 aliveParticle.first = Vector3::Distance(cameraPosition, position);
+
+## Final Result
+
+After putting all these modules together, we have a particle system that can create a wide variety of effects without requiring a completely different implementation for each one.
+
+The main advantage of the system is its modularity. An emitter can combine different modules depending on the effect we want to achieve. By changing parameters such as the spawn rate, lifetime, velocity, size, rotation, colour, animation and rendering mode, we can create very different results while using the same underlying architecture.
+
+For example, a simple fire effect can be created by combining an area that controls where the particles spawn, a lifetime that determines how long they remain visible, a velocity that moves them upwards, a size curve that changes their scale, a colour gradient that controls their appearance and an animated sprite sheet to add visual variation.
+
+The same system can then be reused to create smoke, sparks, dust, magic effects, explosions or environmental particles simply by changing the emitter configuration.
+
+The particle pool also gives the system a predictable memory footprint and avoids continuously allocating and destroying particles during gameplay. When the pool reaches its limit, existing slots can be reused instead of creating additional objects.
+
+At the rendering stage, particles are grouped by texture and layer before being converted into render commands. This keeps the particle simulation separated from the rendering process and allows the renderer to efficiently process the generated particle batches.
+
+The result is a flexible foundation that can be used throughout the engine:
+
+
+<BlogFigure
+src='/images/blog-post/particle-system-pt1/particle-system-final-result.jpg'
+alt='Particle System final result'
+/>
+
+What started as a relatively simple collection of textured planes becomes a complete system capable of handling the entire particle lifecycle: spawning, initialization, simulation, animation, sorting and rendering.
+
+This architecture gives us the foundation we need to continue improving the system. In Part 2, we will build on this implementation and cover some of the upgrades we introduced later, including gravity and other improvements that make the particle system more powerful and suitable for more complex effects.
