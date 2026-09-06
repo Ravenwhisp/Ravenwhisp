@@ -23,8 +23,6 @@ import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 
 ## Overview
 
-<BlogYouTube url='https://www.youtube.com/watch?v=3_DHFQwKAD0' title='Dynamic Transparency System' />
-
 The Dynamic Transparency system was implemented to improve player visibility when a shared camera becomes blocked by walls or other large environment objects.
 The implementation is inspired by the **Dynamic Transparency technique described by Elmqvist, Assarsson and Tsigas**, where occluding geometry is selectively made transparent around important targets instead of fading the entire object.
 
@@ -131,13 +129,13 @@ Multiple transparent occluders are also composed back-to-front to preserve the e
 
 ## Final Result
 
-<BlogFigure
-  src='/images/blog-post/dynamic-transparency-system/RenderPipeline_DynamicTransparency.png'
-  alt='Render pipeline of the dynamic transparency.'
-/>
+<BlogYouTube url='https://www.youtube.com/watch?v=3_DHFQwKAD0' title='Dynamic Transparency System' />
 
 The result is a selective visibility system where players remain readable without making entire walls disappear.
 Only explicitly marked environment geometry participates, the player silhouette remains completely clear, the surrounding wall fades progressively, and normal scene objects continue preserving their original depth and occlusion behaviour.
 It also provides a flexible foundation for future improvements such as more advanced occluder selection, better handling of very close target/occluder intersections, or additional transparency shapes.
 
-
+<BlogFigure
+  src='/images/blog-post/dynamic-transparency-system/RenderPipeline_DynamicTransparency.png'
+  alt='Render pipeline of the dynamic transparency.'
+/>
