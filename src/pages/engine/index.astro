@@ -1,20 +1,280 @@
+
 ---
 import Layout from '@/layouts/Layout.astro'
 
-const pageTitle = 'Engine | Bound By Death'
-const pageDescription = 'Here you can see how our custom engine has been created, check the images and videos to see more indepth how it looks like.'
+const pageTitle = 'Our Engine | Ravenwhisp Studio'
+const pageDescription =
+  'Discover the technology behind Ravenwhisp Studio. Explore our custom engine, its development, and the systems powering our games.'
+
+const features = [
+  {
+    number: '01',
+    category: 'GRAPHICS',
+    title: '3D Models & Rendering',
+    description:
+      'Discover how models, materials, textures, and rendering contribute to bringing our game worlds to life.',
+    image: '/images/engine/models.webp',
+  },
+  {
+    number: '02',
+    category: 'ATMOSPHERE',
+    title: 'Volumetric Fog',
+    description:
+      'Explore atmospheric effects, depth, and lighting techniques that help shape the mood of our environments.',
+    image: '/images/engine/volumetric-fog.webp',
+  },
+  {
+    number: '03',
+    category: 'NAVIGATION',
+    title: 'Navmesh & Pathfinding',
+    description:
+      'Learn about navigation, pathfinding, and the technology behind character movement through game environments.',
+    image: '/images/engine/navmesh.webp',
+  },
+  {
+    number: '04',
+    category: 'LIGHTING',
+    title: 'Lighting System',
+    description:
+      'Take a closer look at the role of lighting, shadows, and illumination in creating immersive scenes.',
+    image: '/images/engine/lighting.webp',
+  },
+]
+
+const principles = [
+  {
+    title: 'Built from the ground up',
+    description:
+      'We are developing our own technology to explore the systems that make our games possible.',
+  },
+  {
+    title: 'Always evolving',
+    description:
+      'Our engine is a work in progress, shaped by experimentation, problem-solving, and continuous development.',
+  },
+  {
+    title: 'Made to create',
+    description:
+      'Every system is part of our journey to build the worlds and experiences we imagine.',
+  },
+]
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
-      <h1 class='text-foreground text-4xl font-bold'>Engine</h1>
-      <p class='text-muted-foreground text-lg'>
-        Our engine is not finish yet, once we have it done you will be able to see all its beauty in display!
+  <main class="overflow-hidden">
+    <!-- Hero -->
+    <section class="relative isolate flex min-h-[540px] items-center border-b border-border sm:min-h-[620px]">
+      <div
+        class="absolute inset-0 -z-20 bg-cover bg-center"
+        style="background-image: url('/images/engine/engine-hero.webp')"
+        aria-hidden="true"
+      >
+      </div>
 
-        Soon you will be able to see how our custom engine has been created, check the images and videos to see more indepth about how it looks like!
-      </p>
-      <p class='text-muted-foreground'>Follow Ravenwhisp Studio channels for release and playtest announcements.</p>
-    </div>
-  </section>
+      <div
+        class="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/90 to-background/35"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="absolute inset-0 -z-10 bg-gradient-to-t from-background via-transparent to-background/20"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+        <div class="max-w-3xl space-y-7">
+          <p class="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <span class="h-px w-8 bg-primary"></span>
+            Ravenwhisp Studio / Technology
+          </p>
+
+          <h1 class="text-5xl font-bold leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl">
+            Behind the
+            <span class="block text-primary">experience.</span>
+          </h1>
+
+          <p class="max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
+            Every world begins with an idea. Discover our journey into building
+            a custom engine and the technology behind the games we create.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a
+              href="#engine-systems"
+              class="inline-flex items-center gap-3 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-85"
+            >
+              Explore the engine
+              <span aria-hidden="true">↓</span>
+            </a>
+
+            <span class="text-sm text-muted-foreground">
+              Currently in development
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-border/70 pt-5 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground sm:text-xs">
+          <span>Independent game development</span>
+          <span>Our technology. Our journey.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="mx-auto grid max-w-7xl gap-8 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-2 lg:gap-20 lg:px-8">
+      <div class="space-y-5">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          01 / Under the hood
+        </p>
+        <h2 class="max-w-lg text-3xl font-bold tracking-tight sm:text-5xl">
+          More than what meets the eye.
+        </h2>
+      </div>
+
+      <div class="space-y-5 text-base leading-8 text-muted-foreground">
+        <p>
+          At Ravenwhisp Studio, we are working on our own custom engine to
+          explore the technology that powers our games and bring our creative
+          ideas to life.
+        </p>
+        <p>
+          The engine is still under development. As our work progresses, this
+          page will become a place to discover our systems, see real
+          development footage, and understand the engineering behind the
+          experience.
+        </p>
+      </div>
+    </section>
+
+    <!-- Feature cards -->
+    <section id="engine-systems" class="scroll-mt-20 border-y border-border bg-muted/20">
+      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div class="mb-12 flex flex-col justify-between gap-5 sm:mb-14 sm:flex-row sm:items-end">
+          <div class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              02 / Engine systems
+            </p>
+            <h2 class="text-3xl font-bold tracking-tight sm:text-5xl">
+              Inside our engine<span class="text-primary">.</span>
+            </h2>
+          </div>
+
+          <p class="max-w-md text-sm leading-7 text-muted-foreground">
+            A closer look at the systems and technologies we are exploring
+            throughout development.
+          </p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            features.map((feature) => (
+              <article class="group overflow-hidden rounded-lg border border-border bg-background transition-colors duration-300 hover:border-primary/50">
+                <div class="relative aspect-[4/3] overflow-hidden bg-muted">
+                  <img
+                    src={feature.image}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none"
+                  />
+                  <span class="absolute left-4 top-4 rounded-sm border border-border/50 bg-background/90 px-2.5 py-1.5 text-xs font-medium backdrop-blur">
+                    {feature.number}
+                  </span>
+                </div>
+
+                <div class="space-y-4 p-5">
+                  <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
+                    {feature.category}
+                  </p>
+
+                  <h3 class="text-xl font-semibold tracking-tight">
+                    {feature.title}
+                  </h3>
+
+                  <p class="text-sm leading-7 text-muted-foreground">
+                    {feature.description}
+                  </p>
+
+                  <span class="inline-flex items-center gap-2 pt-1 text-sm font-medium text-muted-foreground">
+                    Coming soon
+                    <span aria-hidden="true">↗</span>
+                  </span>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+
+        <p class="mt-8 text-xs leading-6 text-muted-foreground">
+          These categories describe areas of development, not a guarantee that
+          every listed system is already implemented. More technical
+          documentation and demonstrations will be added as they become
+          available.
+        </p>
+      </div>
+    </section>
+
+    <!-- Development philosophy -->
+    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <div class="max-w-2xl space-y-5">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          03 / Our approach
+        </p>
+        <h2 class="text-3xl font-bold tracking-tight sm:text-5xl">
+          An ongoing process.
+        </h2>
+        <p class="leading-8 text-muted-foreground">
+          Building an engine means learning, testing, and refining ideas.
+          This is where we will share that process and the progress we make
+          along the way.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-8 md:grid-cols-3 md:gap-10">
+        {
+          principles.map((principle, index) => (
+            <article class="border-t border-border pt-6">
+              <span class="text-xs font-semibold tracking-[0.15em] text-primary">
+                0{index + 1}
+              </span>
+              <h3 class="mt-6 text-xl font-semibold">
+                {principle.title}
+              </h3>
+              <p class="mt-3 text-sm leading-7 text-muted-foreground">
+                {principle.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Closing -->
+    <section class="border-t border-border bg-muted/20">
+      <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          The journey continues
+        </p>
+
+        <h2 class="mt-6 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
+          Built with curiosity.
+          <span class="text-primary">Driven by imagination.</span>
+        </h2>
+
+        <p class="mt-6 max-w-xl leading-8 text-muted-foreground">
+          Follow Ravenwhisp Studio to stay up to date with our games,
+          development progress, and future engine demonstrations.
+        </p>
+
+        <a
+          href="../blog/"
+          class="mt-8 inline-flex items-center gap-3 rounded-md border border-border px-5 py-3 text-sm font-medium transition-colors hover:border-primary hover:text-primary"
+        >
+          Read our development updates
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
 </Layout>
