@@ -35,4 +35,56 @@ const pressKitItems = [
     alt: 'Studio photos',
   },
 ]
+---
 
+<Layout title={pageTitle} description={pageDescription}>
+  <section class="py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl space-y-4">
+        <h1 class="text-foreground text-4xl font-bold">Press Kit</h1>
+        <p class="text-muted-foreground text-lg">
+          Find Ravenwhisp Studio's press materials, artwork, screenshots, and studio images here.
+        </p>
+        <p class="text-muted-foreground">
+          For press inquiries, partnerships, or additional materials, please contact our studio.
+        </p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {pressKitItems.map((item) => (
+          <article class="bg-card border-border overflow-hidden rounded-xl border">
+            {item.href ? (
+              <a
+                href={withBasePath(item.href)}
+                class="group block"
+              >
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  class="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="flex items-center justify-between px-4 py-4">
+                  <h2 class="text-foreground font-semibold">{item.title}</h2>
+                  <ExternalLinkIcon className="text-muted-foreground size-4" />
+                </div>
+              </a>
+            ) : (
+              <div>
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  class="h-48 w-full object-cover"
+                  loading="lazy"
+                />
+                <div class="px-4 py-4">
+                  <h2 class="text-foreground font-semibold">{item.title}</h2>
+                </div>
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
