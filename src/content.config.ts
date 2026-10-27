@@ -1,6 +1,17 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
+const engine = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/engine' }),
+  schema: z.object({
+    slug: z.string(),
+    title: z.string(),
+    description: z.string(),
+    imageUrl: z.string(),
+    imageAlt: z.string()
+  })
+})
+
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
@@ -13,6 +24,7 @@ const blog = defineCollection({
     pubDate: z.string(),
     author: reference('people').optional(),
     authors: z.array(reference('people')).optional(),
+    engineTopics: z.array(reference('engine')).optional(),
     category: z.string().optional(),
     categories: z.array(z.string()).optional(),
     relatedPosts: z.array(z.string()).optional(),
@@ -34,4 +46,4 @@ const people = defineCollection({
   })
 })
 
-export const collections = { blog, people }
+export const collections = { blog, people, engine }

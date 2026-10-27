@@ -1,0 +1,33 @@
+---
+slug: 'navmesh'
+title: 'Navigation and NavMesh'
+description: 'Navigation meshes, custom traversal areas, and agent-specific filters for pathfinding.'
+imageUrl: '/images/blog-post/NavMeshArea1.png'
+imageAlt: "Navigation areas visualized in the engine's NavMesh debug view."
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+
+The navigation system uses a baked NavMesh as the basis for pathfinding. Custom areas and agent profiles allow different characters to follow different traversal rules over the same navigation data.
+
+## Areas and traversal filters
+
+Modifier volumes assign area types during baking. At runtime, polygon flags and query filters determine which areas an agent can use. The project’s navigation profiles connect those traversal rules to gameplay behavior.
+
+<BlogFigure
+  src='/images/blog-post/NavMeshArea2.png'
+  alt='A navigation modifier volume placed over level geometry.'
+  caption='A modifier volume assigns an area during NavMesh baking.'
+  fullWidth={false}
+/>
+
+## Debug visualization
+
+The NavMesh debug view displays the generated navigation regions, making it possible to inspect area assignments and verify traversal setup.
+
+<BlogFigure
+  src='/images/blog-post/NavMeshArea4.png'
+  alt='Different navigation agent profiles traversing area types.'
+  caption='The debug view helps compare the areas available to different agent profiles.'
+  fullWidth={false}
+/>

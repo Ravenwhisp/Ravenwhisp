@@ -1,0 +1,104 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getCollection, render } from 'astro:content'
+import { BlogGrid } from '@/components/blocks/blog-component/blog-component'
+import { withBasePath } from '@/lib/paths'
+import { sortPostsByPubDate } from '@/utils/blog'
+
+export async function getStaticPaths() {
+  const topics = await getCollection('engine')
+
+  return topics.map(topic => ({
+    params: { slug: topic.data.slug },
+    props: { topic }
+  }))
+}
+
+const { topic } = Astro.props
+const { Content } = await render(topic)
+const allPosts = await getCollection('blog')
+const allPeople = await getCollection('people')
+const peopleById = new Map(allPeople.map(person => [person.id, person]))
+const getReferenceId = (reference: { id: string } | string) =>
+  typeof reference === 'string' ? reference : reference.id
+
+const relatedPosts = allPosts.filter(post => {
+  if (post.data.visible === false) return false
+  return post.data.engineTopics?.some(engineTopic => getReferenceId(engineTopic) === topic.id) ?? false
+})
+
+const formattedPosts = relatedPosts.map((post, index) => {
+  const authorReferences = post.data.authors?.length
+    ? post.data.authors
+    : post.data.author
+      ? [post.data.author]
+      : []
+  const authors = authorReferences
+    .flatMap(reference => {
+      const person = peopleById.get(getReferenceId(reference))
+      if (!person) return []
+
+      return [{
+        name: person.data.name,
+        avatarUrl:
+          person.data.avatarFullUrl || person.data.avatarTransparentUrl || '/images/avatars/avatar-placeholder.jpg',
+        url: person.data.type === 'team' ? `/about-us/team/${person.id}` : undefined
+      }]
+    })
+
+  return {
+    id: post.data.id || index + 1,
+    slug: post.data.slug || post.id,
+    title: post.data.title,
+    description: post.data.description,
+    imageUrl: post.data.imageUrl || '/images/blog-post/post-1.webp',
+    imageAlt: post.data.imageAlt || post.data.title,
+    pubDate: post.data.pubDate,
+    authors: authors.length > 0 ? authors : [{ name: 'Unknown Author', avatarUrl: '/images/avatars/avatar-placeholder.jpg' }],
+    categories: post.data.categories?.length ? post.data.categories : post.data.category ? [post.data.category] : ['General'],
+    featured: post.data.featured || false
+  }
+})
+
+const sortedRelatedPosts = sortPostsByPubDate(formattedPosts)
+const pageTitle = `${topic.data.title} | Engine | Bound By Death`
+const pageDescription = topic.data.description
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-16 sm:py-24'>
+    <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <a href={withBasePath('/engine')} class='text-muted-foreground mb-4 block text-sm hover:underline'>
+        ← Back to Engine
+      </a>
+
+      <header class='space-y-5'>
+        <img
+          src={withBasePath(topic.data.imageUrl)}
+          alt={topic.data.imageAlt}
+          class='max-h-[28rem] w-full object-cover'
+        />
+        <div class='space-y-3'>
+          <h1 class='text-foreground text-4xl font-bold'>{topic.data.title}</h1>
+          <p class='text-muted-foreground text-lg'>{topic.data.description}</p>
+        </div>
+      </header>
+
+      <article class='prose dark:prose-invert max-w-none'>
+        <Content />
+      </article>
+    </div>
+
+    {sortedRelatedPosts.length > 0 && (
+      <div class='mx-auto mt-16 max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
+        <div class='space-y-2'>
+          <h2 class='text-foreground text-3xl font-semibold'>Related Blog Posts</h2>
+          <p class='text-muted-foreground'>Development posts about {topic.data.title}.</p>
+        </div>
+        <div class='py-8 sm:pb-16 lg:pb-24'>
+          <BlogGrid posts={sortedRelatedPosts} columnsMaxTwo />
+        </div>
+      </div>
+    )}
+  </section>
+</Layout>

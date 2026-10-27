@@ -1,0 +1,21 @@
+---
+slug: 'ui-system'
+title: 'UI System'
+description: 'The engine UI rendering pipeline, layout foundations, and interactive controls.'
+imageUrl: '/images/blog-post/ui-layout-1.png'
+imageAlt: 'User interface elements rendered by the engine.'
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+
+The UI system combines a rendering pipeline with a layout foundation for interface elements. Its development also covers interactive controls, including button states, slider fill behavior, and gamepad navigation.
+
+## Rendering and layout
+
+UI elements are submitted through a dedicated rendering pass. Canvas render modes and the Transform2D layout system provide the basis for arranging interface elements in the engine.
+
+<BlogFigure
+  src='/images/blog-post/ui-layout-1.png'
+  alt='An interface layout displayed in the engine.'
+  caption='An example of the engine UI system in use.'
+/>

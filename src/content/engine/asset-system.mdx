@@ -1,0 +1,32 @@
+---
+slug: 'asset-system'
+title: 'Asset System'
+description: 'How engine assets are discovered, imported, indexed, cached, and loaded.'
+imageUrl: '/images/blog-post/assets-header.png'
+imageAlt: 'Diagram illustrating the engine asset system.'
+---
+
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
+
+The asset system manages the path from source files to resources used by the engine. Its responsibilities include scanning files, importing supported formats, tracking metadata, and loading processed assets when they are needed.
+
+## Import and identity
+
+The import pipeline converts source assets into engine-friendly data and tracks asset identity and dependencies through metadata. Processed data is stored separately from source files, while the index connects asset identifiers to their metadata.
+
+<BlogFigure
+  src='/images/blog-post/asset-importer-architecture.png'
+  alt='Source asset and companion metadata used by the import pipeline.'
+  caption='Metadata records identity and information about imported assets.'
+/>
+
+## Loading and caching
+
+The runtime load path checks cached resources before loading processed data. This keeps asset discovery, import, and runtime access as distinct parts of the system.
+
+<BlogFigure
+  src='/images/blog-post/asset-flow-diagram.png'
+  alt='Diagram of the asset system flow.'
+  caption='The asset flow connects source files, importing, metadata, and runtime loading.'
+  fullWidth={false}
+/>
