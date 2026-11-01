@@ -20,7 +20,8 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
     <section id='development-blog' aria-labelledby='development-blog-title' className='py-8 sm:py-16 lg:py-24'>
       <div className='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
         <div className='space-y-3'>
-          <h2 id='development-blog-title' className='text-2xl font-semibold md:text-3xl lg:text-4xl'>
+          <p className='text-primary text-sm font-semibold tracking-widest uppercase'>Our Work</p>
+          <h2 id='development-blog-title' className='text-3xl font-semibold text-balance lg:text-4xl'>
             From the development blog
           </h2>
           <p className='text-muted-foreground max-w-2xl text-lg'>

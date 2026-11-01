@@ -7,8 +7,8 @@ const people = await getCollection('people')
 const team = people.filter(person => person.data.type === 'team' && person.data.bio?.trim())
 const sortedTeam = team.sort((a, b) => a.data.name.localeCompare(b.data.name))
 
-const pageTitle = 'About Us | Ravenwhisp Studio'
-const pageDescription = 'Learn more about Ravenwhisp Studio and our mission behind Bound By Death.'
+const pageTitle = 'About Us | Ravenwhisp Studios'
+const pageDescription = 'Learn more about Ravenwhisp Studios and our mission behind Bound By Death.'
 ---
 
 <Layout title={pageTitle} description={pageDescription}>

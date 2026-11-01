@@ -117,7 +117,7 @@ const Footer = () => {
           <span>
             {`©${new Date().getFullYear()}`}{' '}
             <a className='hover:underline' href={withBasePath('/#')}>
-              Ravenwhisp Studio -
+              Ravenwhisp Studios -
             </a>
           </span>
           <span> Made with ❤️ by indie developers</span>

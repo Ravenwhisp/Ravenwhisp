@@ -1,4 +1,4 @@
-# robots.txt for Ravenwhisp Studio
+# robots.txt for Ravenwhisp Studios
 User-agent: *
 Allow: /
 
