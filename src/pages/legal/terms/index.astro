@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Terms and Conditions | Ravenwhisp Studios'
 const pageDescription =
@@ -9,6 +10,9 @@ const pageDescription =
 <Layout title={pageTitle} description={pageDescription}>
   <section class='py-16 sm:py-24'>
     <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <div class='flex'>
+        <a href={withBasePath('/')} class='text-muted-foreground text-sm hover:underline'>← Back to Home</a>
+      </div>
       <h1 class='text-foreground text-4xl font-bold'>Terms and Conditions of Use</h1>
 
       <p class='text-muted-foreground text-lg leading-relaxed'>
