@@ -1,0 +1,44 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+const pageTitle = 'Terms and Conditions | Ravenwhisp Studios'
+const pageDescription =
+  'Terms and conditions for using the Ravenwhisp Studios academic project website.'
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-16 sm:py-24'>
+    <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <h1 class='text-foreground text-4xl font-bold'>Terms and Conditions of Use</h1>
+
+      <p class='text-muted-foreground text-lg leading-relaxed'>
+        Welcome to our website. By accessing and browsing this site, you agree to the following terms:
+      </p>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Nature of the site</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          This website is an academic project developed in the context of UPC School in Barcelona by Ravenwhisp
+          Studios. It has no commercial or business purposes. The information is provided &quot;as is&quot; solely for
+          educational purposes.
+        </p>
+      </div>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Intellectual property</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          All content, images, and texts are property of the project authors or have been used under educational or
+          royalty-free licenses.
+        </p>
+      </div>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Limitation of liability</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          As an academic project and testing environment, we are not responsible for potential technical issues or the
+          complete accuracy of the information displayed.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

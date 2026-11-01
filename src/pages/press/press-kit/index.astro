@@ -9,7 +9,7 @@ const pageDescription = 'Download official Ravenwhisp Studios logo assets for pr
 const logoPackAssets = getPressKitAssets('logo-pack')
 
 const getPreviewClass = (fileName: string) => {
-  if (fileName.includes('Light')) return 'bg-[#d9ddd8]'
+  if (fileName.includes('Light') || fileName.includes('Transparent_Black')) return 'bg-[#d9ddd8]'
   if (fileName.includes('Dark')) return 'bg-[#1d1f24]'
   return 'bg-black'
 }
@@ -35,7 +35,7 @@ const getPreviewClass = (fileName: string) => {
               <div class={`relative flex min-h-72 flex-col justify-center ${getPreviewClass(asset.fileName)}`}>
                 <img
                   src={withBasePath(asset.src)}
-                  alt={asset.title}
+                  alt={asset.alt}
                   class='h-full w-full object-contain'
                   loading='lazy'
                 />

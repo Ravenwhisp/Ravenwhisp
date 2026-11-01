@@ -16,23 +16,23 @@ const pressKitItems = [
   {
     title: 'Logo Pack',
     image: withBasePath(logoPackAssets[0]?.src || '/images/placeholder.png'),
-    href: '/press/press-kit/logo-pack',
-    alt: 'Ravenwhisp logo pack preview',
+    href: '/press/press-kit/',
+    alt: logoPackAssets[0]?.alt ?? '',
   },
   {
     title: 'Key Art',
     image: withBasePath(keyartAssets[0]?.src || '/images/placeholder.png'),
-    alt: 'Key art preview',
+    alt: keyartAssets[0]?.alt ?? '',
   },
   {
     title: 'Screenshots',
     image: withBasePath(screenshotsAssets[0]?.src || '/images/placeholder.png'),
-    alt: 'Game screenshots',
+    alt: screenshotsAssets[0]?.alt ?? '',
   },
   {
     title: 'Studio Shots',
     image: withBasePath(studioShotsAssets[0]?.src || '/images/placeholder.png'),
-    alt: 'Studio photos',
+    alt: studioShotsAssets[0]?.alt ?? '',
   },
 ]
 ---
