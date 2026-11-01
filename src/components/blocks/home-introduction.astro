@@ -1,0 +1,70 @@
+---
+import { buttonVariants } from '@/components/ui/button'
+import { withBasePath } from '@/lib/paths'
+---
+
+<section id='game-introduction' aria-labelledby='game-introduction-title' class='py-16 sm:py-24'>
+  <div class='mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8'>
+    <div class='space-y-3'>
+      <p class='text-primary text-sm font-semibold tracking-widest uppercase'>The Game</p>
+      <h2 id='game-introduction-title' class='text-3xl font-semibold text-balance lg:text-4xl'>
+        A unique Synergy, what is the game
+      </h2>
+    </div>
+    <div class='space-y-6'>
+      <p class='text-foreground/80 text-lg leading-relaxed'>
+        Explore a castle where the past still shapes the present. In this 3D top-down hack-and-slash, Lyriel's bow and
+        Death's scythe give each player a different role in combat. Work together to overcome enemies, solve puzzles,
+        and uncover the story behind their bond.
+      </p>
+      <a href={withBasePath('/bound-by-death')} class={buttonVariants({ variant: 'outline', size: 'lg' })}>
+        Explore the Game <span aria-hidden='true'>→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id='studio' aria-labelledby='studio-title' class='bg-card border-y py-16 sm:py-24'>
+  <div class='mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8'>
+    <div class='flex items-center justify-center px-4 sm:px-0'>
+      <img
+        src={withBasePath('/images/presskit/logo-pack/Ravenwhisp_Logo_Transparent_Black.png')}
+        alt='Black Ravenwhisp Studios logo'
+        width='5000'
+        height='1603'
+        class='h-auto w-full max-w-md dark:hidden'
+        loading='lazy'
+        decoding='async'
+      />
+      <img
+        src={withBasePath('/images/presskit/logo-pack/Ravenwhisp_Logo_Transparent.png')}
+        alt='White Ravenwhisp Studios logo'
+        width='5000'
+        height='1603'
+        class='hidden h-auto w-full max-w-md dark:block'
+        loading='lazy'
+        decoding='async'
+      />
+    </div>
+    <div class='space-y-5'>
+      <div class='space-y-3'>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>The Studio</p>
+        <h2 id='studio-title' class='text-3xl font-semibold text-balance lg:text-4xl'>About Ravenwhisp Studios</h2>
+      </div>
+      <p class='text-foreground/80 text-lg leading-relaxed'>
+        We are Ravenwhisp Studios, a student game development team formed through UPC School's Master's in Advanced
+        Programming for AAA Video Games.
+      </p>
+      <p class='text-foreground/80 text-lg leading-relaxed'>
+        Bound By Death brings together our work in gameplay programming, art, level design, visual effects, and audio,
+        supported by our own game engine. Meet the people behind the project and explore their contributions.
+      </p>
+      <div class='flex flex-wrap items-center gap-3 pt-1'>
+        <a href={withBasePath('/about-us')} class={buttonVariants({ size: 'lg' })}>Meet the Team</a>
+        <a href={withBasePath('/engine')} class={buttonVariants({ variant: 'outline', size: 'lg' })}>
+          Explore the Engine
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

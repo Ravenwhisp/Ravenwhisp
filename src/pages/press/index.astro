@@ -4,8 +4,8 @@ import { getPressKitAssets } from '@/utils/presskit'
 import { withBasePath } from '@/lib/paths'
 import { ExternalLinkIcon } from 'lucide-react'
 
-const pageTitle = 'Press | Ravenwhisp Studio'
-const pageDescription = 'Press kit and media resources for Ravenwhisp Studio.'
+const pageTitle = 'Press | Ravenwhisp Studios'
+const pageDescription = 'Press kit and media resources for Ravenwhisp Studios.'
 
 const logoPackAssets = getPressKitAssets('logo-pack')
 const keyartAssets = getPressKitAssets('key-art')
@@ -16,23 +16,23 @@ const pressKitItems = [
   {
     title: 'Logo Pack',
     image: withBasePath(logoPackAssets[0]?.src || '/images/placeholder.png'),
-    href: '/press/press-kit/logo-pack',
-    alt: 'Ravenwhisp logo pack preview',
+    href: '/press/press-kit/',
+    alt: logoPackAssets[0]?.alt ?? '',
   },
   {
     title: 'Key Art',
     image: withBasePath(keyartAssets[0]?.src || '/images/placeholder.png'),
-    alt: 'Key art preview',
+    alt: keyartAssets[0]?.alt ?? '',
   },
   {
     title: 'Screenshots',
     image: withBasePath(screenshotsAssets[0]?.src || '/images/placeholder.png'),
-    alt: 'Game screenshots',
+    alt: screenshotsAssets[0]?.alt ?? '',
   },
   {
     title: 'Studio Shots',
     image: withBasePath(studioShotsAssets[0]?.src || '/images/placeholder.png'),
-    alt: 'Studio photos',
+    alt: studioShotsAssets[0]?.alt ?? '',
   },
 ]
 ---
@@ -43,7 +43,7 @@ const pressKitItems = [
       <div class="max-w-4xl space-y-4">
         <h1 class="text-foreground text-4xl font-bold">Press Kit</h1>
         <p class="text-muted-foreground text-lg">
-          Find Ravenwhisp Studio's press materials, artwork, screenshots, and studio images here.
+          Find Ravenwhisp Studios' press materials, artwork, screenshots, and studio images here.
         </p>
         <p class="text-muted-foreground">
           For press inquiries, partnerships, or additional materials, please contact our studio.

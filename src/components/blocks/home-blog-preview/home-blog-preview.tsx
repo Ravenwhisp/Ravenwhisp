@@ -17,12 +17,16 @@ interface HomeBlogPreviewProps {
 
 const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPreviewProps) => {
   return (
-    <section className='py-8 sm:py-16 lg:py-24'>
+    <section id='development-blog' aria-labelledby='development-blog-title' className='py-8 sm:py-16 lg:py-24'>
       <div className='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
         <div className='space-y-3'>
-          <h2 className='text-2xl font-semibold md:text-3xl lg:text-4xl'>Read about our game development journey.</h2>
+          <p className='text-primary text-sm font-semibold tracking-widest uppercase'>Our Work</p>
+          <h2 id='development-blog-title' className='text-3xl font-semibold text-balance lg:text-4xl'>
+            From the development blog
+          </h2>
           <p className='text-muted-foreground max-w-2xl text-lg'>
-            Updates, ideas, devlogs, and work in progress notes from the team.
+            Follow the development of Bound By Death through articles from our team. Explore how we build the game and
+            its engine, from gameplay and visual effects to the tools and technical challenges behind them.
           </p>
         </div>
         <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
@@ -95,8 +99,8 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                         className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
                         asChild
                       >
-                        <a href={withBasePath(`/blog/${item.slug}`)}>
-                          <ArrowUpRightIcon />
+                        <a href={withBasePath(`/blog/${item.slug}`)} aria-label={`Read more: ${item.title}`}>
+                          <ArrowUpRightIcon aria-hidden='true' />
                         </a>
                       </Button>
                     </div>
@@ -112,27 +116,26 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
             <p className='text-muted-foreground max-w-2xl text-lg'>Latest Posts</p>
 
             <Button asChild variant='outline' className='rounded-xl'>
-              <a href={withBasePath('/blog')}>Read more posts</a>
+              <a href={withBasePath('/blog')}>Read the Dev Blog</a>
             </Button>
           </div>
 
           <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
             {latestNonFeaturedPosts.map(post => (
-              <a
-                href={withBasePath(`/blog/${post.slug}`)}
-                key={post.id}
-                className='group h-full cursor-pointer overflow-hidden shadow-none transition-all duration-300'
-              >
+              <article key={post.id} className='group h-full overflow-hidden shadow-none transition-all duration-300'>
                 <Card className='h-full shadow-none'>
                   <CardContent className='space-y-3.5'>
-                    <div className='mb-6 overflow-hidden rounded-lg sm:mb-10'>
+                    <a
+                      href={withBasePath(`/blog/${post.slug}`)}
+                      className='mb-6 block overflow-hidden rounded-lg sm:mb-10'
+                    >
                       <img
                         src={withBasePath(post.imageUrl)}
                         alt={post.imageAlt}
                         className='h-59.5 w-full object-cover transition-transform duration-300 group-hover:scale-105'
                         loading='lazy'
                       />
-                    </div>
+                    </a>
                     <div className='flex items-center justify-between gap-1.5'>
                       <div className='text-muted-foreground flex items-center gap-1.5'>
                         <CalendarDaysIcon className='size-5' />
@@ -146,7 +149,11 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                         ))}
                       </div>
                     </div>
-                    <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>{post.title}</h3>
+                    <h3 className='line-clamp-2 text-lg font-medium md:text-xl'>
+                      <a href={withBasePath(`/blog/${post.slug}`)} className='hover:underline'>
+                        {post.title}
+                      </a>
+                    </h3>
                     <p className='text-muted-foreground line-clamp-2'>{post.description}</p>
                     <div className='flex items-center justify-between'>
                       <div className='flex flex-wrap gap-4'>
@@ -175,14 +182,17 @@ const HomeBlogPreview = ({ featuredPosts, latestNonFeaturedPosts }: HomeBlogPrev
                       <Button
                         size='icon'
                         className='group-hover:bg-primary! bg-background text-foreground hover:bg-primary! hover:text-primary-foreground group-hover:text-primary-foreground border group-hover:border-transparent hover:border-transparent'
+                        asChild
                       >
-                        <ArrowRightIcon className='size-4 -rotate-45' />
-                        <span className='sr-only'>Read more: {post.title}</span>
+                        <a href={withBasePath(`/blog/${post.slug}`)}>
+                          <ArrowRightIcon aria-hidden='true' className='size-4 -rotate-45' />
+                          <span className='sr-only'>Read more: {post.title}</span>
+                        </a>
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
-              </a>
+              </article>
             ))}
           </div>
         </div>

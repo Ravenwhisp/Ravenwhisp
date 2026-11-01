@@ -3,7 +3,7 @@ import { withBasePath } from '@/lib/paths'
 // Site Configuration
 // Centralized configuration for site metadata, SEO, and branding
 
-export const SITE_TITLE = 'Bound By Death Game | Ravenwhisp Studio'
+export const SITE_TITLE = 'Bound By Death Game | Ravenwhisp Studios'
 export const SITE_DESCRIPTION = 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.'
 
 export const GITHUB_URL = 'https://github.com/Ravenwhisp/Ravenwhisp'
@@ -11,7 +11,7 @@ export const SITE_URL = 'https://ravenwhisp.github.io/Ravenwhisp/'
 
 export const SITE_METADATA = {
   title: {
-    default: 'Bound By Death Game | Ravenwhisp Studio'
+    default: 'Bound By Death Game | Ravenwhisp Studios'
   },
   description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
   themeColor: {
@@ -19,7 +19,7 @@ export const SITE_METADATA = {
     dark: '#e4e8ef'
   },
   keywords: [
-    'Ravenwhisp Studio',
+    'Ravenwhisp Studios',
     'Bound by Death',
     'indie game',
     'indie game studio',
@@ -36,9 +36,9 @@ export const SITE_METADATA = {
     'game showcase',
     'game trailer'
   ],
-  authors: [{ name: 'Ravenwhisp Studio', url: SITE_URL }],
-  creator: 'Ravenwhisp Studio',
-  publisher: 'Ravenwhisp Studio',
+  authors: [{ name: 'Ravenwhisp Studios', url: SITE_URL }],
+  creator: 'Ravenwhisp Studios',
+  publisher: 'Ravenwhisp Studios',
   robots: {
     index: true,
     follow: true
@@ -59,15 +59,15 @@ export const SITE_METADATA = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Bound By Death | Ravenwhisp Studio',
-    title: 'Bound By Death | Ravenwhisp Studio',
+    siteName: 'Bound By Death | Ravenwhisp Studios',
+    title: 'Bound By Death | Ravenwhisp Studios',
     description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
     images: [
       {
         url: withBasePath('/images/home/hero/home-hero-background.png'),
         width: 1920,
         height: 1080,
-        alt: 'Bound By Death | Ravenwhisp Studio',
+        alt: 'Bound By Death | Ravenwhisp Studios',
         type: 'image/png'
       }
     ]
@@ -76,7 +76,7 @@ export const SITE_METADATA = {
     card: 'summary_large_image',
     site: '@Raven_Whisp',
     creator: '@Raven_Whisp',
-    title: 'Bound By Death | Ravenwhisp Studio',
+    title: 'Bound By Death | Ravenwhisp Studios',
     description: 'Bound By Death is a dark fantasy co-op hack-and-slash for two players.',
     images: [withBasePath('/images/home/hero/home-hero-background.png')]
   },
@@ -101,7 +101,7 @@ export const SOCIAL_LINKS = {
 // Company information for structured data
 export const COMPANY_INFO = {
   name: 'Bound By Death',
-  legalName: 'Ravenwhisp Studio',
+  legalName: 'Ravenwhisp Studios',
   url: SITE_URL,
   logo: withBasePath('/images/site-logo.png'),
   foundingDate: '2026',

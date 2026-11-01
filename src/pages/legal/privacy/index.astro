@@ -1,0 +1,87 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+const pageTitle = 'Privacy Policy | Ravenwhisp Studios'
+const pageDescription =
+  'How the Ravenwhisp Studios website handles data, local storage, and third-party services.'
+const contactEmail = 'ravenwhispstudios@gmail.com'
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-16 sm:py-24'>
+    <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <h1 class='text-foreground text-4xl font-bold'>Privacy Policy</h1>
+
+      <p class='text-muted-foreground text-lg leading-relaxed'>
+        This website has been developed exclusively as a school and academic project in the context of UPC School in
+        Barcelona by Ravenwhisp Studios.
+      </p>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Data collection</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          This website is primarily informative. It does not require user registration and does not include contact
+          forms that submit data through the site. If you choose to email us, you send information through your email
+          provider; we receive whatever you include in that message.
+        </p>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          Like most websites on the public internet, visits may generate technical data (such as IP address, browser
+          type, and requested pages) in server or hosting logs. We do not operate our own analytics dashboard in this
+          project&apos;s code, but hosting and network providers may process such data according to their own policies.
+        </p>
+      </div>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Cookies and local storage</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          Based on the current site implementation, we do not set tracking cookies or third-party advertising cookies
+          to store visitor profiles on this website.
+        </p>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          The site stores your <strong class='text-foreground'>light or dark theme preference</strong> in your
+          browser&apos;s <strong class='text-foreground'>local storage</strong> under the key
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-base'>theme</code>. This is not a cookie; it
+          stays on your device and is used only to remember your display preference when you return. You can clear it
+          through your browser settings.
+        </p>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          Some blog articles may embed YouTube videos using YouTube&apos;s
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-base'>youtube-nocookie.com</code> embed
+          URLs. Those embeds are loaded only on pages that include them and may be subject to Google&apos;s policies
+          when you play a video.
+        </p>
+      </div>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Hosting and third-party services</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          The site is configured for static hosting on <strong class='text-foreground'>GitHub Pages</strong> (see the
+          project&apos;s Astro site and base path settings). GitHub may process technical information related to
+          delivering the site; refer to GitHub&apos;s documentation for details about their processing.
+        </p>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          Typography is loaded from <strong class='text-foreground'>Google Fonts</strong>
+          (<code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-base'>fonts.googleapis.com</code> and
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-base'>fonts.gstatic.com</code>). When you
+          load a page, your browser requests those font files from Google; Google may receive technical data such as
+          your IP address as part of that request. We do not control Google&apos;s processing.
+        </p>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          External links (for example social profiles or team portfolios) lead to other websites with their own privacy
+          practices.
+        </p>
+      </div>
+
+      <div class='space-y-4'>
+        <h2 class='text-foreground text-2xl font-semibold'>Contact</h2>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          For questions regarding this academic project, you can contact us at{' '}
+          <a href={`mailto:${contactEmail}`} class='text-primary font-medium hover:underline'>
+            {contactEmail}
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

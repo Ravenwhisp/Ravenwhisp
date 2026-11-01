@@ -1,0 +1,43 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+const pageTitle = 'Support | Ravenwhisp Studios'
+const pageDescription =
+  'Contact Ravenwhisp Studios for questions or suggestions about our student game project and website.'
+const contactEmail = 'ravenwhispstudios@gmail.com'
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-16 sm:py-24'>
+    <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <h1 class='text-foreground text-4xl font-bold'>Support and Contact Center</h1>
+
+      <p class='text-muted-foreground text-lg leading-relaxed'>
+        <strong class='text-foreground'>Ravenwhisp Studios</strong> is a student game development team working on
+        <strong class='text-foreground'> Bound By Death</strong> in the context of the Master's in Advanced Programming
+        for AAA Video Games at <strong class='text-foreground'>UPC School</strong> in Barcelona. This website presents
+        our project and studio work; it is not operated or supported by UPC School itself.
+      </p>
+
+      <p class='text-muted-foreground text-lg leading-relaxed'>
+        Do you have any questions or suggestions regarding our school project? We will be happy to help you.
+      </p>
+
+      <ul class='text-muted-foreground list-none space-y-4 text-lg leading-relaxed'>
+        <li>
+          <strong class='text-foreground'>Email:</strong>{' '}
+          <a
+            href={`mailto:${contactEmail}`}
+            class='text-primary font-medium hover:underline'
+          >
+            {contactEmail}
+          </a>
+        </li>
+        <li>
+          <strong class='text-foreground'>Contact methods:</strong> We currently only offer support through the email
+          address listed above.
+        </li>
+      </ul>
+    </div>
+  </section>
+</Layout>

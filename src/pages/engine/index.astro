@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Engine | Bound By Death'
-const pageDescription = "Explore the systems and tools behind Ravenwhisp Studio's custom game engine."
+const pageDescription = "Explore the systems and tools behind Ravenwhisp Studios' custom game engine."
 const topics = await getCollection('engine')
 const sortedTopics = topics.sort((a, b) => a.data.title.localeCompare(b.data.title))
 ---

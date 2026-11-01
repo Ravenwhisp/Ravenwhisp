@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content'
 import { sortPostsByPubDate } from '@/utils/blog'
 
 import HeroSection from '@/components/blocks/hero-section/hero-section'
+import HomeIntroduction from '@/components/blocks/home-introduction.astro'
 import HomeBlogPreview from '@/components/blocks/home-blog-preview/home-blog-preview'
 
 // Get all blog posts and convert to the format expected by components
@@ -67,11 +68,11 @@ const featuredPosts = sortedBlogPosts.filter(post => post.featured).slice(0, 2)
 const latestNonFeaturedPosts = sortedBlogPosts.filter(post => !post.featured).slice(0, 3)
 
 // Page-specific SEO configuration
-const pageTitle = 'Bound By Death | Ravenwhisp Studio'
+const pageTitle = 'Bound By Death | Ravenwhisp Studios'
 const pageDescription =
-  'Bound By Death is a dark fantasy co-op hack-and-slash from Ravenwhisp Studio. Explore the world, meet the team, and follow development updates.'
+  'Play as Lyriel and Death in a dark fantasy hack-and-slash with two-player local co-op. Meet Ravenwhisp Studios and follow the development of Bound By Death.'
 const pageKeywords =
-  'Bound By Death, Ravenwhisp Studio, indie game, dark fantasy, co-op game, hack-and-slash, game development, devlog'
+  'Bound By Death, Ravenwhisp Studios, indie game, dark fantasy, local co-op game, hack-and-slash, game development, devlog'
 
 // Structured data for better SEO
 const schema = {
@@ -82,11 +83,11 @@ const schema = {
   genre: ['Action', 'Hack and Slash', 'Co-op', 'Dark Fantasy'],
   author: {
     '@type': 'Organization',
-    name: 'Ravenwhisp Studio'
+    name: 'Ravenwhisp Studios'
   },
   publisher: {
     '@type': 'Organization',
-    name: 'Ravenwhisp Studio'
+    name: 'Ravenwhisp Studios'
   }
 }
 ---
@@ -94,5 +95,6 @@ const schema = {
 <Layout title={pageTitle} description={pageDescription} keywords={pageKeywords} schema={schema}>
   <!--  All Sections -->
   <HeroSection client:load />
+  <HomeIntroduction />
   <HomeBlogPreview featuredPosts={featuredPosts} latestNonFeaturedPosts={latestNonFeaturedPosts} client:load />
 </Layout>
