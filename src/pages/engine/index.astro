@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
 import { getCollection } from 'astro:content'
 import { ENGINE_MODULE_GROUPS } from '@/utils/engine-module-groups'
@@ -7,7 +8,7 @@ import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Engine | Bound By Death'
 const pageDescription =
-  "Explore Engine_Master_UPC — Ravenwhisp Studios' modular DirectX 12 engine and editor built for Bound By Death."
+  "Explore RavEngine — Ravenwhisp Studios' modular DirectX 12 engine and editor built for Bound By Death."
 const topics = await getCollection('engine')
 const sortedTopics = topics.sort((a, b) => a.data.sortOrder - b.data.sortOrder)
 
@@ -36,24 +37,13 @@ const groupedTopics = ENGINE_MODULE_GROUPS.map(group => ({
           <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>build.cfg</code> and renders directly to
           the swap chain.
         </p>
-        <figure class='mx-auto w-full max-w-3xl'>
-          <div class='border-border bg-card overflow-hidden rounded-2xl border shadow-sm'>
-            <div class='aspect-video'>
-              <video
-                class='h-full w-full object-contain'
-                controls
-                playsinline
-                preload='metadata'
-                aria-label='Engine trailer — Ravenwhisp Studios custom engine'
-              >
-                <source src={withBasePath('/videos/Engine_Trailer.mp4')} type='video/mp4' />
-              </video>
-            </div>
-          </div>
-          <figcaption class='text-muted-foreground mt-3 text-center text-sm leading-6'>
-            Engine trailer
-          </figcaption>
-        </figure>
+        <div class='mx-auto w-full max-w-3xl'>
+          <BlogYouTube
+            url='https://youtu.be/T8rWmCnGA00'
+            title='Engine trailer — Ravenwhisp Studios custom engine'
+            caption='Engine trailer'
+          />
+        </div>
       </div>
 
       {
