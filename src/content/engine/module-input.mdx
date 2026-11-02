@@ -1,0 +1,50 @@
+---
+slug: "module-input"
+title: "ModuleInput"
+description: "Manages keyboard, mouse, and gamepads. Exposes press, release, movement, analog sticks, and triggers."
+moduleGroup: core
+sortOrder: 3
+heroPlaceholder: "[ENGINE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Combines **Win32/DirectXTK-style** `Keyboard` and `Mouse` (messages forwarded in `Engine.cpp` `WndProc`) with **SDL3** initialized for gamepad hot-plug.
+
+Up to **2 local players** with `PlayerBinding` (device type + index). Gamepad API mirrors Xbox-style buttons, sticks (with dead-zone filtering), triggers, and D-pad with pressed/just-pressed/released semantics via frame snapshots.
+
+## How it works
+
+- OS messages update keyboard/mouse state.
+- `update()` processes SDL gamepad connect/disconnect and button/trigger snapshots.
+- Game code and `ModuleCamera` query input through accessor methods.
+
+## Internal architecture
+
+```
+ModuleInput
+├── Keyboard + KeyboardStateTracker
+├── Mouse + ButtonStateTracker (position, delta, wheel)
+├── SDL3 gamepads[MAX_GAMEPADS]
+├── PlayerBinding[MAX_LOCAL_PLAYERS]
+└── update() — poll SDL events, sync trackers
+```
+
+<EngineMediaPlaceholder label={"Screenshot: input debug showing stick values and trigger thresholds."} />
+
+<EngineMediaPlaceholder label={"Video: hot-plug gamepad and haptic feedback together."} compact />
+
+## Relationships
+
+- `ModuleCamera` (editor navigation), `ModuleEventSystem` (mouse for UI), `ModuleGameView`, `ModuleHaptics` (reads mixed output context), `WindowSceneEditor` (picking, gizmo).
+
+## Technical features
+
+- Keyboard/mouse via DirectXTK trackers; gamepads via SDL3 with hot-plug.
+- Dead-zone filtering on analog sticks; frame-accurate pressed/released/just-pressed queries.
+
+## Implementation notes
+
+- **Verified:** keyboard, mouse, SDL gamepad surface area in header/implementations.

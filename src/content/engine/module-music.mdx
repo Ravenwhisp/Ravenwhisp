@@ -1,0 +1,52 @@
+---
+slug: "module-music"
+title: "ModuleMusic"
+description: "Integrates music playback and sound bank management via Wwise."
+moduleGroup: simulation
+sortOrder: 19
+heroPlaceholder: "[MODULE DEMONSTRATION VIDEO]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+**`WwiseManager`** wraps Audiokinetic API: register game objects/listeners, post events, RTPC/switch/state, 3D transforms.
+
+Loads **`WwiseBank`** assets (Init bank + scene banks). **`stopAllSounds`** on simulation stop (called from `ModuleRender::preRender` stop path).
+
+**`MusicPlaybackTracker`** and grouped event cooldowns reduce SFX spam. Scene tracks loaded bank refs; crossfade via Wwise states.
+
+## How it works
+
+- Banks load from assets (Init + scene banks); scene holds loaded bank references.
+- Events post through `WwiseManager` with RTPC/switch/state and 3D positioning.
+- Simulation stop triggers `stopAllSounds` via the render module stop path.
+
+## Internal architecture
+
+```
+ModuleMusic
+├── WwiseManager
+├── Bank list + Init bank
+├── Event posting + grouping/cooldown
+└── Scene bank refs (Scene::m_loadedBankRefs)
+```
+
+<EngineMediaPlaceholder label={"Wwise profiler screenshot paired with in-engine event trigger."} />
+
+<EngineMediaPlaceholder label={"Diagram: GameObject → SoundSource → Wwise emitter ID."} compact />
+
+## Relationships
+
+- Audio components on entities; `ModuleGameView` stop; release `build.cfg` bank load.
+
+## Technical features
+
+- Audiokinetic Wwise integration (events, RTPC, switches, states, 3D).
+- Bank asset loading and scene bank reference tracking.
+- Grouped event cooldowns and music playback tracking.
+
+## Implementation notes
+
+- **Verified:** Wwise integration surface in module API.

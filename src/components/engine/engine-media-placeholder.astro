@@ -1,0 +1,24 @@
+---
+interface Props {
+  label: string
+  class?: string
+  compact?: boolean
+}
+
+const { label, class: className = '', compact = false } = Astro.props
+---
+
+<div
+  class:list={[
+    'border-border bg-muted/30 text-center',
+    compact ? 'rounded-lg border border-dashed px-4 py-6' : 'rounded-xl border border-dashed px-6 py-10 sm:py-14',
+    className
+  ]}
+  role='img'
+  aria-label={label}
+>
+  <p class='text-primary text-xs font-semibold tracking-widest uppercase'>Media placeholder</p>
+  <p class:list={['text-foreground/85 mt-2 font-medium text-balance', compact ? 'text-sm' : 'text-base sm:text-lg']}>
+    {label}
+  </p>
+</div>

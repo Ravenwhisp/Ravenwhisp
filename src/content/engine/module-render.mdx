@@ -1,0 +1,64 @@
+---
+slug: "module-render"
+title: "ModuleRender"
+description: "Executes the full graphics pipeline and coordinates render passes. It is one of the engine's main modules."
+moduleGroup: presentation
+sortOrder: 15
+heroPlaceholder: "[RENDERING PIPELINE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Orchestrates **two rendering contexts**: editor/play viewports (off-screen `RenderSurface`s) in **`preRender`** when not `GAME_RELEASE`, and the **swap chain** in **`render`** (clear, **`ImGuiPass::apply`**, present).
+
+Core scene drawing is **`renderScene()`**—a explicit multi-stage GPU sequence, then a loop over **`m_renderPasses`.**
+
+Pulls scene lists from `ModuleScene`, UI commands from `ModuleUI`/`ModuleParticleSystem`, settings from `Scene`, camera from `ModuleCamera` (editor) or default `CameraComponent` (game).
+
+## How it works
+
+- `init()` builds passes, one-shot `StaticTexturesPass`, registers debug drawables.
+- `preRender`: ring buffer free, viewport resize, render visible viewports, execute CL, ImGui start.
+- `render`: swap chain + ImGui end.
+- `renderScene` builds `RenderContext` and runs skinning compute, GBuffer geometry, shadows, SSAO, deferred lighting, forward/transparent stack, post-process, debug, and UI passes.
+
+## Internal architecture
+
+```
+ModuleRender
+├── Viewport registry (Editor/Play RenderSurfaces)
+├── renderScene()
+│   ├── Pre-pass compute & shadows pipeline
+│   ├── GBuffer + light/shadow/SSAO
+│   └── m_renderPasses (forward/deferred composite stack)
+├── ImGuiPass (startFrame / apply)
+├── VideoPass (optional takeover)
+├── RingBuffer
+└── GPU/CPU pass profiler
+```
+
+<EngineMediaPlaceholder label={"Pipeline diagram (strong candidate for website hero graphic)."} />
+
+<EngineMediaPlaceholder label={"Side-by-side: GBuffer channel debug views."} compact />
+
+## Relationships
+
+- Depends on `ModuleD3D12` for command list execution and swap chain.
+- Reads filtered scene render lists and settings from `ModuleScene`.
+- Consumes UI/particle command buffers; coordinates with `ModuleCamera` and `ModuleVideo` takeover.
+
+## Technical features
+
+- Verified `renderScene` order: skinning compute → occlusion/transparency masks → forward prepass → **GeometryPass** (5-target GBuffer) → shadow/light culling → shadow maps → volumetric fog → SSAO → deferred shading → sky/fog/particles/trails/lines/transparent/outline → post-process → debug → UI images/fonts.
+- Editor/play viewports rendered off-screen; ImGui composites to swap chain.
+- Ring-buffer constant uploads with fence commit; optional GPU timestamp profiling in game view.
+- **Partial / unused:** `PlayerPass` compiled but **never instantiated** in the pass list.
+
+## Implementation notes
+
+- **Verified:** GBuffer deferred + forward prepass + transparent forward + post stack.
+- **Verified:** skinning compute, SSAO, tiled light culling, cascaded shadows, volumetric fog, particles/trails/lines.
+- **Partial / unused:** `PlayerPass` compiled and included in `ModuleRender.cpp` but **never instantiated** in the pass list—likely superseded by deferred/forward split.
+- **Verified:** ImGui and debug draw integrated.

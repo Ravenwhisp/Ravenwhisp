@@ -1,0 +1,48 @@
+---
+slug: "module-font"
+title: "ModuleFont"
+description: "Loads and prepares fonts for rendering in the engine and UI."
+moduleGroup: presentation
+sortOrder: 21
+heroPlaceholder: "[ENGINE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Registry of **`SpriteFont`** objects (DirectXTK) with names and GPU descriptor handles.
+
+**`loadFonts`** called from font pass init path: editor enumerates **`AssetType::FONT`** from asset index; release reads **`build.cfg`** font lines.
+
+Exposes glyph lookup, texture SRV, line spacing for **`FontPass`.**
+
+## How it works
+
+- Font pass init invokes `loadFonts` with device, upload batch, and descriptor heap.
+- Editor loads all font assets from the asset index; release loads fonts listed in `build.cfg`.
+- `FontPass` queries glyphs, SRVs, and line spacing at draw time.
+
+## Internal architecture
+
+```
+ModuleFont
+├── SpriteFont vector + name table
+├── loadFonts(device, upload batch, heap)
+└── Glyph/texture queries for FontPass
+```
+
+<EngineMediaPlaceholder label={"Texture atlas screenshot + rendered glyph grid."} />
+
+## Relationships
+
+- `ModuleAssets` font assets; `ModuleUI` UIText; `ModuleRender::FontPass`.
+
+## Technical features
+
+- DirectXTK `SpriteFont` registry with GPU descriptor handles.
+- Editor asset-index-driven loading vs release `build.cfg` font lines.
+
+## Implementation notes
+
+- **Verified:** asset-driven font loading paths for editor and release.

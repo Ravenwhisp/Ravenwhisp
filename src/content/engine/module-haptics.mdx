@@ -1,0 +1,52 @@
+---
+slug: "module-haptics"
+title: "ModuleHaptics"
+description: "Controls vibration and haptic feedback effects."
+moduleGroup: simulation
+sortOrder: 7
+heroPlaceholder: "[MODULE DEMONSTRATION VIDEO]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Library of **`HapticEffectDefinition`** entries with envelopes (attack/release/curves). Up to **4 players**, **16 concurrent instances**.
+
+**`update`** advances instances; **`getMixedOutput`** combines to motor amplitudes (including trigger motors). Uses **SDL3** for sending rumble to connected controllers.
+
+**`playEffect` / `playAtScale` / `submitAnonymous`**. Initialized early in module list (before scripting)—comment mentions LOG setup ordering.
+
+## How it works
+
+- Effect definitions are scheduled into per-player instance slots.
+- Each frame `update()` advances envelope evaluation.
+- `getMixedOutput()` mixes active instances into motor amplitudes sent via SDL rumble.
+
+## Internal architecture
+
+```
+ModuleHaptics
+├── HapticEffectLibrary
+├── Per-player instance slots
+├── Envelope evaluation
+└── SDL rumble output mixing
+```
+
+<EngineMediaPlaceholder label={"Chart: envelope curves (Linear, Exponential, Punch)."} />
+
+<EngineMediaPlaceholder label={"Video: synchronized haptic + on-screen hit effect."} compact />
+
+## Relationships
+
+- Gameplay/scripts trigger effects; reads time via `ModuleTime`; coexists with `ModuleInput` gamepads.
+
+## Technical features
+
+- Envelope-based haptic effects (attack/release/curves).
+- Up to 4 players and 16 concurrent instances.
+- SDL3 rumble output including trigger motors.
+
+## Implementation notes
+
+- **Verified:** effect scheduling and mixing API; SDL used for device output in implementation file.

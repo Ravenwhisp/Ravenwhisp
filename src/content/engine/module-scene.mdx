@@ -1,0 +1,67 @@
+---
+slug: "module-scene"
+title: "ModuleScene"
+description: "Manages the active scene, GameObjects, components, gameplay updates, and spatial queries."
+moduleGroup: content
+sortOrder: 18
+heroPlaceholder: "[SCENE HIERARCHY SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Owns `std::shared_ptr<Scene> m_scene`, **`m_activeScene` atomic** for thread-safe load boundaries, **dual quadtrees** (static: `ENVIRONMENT`, `NAVMESH`; dynamic: `DEFAULT`, `PLAYER`, `ENEMY`, `PROJECTILE`, `BREAKABLE`, `PICKUP`), and **typed component caches**.
+
+**Scene asset** stores GameObjects, lighting/skybox/SSAO/post/fog settings, navmesh `AssetId`, default camera, trigger system, serialized JSON, pending add/destroy queues with **GPU fence-deferred destruction**.
+
+**Gameplay (`Scene::update`):** only if `PLAYING`—remove marked objects, `update`/`lateUpdate`, `TriggerSystem::update`, flush pending spawns.
+
+**Picking:** `collectAABBHits` then triangle tests in local space. **Async** load/change via worker futures. **Snapshots** for play mode (`ModuleGameView`).
+
+## How it works
+
+- Default empty scene at construct; quadtrees init with debug colors.
+- Each frame: resolve pending loads → scene update → rebuild quadtrees if culling toggled → refit trees.
+- On transform/layer changes, `moveGameObjectInQuadtrees` (scene thread only).
+- Render modules pull filtered mesh/light lists from caches.
+
+## Internal architecture
+
+```
+ModuleScene
+├── Scene (Asset)
+│   ├── GameObjects + hierarchy
+│   ├── Settings blocks (lighting, skybox, SSAO, fog, post)
+│   ├── TriggerSystem
+│   └── Pending add/remove/destroy queues
+├── Component caches (rebuild on dirty)
+├── Static Quadtree / Dynamic Quadtree
+├── Picking (AABB → triangle)
+├── Load/save + async futures
+└── Profiling (detailed update + script spikes)
+```
+
+<EngineMediaPlaceholder label={"Debug draw: quadtree nodes (static red/green, dynamic cyan/yellow via `IDebugDrawable`)."} />
+
+<EngineMediaPlaceholder label={"Video: Play mode snapshot restore on Stop."} compact />
+
+## Relationships
+
+- Central data hub for render, UI, navigation, audio, scripting.
+- `ModuleRender` reads scene settings every frame.
+- `ModuleNavigation` builds/loads navmesh per scene.
+- `ModuleEditor` selection/picking.
+
+## Technical features
+
+- Component caches and dual quadtrees tied to frustum culling setting.
+- PLAYING-only gameplay update; editor still loads/saves and maintains spatial structures.
+- Frustum queries in parameterless `Quadtree::query()` use **`Scene::getDefaultCamera()`** frustum.
+- Picking does **not** use quadtree culling (full renderer list).
+
+## Implementation notes
+
+- **Verified:** caches, dual quadtrees, PLAYING-only gameplay update, picking, snapshots, async load scaffolding.
+- **Nuance verified:** frustum queries use default scene camera in parameterless quadtree query.
+- **Verified:** picking does **not** use quadtree culling (full renderer list).

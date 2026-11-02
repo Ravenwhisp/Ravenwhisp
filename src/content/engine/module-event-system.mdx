@@ -1,0 +1,52 @@
+---
+slug: "module-event-system"
+title: "ModuleEventSystem"
+description: "Provides event-based communication between different parts of the engine."
+moduleGroup: editor
+sortOrder: 11
+heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Unity-style **UI event routing**: each frame **`process`** raycasts UI hierarchy from scene roots, resolves deepest **`UIButton`/`UISlider`/etc.** under pointer, sends **PointerEnter/Exit/Down/Drag/Up/Click** with **`PointerEventData`.**
+
+Separate **controller navigation** path via **`UINavigation`**. Tracks per-button (3 mouse buttons) press targets.
+
+Not a general publish/subscribe bus for gameplay—**verified focus is UI interaction**.
+
+## How it works
+
+- Each frame `process` walks UI hierarchies from scene roots under the pointer.
+- Deepest interactive component receives pointer events with `PointerEventData`.
+- Controller navigation uses a separate `UINavigation` branch.
+- Per mouse button press targets are tracked across enter/exit/down/drag/up/click.
+
+## Internal architecture
+
+```
+ModuleEventSystem
+├── Mouse raycast (hierarchy walk)
+├── Controller navigation branch
+├── ButtonState[3]
+└── Hover tracking
+```
+
+<EngineMediaPlaceholder label={"Diagram: pointer event bubble from leaf button to root canvas."} />
+
+## Relationships
+
+- Depends on `ModuleScene` UI objects, `ModuleInput`, viewport mouse mapping.
+
+## Technical features
+
+- Pointer event pipeline for UI components (buttons, sliders, etc.).
+- Controller navigation branch for gamepad-driven UI.
+- Scope is UI interaction routing, not a general gameplay event bus.
+
+## Implementation notes
+
+- **Verified:** UI pointer pipeline.
+- **Not verified as general gameplay event bus**—name is broader than implementation scope.

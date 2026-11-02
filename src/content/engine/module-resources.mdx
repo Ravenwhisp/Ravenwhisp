@@ -1,0 +1,60 @@
+---
+slug: "module-resources"
+title: "ModuleResources"
+description: "Loads, creates, and maintains graphic resources such as buffers, textures, materials, and shaders."
+moduleGroup: graphics
+sortOrder: 6
+heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+**Low-level GPU factory** (comment in header: owns no asset objects—callers hold `shared_ptr`s). Creates upload/default buffers, vertex/index buffers, **ring buffers**, depth/HDR/GBuffer/SSAO/outline textures, shadow maps, volume textures, **RenderSurface**, and builds **`BasicMesh` / `BasicMaterial`** from `MeshAsset`/`MaterialAsset`.
+
+Uses **DirectXTex** for texture upload paths and a **WeakCache** keyed by content hash.
+
+**Deferred GPU release:** `deferResourceRelease` queues `ID3D12Resource` until fence passes; `preRender` → `collectCompletedResources`.
+
+Shader compilation is generally **offline** (`.cso` blobs read in passes); this module focuses on resource objects, not HLSL compilation at runtime.
+
+## How it works
+
+- Passes/modules request resources at init or resize.
+- Uploads may use upload buffers + command list transitions (`uploadTextureAndTransition`).
+- Freed GPU resources wait for safe fence before destruction.
+
+## Internal architecture
+
+```
+ModuleResources
+├── Device + CommandQueue refs
+├── create* family (buffers, textures, surfaces)
+├── Asset-driven createMesh/createMaterial/createTexture
+├── RingBuffer factory
+├── WeakCache<MD5Hash, ICacheable>
+└── DeferredResource queue (fence-gated free)
+```
+
+<EngineMediaPlaceholder label={"Before/after: resize viewport → GBuffer recreation."} />
+
+<EngineMediaPlaceholder label={"Diagram: upload → default heap → shader-visible SRV."} compact />
+
+## Relationships
+
+- `ModuleRender::initSceneRenderTargets` creates GBuffer/SSAO attachments.
+- `ModuleAssets::load` triggers mesh/material/texture creation.
+- Environment BRDF texture stored here for IBL.
+
+## Technical features
+
+- Broad create API for buffers, textures, surfaces, and asset-driven meshes/materials.
+- Ring buffer factory and WeakCache keyed by content hash.
+- Fence-gated deferred GPU resource release.
+- Shaders: precompiled `.cso` in passes (e.g. `GeometryPass`), not compiled in this module.
+
+## Implementation notes
+
+- **Verified:** broad create API and deferred release.
+- Shaders: **verified** as precompiled `.cso` in passes (e.g. `GeometryPass`), not compiled in this module.

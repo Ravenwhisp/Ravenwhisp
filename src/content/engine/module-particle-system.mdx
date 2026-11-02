@@ -1,0 +1,53 @@
+---
+slug: "module-particle-system"
+title: "ModuleParticleSystem"
+description: "Updates and renders particle systems via emitters, behavior modules, and dedicated buffers."
+moduleGroup: simulation
+sortOrder: 13
+heroPlaceholder: "[MODULE DEMONSTRATION VIDEO]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Maintains a **fixed pool** of particle slots shared by **`ParticleSystemComponent`** instances.
+
+**`update`** advances emitter modules (engine-specific `ParticleSystem` types).
+
+**`preRender`** builds **`ParticleEmitterCommand`** list for **`ParticlesPass`**. Supports editor time scaling separate from game delta.
+
+## How it works
+
+- `update()` simulates emitters against the shared particle pool.
+- `preRender()` builds render commands for active emitters.
+- `ParticlesPass` renders billboards during `ModuleRender::renderScene`.
+
+## Internal architecture
+
+```
+ModuleParticleSystem
+├── Particle pool + slot bookkeeping
+├── EmitterInstance ownership
+├── update() — simulation
+├── buildParticleCommands() — render prep
+└── ParticlesPass (GPU billboards)
+```
+
+<EngineMediaPlaceholder label={"Video: burst emitter + trail combination."} />
+
+<EngineMediaPlaceholder label={"Debug: pool slot exhaustion behavior."} compact />
+
+## Relationships
+
+- `ModuleScene` cache of `ParticleSystemComponent`; reset on play start (`ModuleGameView`).
+
+## Technical features
+
+- Fixed particle pool with slot bookkeeping.
+- Emitter modules and dedicated `ParticlesPass` GPU path.
+- Editor time scaling separate from game delta.
+
+## Implementation notes
+
+- **Verified:** pool, commands, dedicated render pass.

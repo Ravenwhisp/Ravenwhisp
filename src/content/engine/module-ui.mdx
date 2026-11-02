@@ -1,0 +1,49 @@
+---
+slug: "module-ui"
+title: "ModuleUI"
+description: "Controls UI elements and their on-screen representation, including images, text, buttons, sliders, and navigation."
+moduleGroup: presentation
+sortOrder: 12
+heroPlaceholder: "[ENGINE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Does not draw directly in `update`; **`preRender`** clears command buffers; **`buildCommandsForViewport`** walks active scene `GameObject`s with **Canvas / UIImage / UIText / UIButton / UISlider / UISheet** components, computing screen rects (layout utils), producing **`UITextCommand`** and **`UIImageCommand`** vectors consumed by **`FontPass`** and **`UIImagePass`** during `renderScene`.
+
+World-space canvas modes transform with canvas world matrix; screen-space overlays use orthographic projection in passes.
+
+## How it works
+
+- `preRender` clears UI command buffers.
+- `buildCommandsForViewport` traverses scene UI components and builds draw commands.
+- `ModuleRender::renderScene` consumes commands in `FontPass` and `UIImagePass`.
+
+## Internal architecture
+
+```
+ModuleUI
+├── Scene graph UI traversal
+├── UITextCommand / UIImageCommand buffers
+└── Integration with FontPass / UIImagePass
+```
+
+<EngineMediaPlaceholder label={"Screen recording: button hover + slider drag with event routing."} />
+
+<EngineMediaPlaceholder label={"Split: UI command list vs final composite."} compact />
+
+## Relationships
+
+- `ModuleEventSystem` handles interaction; `ModuleFont` supplies glyphs; `ModuleRender` triggers build before GPU UI draws.
+
+## Technical features
+
+- Command-buffer UI architecture (text + image commands).
+- Supports world-space and screen-space canvas modes.
+- Layout utilities produce screen rects for UI components.
+
+## Implementation notes
+
+- **Verified:** command-buffer UI architecture tied to render passes.

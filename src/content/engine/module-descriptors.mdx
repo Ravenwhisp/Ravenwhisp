@@ -1,0 +1,49 @@
+---
+slug: "module-descriptors"
+title: "ModuleDescriptors"
+description: "Manages descriptor heaps and allocation of descriptors for textures, buffers, and GPU resources."
+moduleGroup: graphics
+sortOrder: 5
+heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Central heap manager for **RTV, DSV, CBV/SRV/UAV, Sampler** heaps plus a **StagingDescriptorHeap** for dynamic SRV tables (e.g. render surface descriptor tables).
+
+Creates default samplers (`LINEAR/PPOINT` × `WRAP/CLAMP`). **`defferDescriptorRelease`** queues frees until GPU completes; **`preRender`** reclaims descriptors/blocks when `lastCompletedFrame` allows.
+
+## How it works
+
+- Constructed with device; heaps sized (e.g. 4096×8 SRV slots).
+- Textures/surfaces allocate RTV/DSV/SRV via heap APIs.
+- Each frame, completed frames trigger descriptor recycling.
+
+## Internal architecture
+
+```
+ModuleDescriptors
+├── DescriptorHeap map (by D3D12 heap type)
+├── StagingDescriptorHeap
+├── Default samplers
+└── Deferred release lists (handles + heap blocks)
+```
+
+<EngineMediaPlaceholder label={"Infographic: heap types and what references them (GBuffer SRV table vs material SRVs)."} />
+
+## Relationships
+
+- Used by every pass and `Texture`/`RenderSurface`.
+- ImGui pass receives GPU/CPU heap base handles from CBV/SRV heap slot 0.
+
+## Technical features
+
+- Multi-heap management (RTV, DSV, CBV/SRV/UAV, samplers).
+- Staging heap for dynamic SRV tables.
+- Deferred descriptor release tied to completed GPU frames.
+
+## Implementation notes
+
+- **Verified:** multi-heap management and deferred free pattern.

@@ -1,41 +1,90 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
 import { getCollection } from 'astro:content'
+import { ENGINE_MODULE_GROUPS } from '@/utils/engine-module-groups'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Engine | Bound By Death'
-const pageDescription = "Explore the systems and tools behind Ravenwhisp Studios' custom game engine."
+const pageDescription =
+  "Explore Engine_Master_UPC — Ravenwhisp Studios' modular DirectX 12 engine and editor built for Bound By Death."
 const topics = await getCollection('engine')
-const sortedTopics = topics.sort((a, b) => a.data.title.localeCompare(b.data.title))
+const sortedTopics = topics.sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+
+const groupedTopics = ENGINE_MODULE_GROUPS.map(group => ({
+  ...group,
+  modules: sortedTopics.filter(topic => topic.data.moduleGroup === group.id)
+})).filter(group => group.modules.length > 0)
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-5xl space-y-8 px-4 sm:px-6 lg:px-8'>
-      <h1 class='text-foreground text-4xl font-bold'>Engine</h1>
-      <p class='text-muted-foreground text-lg'>
-        We have created our own CUSTOM ENGINE using DirectX12, Visual Studio and libraries. Here are all the parts that made our engine:
-      </p>
-
-      <div class='grid gap-5 sm:grid-cols-2'>
-        {sortedTopics.map(topic => (
-          <a
-            href={withBasePath(`/engine/${topic.data.slug}`)}
-            class='group border-border bg-card flex min-h-36 items-center gap-5 border p-4 transition-colors hover:bg-muted/30 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none'
-          >
-            <img
-              src={withBasePath(topic.data.imageUrl)}
-              alt={topic.data.imageAlt}
-              class='size-24 shrink-0 object-cover sm:size-28'
-              loading='lazy'
-            />
-            <span class='min-w-0 space-y-2'>
-              <span class='text-foreground block text-lg font-semibold group-hover:underline'>{topic.data.title}</span>
-              <span class='text-muted-foreground block text-sm'>{topic.data.description}</span>
-            </span>
-          </a>
-        ))}
+    <div class='mx-auto max-w-5xl space-y-12 px-4 sm:px-6 lg:px-8'>
+      <div class='space-y-6'>
+        <h1 class='text-foreground text-4xl font-bold'>Engine</h1>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          <strong class='text-foreground'>Engine_Master_UPC</strong> is a Windows-native game engine and editor built
+          around a modular <strong class='text-foreground'>Application</strong> class. Each subsystem inherits from
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>Module</code> and shares a common
+          lifecycle—initialization, update, pre-render, render, post-render, and shutdown—driven from a classic Win32
+          main loop where each <strong class='text-foreground'>WM_PAINT</strong> advances one full frame.
+        </p>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
+          Rendering targets <strong class='text-foreground'>DirectX 12</strong>. Gameplay and editor data live in a
+          component-based scene graph. The default editor build composes ImGui docked windows and scene viewports; the
+          <strong class='text-foreground'>GAME_RELEASE</strong> build loads scenes and audio from
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>build.cfg</code> and renders directly to
+          the swap chain.
+        </p>
+        <EngineMediaPlaceholder
+          label='[ENGINE ARCHITECTURE DIAGRAM] — module init order vs shutdown order'
+          class='max-w-3xl'
+        />
       </div>
+
+      {
+        groupedTopics.map(group => (
+          <div class='space-y-5'>
+            <div class='space-y-2'>
+              <h2 class='text-foreground text-2xl font-semibold'>{group.title}</h2>
+              <p class='text-muted-foreground text-sm'>
+                Explore the modules that make up this layer of the engine.
+              </p>
+            </div>
+            <div class='grid gap-5 sm:grid-cols-2'>
+              {group.modules.map(topic => (
+                <a
+                  href={withBasePath(`/engine/${topic.data.slug}`)}
+                  class='group border-border bg-card hover:bg-muted/30 flex min-h-36 flex-col gap-4 border p-4 transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:flex-row sm:items-stretch'
+                >
+                  <div class='sm:w-28 sm:shrink-0'>
+                    {topic.data.imageUrl ? (
+                      <img
+                        src={withBasePath(topic.data.imageUrl)}
+                        alt={topic.data.imageAlt ?? topic.data.title}
+                        class='size-full max-h-28 min-h-24 object-cover sm:max-h-none sm:min-h-28'
+                        loading='lazy'
+                      />
+                    ) : (
+                      <EngineMediaPlaceholder
+                        label={topic.data.heroPlaceholder ?? `[${topic.data.title}]`}
+                        compact
+                        class='h-full min-h-24 sm:min-h-28'
+                      />
+                    )}
+                  </div>
+                  <span class='min-w-0 space-y-2'>
+                    <span class='text-foreground block text-lg font-semibold group-hover:underline'>
+                      {topic.data.title}
+                    </span>
+                    <span class='text-muted-foreground block text-sm leading-relaxed'>{topic.data.description}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      }
     </div>
   </section>
 </Layout>

@@ -1,0 +1,60 @@
+---
+slug: "module-assets"
+title: "ModuleAssets"
+description: "Manages the editor asset system: scanning, import, identification, references, metadata, and dependencies."
+moduleGroup: content
+sortOrder: 9
+heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+**Editor build:** `AssetScanner` refresh on init, `ContentRegistry`, import via `ImporterRegistry`, `AssetIndex`, in-memory `AssetCache`, `PrefabManager`, deferred `AssetFileDialog` flush on `postRender`.
+
+**Release build:** scanner/registry/dialog stripped; prefab manager remains; loading via library/index paths used by runtime.
+
+Provides templated `load<T>(AssetId&)`, save, import, dependency registration, `fixAllAssetReferences` (re-bake pipeline), and UID→`AssetId` resolution.
+
+Importers include **glTF** (`ImporterGltf` + tinygltf) producing prefabs, meshes, materials, animations, skins.
+
+## How it works
+
+- `init()` builds subsystems; editor rescans disk.
+- Import: pick importer by extension → typed asset → library binary + index entry.
+- `load` pulls from cache or deserializes container, resolves `AssetId` references.
+
+## Internal architecture
+
+```
+ModuleAssets
+├── AssetIndex (UID, hash, type, paths)
+├── ImporterRegistry → ImporterGltf, etc.
+├── AssetCache
+├── PrefabManager
+├── [Editor] AssetScanner, ContentRegistry, AssetFileDialog
+└── persistAsset / registerSubAsset / dependency graph
+```
+
+<EngineMediaPlaceholder label={"Screen recording: drag-drop import in asset browser."} />
+
+<EngineMediaPlaceholder label={"Diagram: source file → importer → library hash → runtime `AssetId`."} compact />
+
+## Relationships
+
+- `ModuleScene` load/save uses scene assets.
+- `ModuleResources` materializes GPU data from assets.
+- `ModuleFont` loads `FontAsset`. `ModuleMusic` loads sound banks.
+
+## Technical features
+
+- Editor scan/import/cache pipeline with `AssetIndex` and importers.
+- glTF import via tinygltf.
+- Dependency graph and reference fixup (`fixAllAssetReferences`).
+- Large editor-only paths gated with `#ifndef GAME_RELEASE`.
+
+## Implementation notes
+
+- **Verified:** editor scan/import/cache pipeline.
+- **Verified:** large parts `#ifndef GAME_RELEASE` gated.

@@ -1,0 +1,52 @@
+---
+slug: "module-camera"
+title: "ModuleCamera"
+description: "Manages editor and game cameras, transforms, projections, and camera switching."
+moduleGroup: presentation
+sortOrder: 17
+heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+**Editor navigation camera** (not the scene's `CameraComponent` by default): orbit, pan, zoom, fly modes driven by `ModuleEditor` navigation mode and `ModuleInput`.
+
+Maintains view/projection matrices, FOV, clip planes, mouse state per mode. **`createRayFromViewport`** supports scene editor picking rays.
+
+When a scene **`CameraComponent`** is chosen as "current perspective" (`Application::setCurrentCameraPerspective`), **`ModuleRender::getEditorCamera`** uses that component instead of free camera. Game rendering uses **`Scene::getDefaultCamera()`.**
+
+## How it works
+
+- Editor navigation modes update view/projection from `ModuleInput` and editor tool state.
+- Scene editor picking uses `createRayFromViewport` from the active editor camera.
+- Optional scene `CameraComponent` can replace the free camera for editor viewport rendering.
+
+## Internal architecture
+
+```
+ModuleCamera
+├── View/projection state
+├── Navigation modes (pan/orbit/zoom/fly)
+├── ModuleEditor + ModuleInput coupling
+└── Ray from viewport helper
+```
+
+<EngineMediaPlaceholder label={"GIF: orbit vs fly mode in scene view."} />
+
+<EngineMediaPlaceholder label={"Diagram: editor camera vs scene camera component."} compact />
+
+## Relationships
+
+- `WindowSceneEditor`, `ModuleRender` editor path, picking in scene editor.
+
+## Technical features
+
+- Orbit, pan, zoom, and fly editor navigation modes.
+- Viewport picking ray helper.
+- Distinct editor camera vs scene `CameraComponent` / default game camera.
+
+## Implementation notes
+
+- **Verified:** editor camera + ray helper; game uses scene camera separately.

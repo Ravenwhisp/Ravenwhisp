@@ -1,14 +1,19 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
+const engineModuleGroup = z.enum(['core', 'graphics', 'content', 'simulation', 'presentation', 'editor'])
+
 const engine = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/engine' }),
   schema: z.object({
     slug: z.string(),
     title: z.string(),
     description: z.string(),
-    imageUrl: z.string(),
-    imageAlt: z.string()
+    moduleGroup: engineModuleGroup,
+    sortOrder: z.number(),
+    imageUrl: z.string().optional(),
+    imageAlt: z.string().optional(),
+    heroPlaceholder: z.string().optional()
   })
 })
 

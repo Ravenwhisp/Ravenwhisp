@@ -1,0 +1,54 @@
+---
+slug: "module-editor"
+title: "ModuleEditor"
+description: "Contains editor-specific functionality: windows, inspector, hierarchy, asset explorer, settings, and debugging tools."
+moduleGroup: editor
+sortOrder: 10
+heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Manages **`EditorWindow`** instances via factory map (`registerWindowType`), persisted layout **`editor_windows.ini`**, ImGui styling, **selection** (GameObject / Asset), **scene tools** (move/rotate/scale/transform/nav), **gizmo local/world**, **prefab edit sessions**, simulation mode enum mirrored by play toolbar.
+
+Registered windows include **Hierarchy, Inspector, Scene Editor, Game view, Logger, Hardware, Settings, File dialog, Scene config, Animation state machine, Music/Video debug, Data container manager**, etc.
+
+**`render`** draws editor UI through ImGui (with `ModuleEditor::render` override).
+
+## How it works
+
+- Window types register with the editor factory; instances are created and laid out via ImGui docking.
+- Selection, scene tools, and gizmo modes drive manipulation of `ModuleScene` content.
+- Play toolbar coordinates simulation mode with `ModuleGameView` and `ENGINE_STATE`.
+- `render()` draws the full editor UI each frame in non-release builds.
+
+## Internal architecture
+
+```
+ModuleEditor
+├── EditorWindow registry + instances
+├── Selection + scene tools + gizmo flags
+├── PrefabEditSession
+├── WindowSceneEditor / WindowGame references
+└── ImGui integration (style, dock layout)
+```
+
+<EngineMediaPlaceholder label={"High-quality editor screenshot annotated with window names."} />
+
+<EngineMediaPlaceholder label={"Video: prefab edit mode header + apply/revert flow."} compact />
+
+## Relationships
+
+- Drives `ModuleCamera`, talks to `ModuleScene`/`ModuleAssets`, registers debug drawables, coordinates with `ModuleGameView` for play/stop.
+
+## Technical features
+
+- ImGui docked editor with persisted `editor_windows.ini` layout.
+- Broad window ecosystem (hierarchy, inspector, scene/game views, debug tools).
+- Prefab edit sessions and scene manipulation tools.
+
+## Implementation notes
+
+- **Verified:** broad editor window ecosystem; **`#ifndef GAME_RELEASE`** for much asset UI elsewhere, editor module itself always present in non-release builds.

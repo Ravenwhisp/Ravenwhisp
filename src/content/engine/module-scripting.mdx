@@ -1,0 +1,52 @@
+---
+slug: "module-scripting"
+title: "ModuleScripting"
+description: "Compiles, loads, and reloads game script DLLs. Also instantiates and maintains scripting components associated with the scene."
+moduleGroup: content
+sortOrder: 8
+heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+**`ScriptLibraryLoader`** loads game script DLL at init. **`ScriptBuildSystem`** + async **`std::future`** rebuilds DLL from `script_build_settings.ini` when requested.
+
+Hot reload saves **`ScriptComponent`** serialized fields (RapidJSON), reloads DLL, restores instances.
+
+**`instantiateSceneScripts` / `destroySceneScripts`** called around play mode (`ModuleGameView`). State machine behaviours also destroyed on reload. Cannot rebuild while **`PLAYING`.**
+
+## How it works
+
+- Init loads the game scripts DLL via `ScriptLibraryLoader`.
+- Editor-triggered rebuild runs MSBuild asynchronously through `ScriptBuildSystem`.
+- On reload, serialized script fields are preserved, DLL is swapped, and scene script instances are restored.
+- Play mode start/stop hooks instantiate or destroy scene scripts via `ModuleGameView`.
+
+## Internal architecture
+
+```
+ModuleScripting
+├── ScriptLibraryLoader (DLL)
+├── ScriptBuildSystem + MSBuild worker
+├── Reload state machine (Idle/Building/…)
+└── Scene script lifecycle hooks
+```
+
+<EngineMediaPlaceholder label={"Screen recording: edit C++ script → build → reload without restarting editor."} />
+
+## Relationships
+
+- `ScriptComponent` on `GameObject`s; `ModuleGameView` play/stop; editor windows for script settings.
+
+## Technical features
+
+- Game script DLL load at init.
+- Async MSBuild rebuild from `script_build_settings.ini`.
+- RapidJSON-backed hot reload of `ScriptComponent` fields.
+- Play-mode instantiation rules tied to `ENGINE_STATE`.
+
+## Implementation notes
+
+- **Verified:** DLL load, async build/reload, play-mode instantiation rules.

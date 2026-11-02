@@ -1,0 +1,50 @@
+---
+slug: "module-game-view"
+title: "ModuleGameView"
+description: "Manages the window or viewport where game execution is displayed."
+moduleGroup: editor
+sortOrder: 16
+heroPlaceholder: "[ENGINE SCREENSHOT]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Coordinates **play mode simulation**: **`startGameSimulation`** captures **`SceneSnapshot`**, resets particles, **`instantiateSceneScripts`**, **`initializeRuntimeSceneSystems`.
+
+**`stopGameSimulation`** clears runtime systems, **`Scene::onGameStop`**, restores snapshot.
+
+**`WindowGame`** registers a **`ModuleRender` PLAY viewport** surface. Stop can be requested asynchronously via **`ModuleRender::requestStopSimulation`.**
+
+## How it works
+
+- Play toolbar triggers `startGameSimulation`, setting `ENGINE_STATE` to `PLAYING` and cloning the scene via `SceneSnapshot`.
+- Runtime systems (scripts, particles, etc.) initialize for the play session.
+- Stop restores the snapshot and tears down runtime systems; F3 toggles `WindowGameDebug` in play mode.
+
+## Internal architecture
+
+```
+ModuleGameView
+├── SceneSnapshot clone
+├── start/stop simulation hooks
+├── ModuleScene / Scripting / ParticleSystem refs
+└── Debug window flag (F3)
+```
+
+<EngineMediaPlaceholder label={"Side-by-side editor scene vs play viewport after snapshot restore."} />
+
+## Relationships
+
+- `PlayToolbar` → `startGameSimulation`; `ModuleRender` stop hook; `ENGINE_STATE::PLAYING`.
+
+## Technical features
+
+- Snapshot-based play/stop isolation for editor vs running game.
+- Dedicated play viewport surface registered with `ModuleRender`.
+- Async stop path through `ModuleRender::requestStopSimulation` (GPU flush, music stop).
+
+## Implementation notes
+
+- **Verified:** snapshot-based play/stop isolation.

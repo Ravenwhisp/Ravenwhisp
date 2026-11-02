@@ -1,0 +1,63 @@
+---
+slug: "application-engine"
+title: "Application / Engine"
+description: "Coordinates the engine lifecycle and module execution order. Manages application initialization, update, rendering, and shutdown."
+moduleGroup: core
+sortOrder: 1
+heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+`Application` is the composition root. It owns every `Module*`, exposes typed accessors, tracks **engine state** (`EDITOR` / `PLAYING` / `PAUSED`), pause/quit flags, optional **per-module update profiling**, **frame phase timings**, and the **active editor camera perspective** (`CameraComponent*`) used when rendering the scene editor viewport.
+
+Module registration order in the constructor defines default update/render ordering. Initialization is strictly forward; cleanup strictly reverse—matching typical dependency teardown (render before D3D12 device destruction). Release builds bootstrap from `build.cfg` (scene UID/hash, optional bank, named scene library IDs) without the asset scanner.
+
+## How it works
+
+- Win32 creates HWND; `Application` is constructed with the ordered module list.
+- `init()` initializes all modules forward; `cleanUp()` tears them down in reverse order.
+- Each `WM_PAINT` calls `update()` unless the window is minimized-paused.
+- When not paused, each frame runs **update → preRender → render → postRender** on every module, with optional per-module CPU timing.
+- In `PLAYING`, `ModuleTime::deltaTime()` uses scaled real delta; otherwise delta stays 0.
+- GPU work is bracketed by `ModuleD3D12::preRender` / `postRender` around module render hooks.
+
+## Internal architecture
+
+```
+Application
+├── Module registry (vector<Module*>)
+├── ENGINE_STATE + pause/quit
+├── FrameCpuTimings / ModuleUpdateTiming
+├── Settings
+├── ThreadPool
+└── Lifecycle drivers
+    ├── init() — forward init
+    ├── update() — update → preRender → render → postRender
+    └── cleanUp() — reverse cleanUp
+```
+
+<EngineMediaPlaceholder label={"Diagram: module init order vs shutdown order (forward/reverse arrows)."} />
+
+<EngineMediaPlaceholder label={"Screenshot: editor with debug overlay showing module update timings (`Settings` debug flags)."} compact />
+
+## Relationships
+
+- Central hub: all modules are owned here; the global `app` pointer is used throughout the codebase.
+- `ModuleScene` receives profiling hooks from `Application::update`.
+- `ModuleRender` requests simulation stop via `requestStopSimulation` → `ModuleGameView::stopGameSimulation`.
+
+## Technical features
+
+- Win32 host (`Engine.cpp` → `wWinMain`); **each `WM_PAINT` triggers one full engine frame** via `Application::update()`.
+- Orthogonal state: `ENGINE_STATE` (`EDITOR` / `PLAYING` / `PAUSED`) and `Application::m_paused` when minimized.
+- Four-phase frame with recorded CPU timings: update, preRender, render, postRender.
+- `GAME_RELEASE` bootstrap from `build.cfg` without editor asset scanning.
+
+## Implementation notes
+
+- **Verified:** module order, four-phase frame, reverse cleanup, `GAME_RELEASE` bootstrap.
+- **Partial:** `ModuleTime::waitForNextFrame()` not used; 120 FPS target in constructor does not limit frames in practice.
+- **Verified:** default state `EDITOR`; release forces `PLAYING`.

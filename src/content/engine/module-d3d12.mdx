@@ -1,0 +1,57 @@
+---
+slug: "module-d3d12"
+title: "ModuleD3D12"
+description: "Initializes DirectX 12 and manages the graphics device, command queues, command lists, swap chain, and GPU synchronization."
+moduleGroup: graphics
+sortOrder: 4
+heroPlaceholder: "[RENDERING PIPELINE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Constructor calls `loadPipeline()` to create DXGI factory, adapter, **ID3D12Device4**, and **CommandQueue**. `init()` builds **SwapChain** and **GraphicsMemory** (DirectXTK allocator). Owns the primary **ID3D12GraphicsCommandList4** recycled through the queue.
+
+Synchronization: **double-buffered frames** (`FRAMES_IN_FLIGHT = 2` in `Globals.h`), per-slot fence values, `waitForFenceValue` before reusing command allocators. `executeCurrentCommandList()` submits work and returns new fence value.
+
+## How it works
+
+- Device/queue created at construction.
+- Each frame `preRender` waits for current back-buffer slot fence.
+- Render modules record into shared command list.
+- `postRender` executes, presents, commits transient allocations.
+
+## Internal architecture
+
+```
+ModuleD3D12
+├── DXGI adapter/factory
+├── ID3D12Device4
+├── CommandQueue + command list
+├── SwapChain → RenderSurface (COMPOSITE + DEPTH)
+├── GraphicsMemory
+└── Fence / frame index tracking
+    ├── preRender — wait, reset list
+    └── postRender — execute, Present, Commit
+```
+
+<EngineMediaPlaceholder label={"Diagram: CPU frame timeline vs GPU fences (two frames in flight)."} />
+
+<EngineMediaPlaceholder label={"PIX capture screenshot of command list markers (pass names use `BEGIN_EVENT`)."} compact />
+
+## Relationships
+
+- Feeds device to `ModuleDescriptors`, `ModuleResources`, and all render passes.
+- `ModuleRender` executes mid-frame command lists.
+- Window resize triggers `SwapChain::resize`.
+
+## Technical features
+
+- DirectX 12 device, command queue, and shared graphics command list.
+- Swap chain with composite + depth surfaces; DirectXTK `GraphicsMemory`.
+- Fence-based frame-in-flight synchronization (`FRAMES_IN_FLIGHT = 2`).
+
+## Implementation notes
+
+- **Verified:** device, swap chain, fence model, list execution helpers.

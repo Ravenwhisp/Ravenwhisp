@@ -1,0 +1,52 @@
+---
+slug: "module-video"
+title: "ModuleVideo"
+description: "Manages video loading and playback and its integration with rendering and the interface."
+moduleGroup: simulation
+sortOrder: 20
+heroPlaceholder: "[MODULE DEMONSTRATION VIDEO]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+**`VideoPlayback`** instances; **`IXAudio2`** mastering voice for audio. **`playVideo`** from path or memory.
+
+**`update`** advances playback. When active, **`ModuleRender::renderPlayScene`** / **`renderGameToBackbuffer`** delegate to **`VideoPass`** + UI overlay instead of full 3D scene.
+
+Editor debug window **`WindowVideoDebug`** loads `VideoAsset` via `ModuleAssets`.
+
+## How it works
+
+- `update()` advances active `VideoPlayback` instances.
+- When video is playing, render path short-circuits to `VideoPass` with optional UI overlay.
+- Audio routed through XAudio2 mastering voice.
+
+## Internal architecture
+
+```
+ModuleVideo
+├── VideoPlayback instances
+├── XAudio2 master voice
+├── VideoPass (full-screen video)
+└── UI overlay path (ModuleUI commands)
+```
+
+<EngineMediaPlaceholder label={"Full-screen cinematic takeover demo."} />
+
+<EngineMediaPlaceholder label={"Split: video frame + subtitle UI overlay."} compact />
+
+## Relationships
+
+- `VideoComponent`; render short-circuit; optional UI on top.
+
+## Technical features
+
+- Video playback from path or memory with XAudio2 audio.
+- Full-screen `VideoPass` takeover of play/game backbuffer rendering.
+- Editor `WindowVideoDebug` for `VideoAsset` inspection.
+
+## Implementation notes
+
+- **Verified:** playback API and render takeover path.

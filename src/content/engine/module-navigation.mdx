@@ -1,0 +1,53 @@
+---
+slug: "module-navigation"
+title: "ModuleNavigation"
+description: "Manages navmesh-based navigation using Recast/Detour. Allows building navigation meshes, querying paths, and applying dynamic blockers."
+moduleGroup: simulation
+sortOrder: 14
+heroPlaceholder: "[RENDERING PIPELINE DIAGRAM]"
+---
+
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+
+## Overview
+
+Wraps **`dtNavMesh`** / **`dtNavMeshQuery`** loaded from scene navmesh assets or built at runtime via **`NavMeshBuilder`** (Recast pipeline in `ModuleNavigation.cpp`).
+
+Collects **`NavModifierVolume`** / runtime blockers from scene components. Exposes **`findStraightPath`**, runtime blocker tests, debug polyline generation, **`IDebugDrawable`** integration in **`DebugDrawPass`.**
+
+Agent profiles map to Detour include flags.
+
+## How it works
+
+- Navmesh data is loaded from scene assets or built per scene via Recast.
+- Runtime modifier/blocker volumes update queryable navigation.
+- Path queries use Detour; debug geometry draws through `DebugDrawPass`.
+
+## Internal architecture
+
+```
+ModuleNavigation
+├── NavMeshBuilder (Recast)
+├── Detour nav mesh + query
+├── Runtime modifier/blocker volumes
+├── Path debug + draw lines
+└── Editor build/load per scene name
+```
+
+<EngineMediaPlaceholder label={"Overlay video: navmesh wireframe + computed path."} />
+
+<EngineMediaPlaceholder label={"Before/after: dynamic blocker carving effect (if used in project scenes)."} compact />
+
+## Relationships
+
+- `Scene::m_navMesh` asset reference; `ModuleScene` static quadtree includes `NAVMESH` layer; editor nav tool in `ModuleEditor`.
+
+## Technical features
+
+- Recast build pipeline and Detour runtime queries.
+- Dynamic blockers and modifier volumes.
+- Debug draw integration for navmesh and paths.
+
+## Implementation notes
+
+- **Verified:** Detour integration, build API, debug draw registration.

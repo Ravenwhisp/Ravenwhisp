@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
 import { getCollection, render } from 'astro:content'
 import { BlogGrid } from '@/components/blocks/blog-component/blog-component'
 import { withBasePath } from '@/lib/paths'
@@ -63,24 +64,31 @@ const formattedPosts = relatedPosts.map((post, index) => {
 const sortedRelatedPosts = sortPostsByPubDate(formattedPosts)
 const pageTitle = `${topic.data.title} | Engine | Bound By Death`
 const pageDescription = topic.data.description
+const heroLabel = topic.data.heroPlaceholder ?? `[ENGINE SCREENSHOT] ${topic.data.title}`
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <section class='py-16 sm:py-24'>
     <div class='mx-auto max-w-4xl space-y-8 px-4 sm:px-6 lg:px-8'>
-      <a href={withBasePath('/engine')} class='text-muted-foreground mb-4 block text-sm hover:underline'>
-        ← Back to Engine
-      </a>
+      <div class='flex'>
+        <a href={withBasePath('/engine')} class='text-muted-foreground text-sm hover:underline'>← Back to Engine</a>
+      </div>
 
       <header class='space-y-5'>
-        <img
-          src={withBasePath(topic.data.imageUrl)}
-          alt={topic.data.imageAlt}
-          class='max-h-[28rem] w-full object-cover'
-        />
+        {
+          topic.data.imageUrl ? (
+            <img
+              src={withBasePath(topic.data.imageUrl)}
+              alt={topic.data.imageAlt ?? topic.data.title}
+              class='max-h-[28rem] w-full rounded-xl object-cover'
+            />
+          ) : (
+            <EngineMediaPlaceholder label={heroLabel} class='max-h-[28rem] w-full' />
+          )
+        }
         <div class='space-y-3'>
           <h1 class='text-foreground text-4xl font-bold'>{topic.data.title}</h1>
-          <p class='text-muted-foreground text-lg'>{topic.data.description}</p>
+          <p class='text-muted-foreground text-lg leading-relaxed'>{topic.data.description}</p>
         </div>
       </header>
 
