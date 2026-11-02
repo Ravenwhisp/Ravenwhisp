@@ -4,10 +4,11 @@ title: "ModuleScripting"
 description: "Compiles, loads, and reloads game script DLLs. Also instantiates and maintains scripting components associated with the scene."
 moduleGroup: content
 sortOrder: 8
-heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+imageUrl: "/images/engine-images/scripting.png"
+imageAlt: "Scripting workflow from C++ source through MSBuild to DLL reload and gameplay"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,14 @@ import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder
 Hot reload saves **`ScriptComponent`** serialized fields (RapidJSON), reloads DLL, restores instances.
 
 **`instantiateSceneScripts` / `destroySceneScripts`** called around play mode (`ModuleGameView`). State machine behaviours also destroyed on reload. Cannot rebuild while **`PLAYING`.**
+
+<BlogFigure
+  src="/images/engine-images/scripting.png"
+  alt="Scripting workflow from C++ source through MSBuild to DLL reload and gameplay"
+  fullWidth={true}
+  fit="contain"
+  caption="Scripting workflow from C++ source through MSBuild to DLL reload and gameplay"
+/>
 
 ## How it works
 
@@ -33,8 +42,6 @@ ModuleScripting
 ├── Reload state machine (Idle/Building/…)
 └── Scene script lifecycle hooks
 ```
-
-<EngineMediaPlaceholder label={"Screen recording: edit C++ script → build → reload without restarting editor."} />
 
 ## Relationships
 

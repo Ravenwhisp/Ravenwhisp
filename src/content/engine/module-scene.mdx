@@ -4,10 +4,9 @@ title: "ModuleScene"
 description: "Manages the active scene, GameObjects, components, gameplay updates, and spatial queries."
 moduleGroup: content
 sortOrder: 18
-heroPlaceholder: "[SCENE HIERARCHY SCREENSHOT]"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -18,6 +17,21 @@ Owns `std::shared_ptr<Scene> m_scene`, **`m_activeScene` atomic** for thread-saf
 **Gameplay (`Scene::update`):** only if `PLAYING`—remove marked objects, `update`/`lateUpdate`, `TriggerSystem::update`, flush pending spawns.
 
 **Picking:** `collectAABBHits` then triangle tests in local space. **Async** load/change via worker futures. **Snapshots** for play mode (`ModuleGameView`).
+
+<BlogFigure
+  src="/images/engine-images/frustum-culling-before.png"
+  alt="Scene editor with frustum culling disabled"
+  fullWidth={true}
+  fit="contain"
+  caption="Scene view before frustum culling is enabled"
+/>
+<BlogFigure
+  src="/images/engine-images/frustum-culling-after.png"
+  alt="Scene editor with frustum culling enabled"
+  fullWidth={true}
+  fit="contain"
+  caption="After frustum culling removes objects outside the camera frustum"
+/>
 
 ## How it works
 
@@ -41,10 +55,6 @@ ModuleScene
 ├── Load/save + async futures
 └── Profiling (detailed update + script spikes)
 ```
-
-<EngineMediaPlaceholder label={"Debug draw: quadtree nodes (static red/green, dynamic cyan/yellow via `IDebugDrawable`)."} />
-
-<EngineMediaPlaceholder label={"Video: Play mode snapshot restore on Stop."} compact />
 
 ## Relationships
 

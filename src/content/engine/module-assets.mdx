@@ -4,10 +4,11 @@ title: "ModuleAssets"
 description: "Manages the editor asset system: scanning, import, identification, references, metadata, and dependencies."
 moduleGroup: content
 sortOrder: 9
-heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+imageUrl: "/images/engine-images/prefabs.png"
+imageAlt: "Editor asset browser showing prefab assets in the project library"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -18,6 +19,14 @@ import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder
 Provides templated `load<T>(AssetId&)`, save, import, dependency registration, `fixAllAssetReferences` (re-bake pipeline), and UID→`AssetId` resolution.
 
 Importers include **glTF** (`ImporterGltf` + tinygltf) producing prefabs, meshes, materials, animations, skins.
+
+<BlogFigure
+  src="/images/engine-images/prefabs.png"
+  alt="Editor asset browser showing prefab assets in the project library"
+  fullWidth={true}
+  fit="contain"
+  caption="Editor asset browser showing prefab assets in the project library"
+/>
 
 ## How it works
 
@@ -36,10 +45,6 @@ ModuleAssets
 ├── [Editor] AssetScanner, ContentRegistry, AssetFileDialog
 └── persistAsset / registerSubAsset / dependency graph
 ```
-
-<EngineMediaPlaceholder label={"Screen recording: drag-drop import in asset browser."} />
-
-<EngineMediaPlaceholder label={"Diagram: source file → importer → library hash → runtime `AssetId`."} compact />
 
 ## Relationships
 

@@ -4,16 +4,25 @@ title: "Application / Engine"
 description: "Coordinates the engine lifecycle and module execution order. Manages application initialization, update, rendering, and shutdown."
 moduleGroup: core
 sortOrder: 1
-heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
+imageUrl: "/images/engine-images/modular-architecture.png"
+imageAlt: "Modular RavEngine architecture diagram showing Application and major module groups"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
 `Application` is the composition root. It owns every `Module*`, exposes typed accessors, tracks **engine state** (`EDITOR` / `PLAYING` / `PAUSED`), pause/quit flags, optional **per-module update profiling**, **frame phase timings**, and the **active editor camera perspective** (`CameraComponent*`) used when rendering the scene editor viewport.
 
 Module registration order in the constructor defines default update/render ordering. Initialization is strictly forward; cleanup strictly reverse—matching typical dependency teardown (render before D3D12 device destruction). Release builds bootstrap from `build.cfg` (scene UID/hash, optional bank, named scene library IDs) without the asset scanner.
+
+<BlogFigure
+  src="/images/engine-images/modular-architecture.png"
+  alt="Modular RavEngine architecture diagram showing Application and major module groups"
+  fullWidth={true}
+  fit="contain"
+  caption="Modular RavEngine architecture diagram showing Application and major module groups"
+/>
 
 ## How it works
 
@@ -38,10 +47,6 @@ Application
     ├── update() — update → preRender → render → postRender
     └── cleanUp() — reverse cleanUp
 ```
-
-<EngineMediaPlaceholder label={"Diagram: module init order vs shutdown order (forward/reverse arrows)."} />
-
-<EngineMediaPlaceholder label={"Screenshot: editor with debug overlay showing module update timings (`Settings` debug flags)."} compact />
 
 ## Relationships
 

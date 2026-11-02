@@ -1,9 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
 import { getCollection } from 'astro:content'
 import { ENGINE_MODULE_GROUPS } from '@/utils/engine-module-groups'
+import { getEngineModuleImages } from '@/utils/engine-module-images'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Engine | Bound By Death'
@@ -56,27 +56,27 @@ const groupedTopics = ENGINE_MODULE_GROUPS.map(group => ({
               </p>
             </div>
             <div class='grid gap-5 sm:grid-cols-2'>
-              {group.modules.map(topic => (
+              {group.modules.map(topic => {
+                const moduleImages = getEngineModuleImages(topic.data.slug)
+                const cardImageUrl =
+                  topic.data.imageUrl?.trim() || moduleImages?.imageUrl?.trim() || undefined
+                const cardImageAlt = topic.data.imageAlt ?? moduleImages?.imageAlt ?? topic.data.title
+
+                return (
                 <a
                   href={withBasePath(`/engine/${topic.data.slug}`)}
                   class='group border-border bg-card hover:bg-muted/30 flex min-h-36 flex-col gap-4 border p-4 transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:flex-row sm:items-stretch'
                 >
+                  {cardImageUrl && (
                   <div class='sm:w-28 sm:shrink-0'>
-                    {topic.data.imageUrl ? (
                       <img
-                        src={withBasePath(topic.data.imageUrl)}
-                        alt={topic.data.imageAlt ?? topic.data.title}
+                        src={withBasePath(cardImageUrl)}
+                        alt={cardImageAlt}
                         class='size-full max-h-28 min-h-24 object-cover sm:max-h-none sm:min-h-28'
                         loading='lazy'
                       />
-                    ) : (
-                      <EngineMediaPlaceholder
-                        label={topic.data.heroPlaceholder ?? `[${topic.data.title}]`}
-                        compact
-                        class='h-full min-h-24 sm:min-h-28'
-                      />
-                    )}
                   </div>
+                  )}
                   <span class='min-w-0 space-y-2'>
                     <span class='text-foreground block text-lg font-semibold group-hover:underline'>
                       {topic.data.title}
@@ -84,7 +84,8 @@ const groupedTopics = ENGINE_MODULE_GROUPS.map(group => ({
                     <span class='text-muted-foreground block text-sm leading-relaxed'>{topic.data.description}</span>
                   </span>
                 </a>
-              ))}
+                )
+              })}
             </div>
           </div>
         ))

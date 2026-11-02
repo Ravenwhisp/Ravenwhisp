@@ -4,16 +4,32 @@ title: "ModuleUI"
 description: "Controls UI elements and their on-screen representation, including images, text, buttons, sliders, and navigation."
 moduleGroup: presentation
 sortOrder: 12
-heroPlaceholder: "[ENGINE SCREENSHOT]"
+imageUrl: "/images/engine-images/hud-anchors.png"
+imageAlt: "HUD canvas anchor presets and layout in the UI inspector"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
 Does not draw directly in `update`; **`preRender`** clears command buffers; **`buildCommandsForViewport`** walks active scene `GameObject`s with **Canvas / UIImage / UIText / UIButton / UISlider / UISheet** components, computing screen rects (layout utils), producing **`UITextCommand`** and **`UIImageCommand`** vectors consumed by **`FontPass`** and **`UIImagePass`** during `renderScene`.
 
 World-space canvas modes transform with canvas world matrix; screen-space overlays use orthographic projection in passes.
+
+<BlogFigure
+  src="/images/engine-images/hud-anchors.png"
+  alt="HUD canvas anchor presets and layout in the UI inspector"
+  fullWidth={true}
+  fit="contain"
+  caption="HUD canvas anchor presets and layout in the UI inspector"
+/>
+<BlogFigure
+  src="/images/engine-images/hud-slider.png"
+  alt="UISlider component with fill amount and anchor layout in the inspector"
+  fullWidth={true}
+  fit="contain"
+  caption="UISlider layout and fill driven through ModuleUI"
+/>
 
 ## How it works
 
@@ -29,10 +45,6 @@ ModuleUI
 ├── UITextCommand / UIImageCommand buffers
 └── Integration with FontPass / UIImagePass
 ```
-
-<EngineMediaPlaceholder label={"Screen recording: button hover + slider drag with event routing."} />
-
-<EngineMediaPlaceholder label={"Split: UI command list vs final composite."} compact />
 
 ## Relationships
 

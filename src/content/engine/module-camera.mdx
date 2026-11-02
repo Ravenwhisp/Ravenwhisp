@@ -4,10 +4,11 @@ title: "ModuleCamera"
 description: "Manages editor and game cameras, transforms, projections, and camera switching."
 moduleGroup: presentation
 sortOrder: 17
-heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+imageUrl: "/images/engine-images/how-game-looks-in-engine.png"
+imageAlt: "Scene editor viewport with navigation tools and the active editor camera"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,14 @@ import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder
 Maintains view/projection matrices, FOV, clip planes, mouse state per mode. **`createRayFromViewport`** supports scene editor picking rays.
 
 When a scene **`CameraComponent`** is chosen as "current perspective" (`Application::setCurrentCameraPerspective`), **`ModuleRender::getEditorCamera`** uses that component instead of free camera. Game rendering uses **`Scene::getDefaultCamera()`.**
+
+<BlogFigure
+  src="/images/engine-images/how-game-looks-in-engine.png"
+  alt="Scene editor viewport with navigation tools and the active editor camera"
+  fullWidth={true}
+  fit="contain"
+  caption="Scene editor viewport with navigation tools and the active editor camera"
+/>
 
 ## How it works
 
@@ -32,10 +41,6 @@ ModuleCamera
 ├── ModuleEditor + ModuleInput coupling
 └── Ray from viewport helper
 ```
-
-<EngineMediaPlaceholder label={"GIF: orbit vs fly mode in scene view."} />
-
-<EngineMediaPlaceholder label={"Diagram: editor camera vs scene camera component."} compact />
 
 ## Relationships
 

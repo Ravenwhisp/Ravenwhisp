@@ -4,10 +4,7 @@ title: "ModuleTime"
 description: "Controls runtime time, delta time, update frequency, and frame limiting."
 moduleGroup: core
 sortOrder: 2
-heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
 ---
-
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
 
 ## Overview
 
@@ -31,10 +28,6 @@ ModuleTime
 ├── m_lastRealDelta, m_scale, m_frames
 └── waitForNextFrame() (optional pacing — unused in main loop)
 ```
-
-<EngineMediaPlaceholder label={"Graph: real delta vs scaled delta when changing time scale in settings/scripts."} />
-
-<EngineMediaPlaceholder label={"Debug overlay: frame count and delta when profiling enabled."} compact />
 
 ## Relationships
 

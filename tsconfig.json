@@ -8,6 +8,7 @@
     "dist"
   ],
   "compilerOptions": {
+    "resolveJsonModule": true,
     "jsxImportSource": "react",
     "jsx": "react-jsx",
     "baseUrl": ".",

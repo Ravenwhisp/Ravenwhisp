@@ -1,0 +1,152 @@
+{
+  "application-engine": {
+    "imageUrl": "/images/engine-images/modular-architecture.png",
+    "imageAlt": "Modular RavEngine architecture diagram showing Application and major module groups",
+    "figures": []
+  },
+  "module-time": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-input": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-d3d12": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-descriptors": {
+    "imageUrl": "/images/blog-post/descriptor-heap-cover.png",
+    "imageAlt": "Diagram linking pipeline shader stages to descriptor slots in GPU memory",
+    "figures": []
+  },
+  "module-resources": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": [
+      {
+        "src": "/images/engine-images/shader-water-flowmap-before.png",
+        "alt": "Water flow-map material before the flow texture is assigned",
+        "caption": "Flow-map water material before the texture resource is bound"
+      },
+      {
+        "src": "/images/engine-images/shader-water-flowmap-after.png",
+        "alt": "Water flow-map material after the flow texture is assigned",
+        "caption": "After the flow texture is uploaded and bound through ModuleResources"
+      }
+    ]
+  },
+  "module-assets": {
+    "imageUrl": "/images/engine-images/prefabs.png",
+    "imageAlt": "Editor asset browser showing prefab assets in the project library",
+    "figures": []
+  },
+  "module-scene": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": [
+      {
+        "src": "/images/engine-images/frustum-culling-before.png",
+        "alt": "Scene editor with frustum culling disabled",
+        "caption": "Scene view before frustum culling is enabled"
+      },
+      {
+        "src": "/images/engine-images/frustum-culling-after.png",
+        "alt": "Scene editor with frustum culling enabled",
+        "caption": "After frustum culling removes objects outside the camera frustum"
+      }
+    ]
+  },
+  "module-render": {
+    "imageUrl": "/images/engine-images/deferred-rendering.png",
+    "imageAlt": "Deferred rendering pipeline showing G-buffer channels composited into the final shaded scene",
+    "figures": [
+      {
+        "src": "/images/engine-images/shadow-cascade.png",
+        "alt": "Cascaded directional shadow maps in the viewport",
+        "caption": "Cascaded shadow map pass in the render pipeline"
+      },
+      {
+        "src": "/images/engine-images/fog.png",
+        "alt": "Volumetric fog applied in the rendered scene",
+        "caption": "Volumetric fog pass"
+      }
+    ]
+  },
+  "module-camera": {
+    "imageUrl": "/images/engine-images/how-game-looks-in-engine.png",
+    "imageAlt": "Scene editor viewport with navigation tools and the active editor camera",
+    "figures": []
+  },
+  "module-ui": {
+    "imageUrl": "/images/engine-images/hud-anchors.png",
+    "imageAlt": "HUD canvas anchor presets and layout in the UI inspector",
+    "figures": [
+      {
+        "src": "/images/engine-images/hud-slider.png",
+        "alt": "UISlider component with fill amount and anchor layout in the inspector",
+        "caption": "UISlider layout and fill driven through ModuleUI"
+      }
+    ]
+  },
+  "module-particle-system": {
+    "imageUrl": "/images/engine-images/particle-system.png",
+    "imageAlt": "Particle system emitter cone and live particles in the scene editor",
+    "figures": []
+  },
+  "module-navigation": {
+    "imageUrl": "/images/engine-images/navmesh-pathfinding.png",
+    "imageAlt": "Navmesh pathfinding visualization with a computed route in the scene",
+    "figures": [
+      {
+        "src": "/images/engine-images/navmesh-creation.png",
+        "alt": "Navmesh authoring settings in the scene configuration panel",
+        "caption": "Navmesh generation settings in the editor"
+      }
+    ]
+  },
+  "module-scripting": {
+    "imageUrl": "/images/engine-images/scripting.png",
+    "imageAlt": "Scripting workflow from C++ source through MSBuild to DLL reload and gameplay",
+    "figures": []
+  },
+  "module-music": {
+    "imageUrl": "/images/engine-images/music-integration.png",
+    "imageAlt": "Wwise bank integration and music library panels in the editor",
+    "figures": []
+  },
+  "module-video": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-haptics": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-event-system": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-editor": {
+    "imageUrl": "/images/engine-images/debugging.png",
+    "imageAlt": "Editor settings for scene gizmos, debug draw, and frustum culling toggles",
+    "figures": []
+  },
+  "module-game-view": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  },
+  "module-font": {
+    "imageUrl": "",
+    "imageAlt": "",
+    "figures": []
+  }
+}

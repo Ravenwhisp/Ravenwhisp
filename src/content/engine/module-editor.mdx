@@ -4,10 +4,11 @@ title: "ModuleEditor"
 description: "Contains editor-specific functionality: windows, inspector, hierarchy, asset explorer, settings, and debugging tools."
 moduleGroup: editor
 sortOrder: 10
-heroPlaceholder: "[EDITOR INTERFACE SCREENSHOT]"
+imageUrl: "/images/engine-images/debugging.png"
+imageAlt: "Editor settings for scene gizmos, debug draw, and frustum culling toggles"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,14 @@ Manages **`EditorWindow`** instances via factory map (`registerWindowType`), per
 Registered windows include **Hierarchy, Inspector, Scene Editor, Game view, Logger, Hardware, Settings, File dialog, Scene config, Animation state machine, Music/Video debug, Data container manager**, etc.
 
 **`render`** draws editor UI through ImGui (with `ModuleEditor::render` override).
+
+<BlogFigure
+  src="/images/engine-images/debugging.png"
+  alt="Editor settings for scene gizmos, debug draw, and frustum culling toggles"
+  fullWidth={true}
+  fit="contain"
+  caption="Editor settings for scene gizmos, debug draw, and frustum culling toggles"
+/>
 
 ## How it works
 
@@ -34,10 +43,6 @@ ModuleEditor
 ├── WindowSceneEditor / WindowGame references
 └── ImGui integration (style, dock layout)
 ```
-
-<EngineMediaPlaceholder label={"High-quality editor screenshot annotated with window names."} />
-
-<EngineMediaPlaceholder label={"Video: prefab edit mode header + apply/revert flow."} compact />
 
 ## Relationships
 

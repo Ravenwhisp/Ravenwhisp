@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import engineImages from '../src/data/engine-module-images.json' with { type: 'json' }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const OUT_DIR = path.join(__dirname, '..', 'src', 'content', 'engine')
@@ -844,22 +845,53 @@ function bulletList(items) {
   return items.map(item => `- ${item}`).join('\n')
 }
 
+function blogFigure(fig) {
+  const lines = [
+    '<BlogFigure',
+    `  src=${yamlString(fig.src)}`,
+    `  alt=${yamlString(fig.alt)}`,
+    '  fullWidth={true}',
+    '  fit="contain"'
+  ]
+  if (fig.caption) lines.push(`  caption=${yamlString(fig.caption)}`)
+  lines.push('/>')
+  return lines.join('\n')
+}
+
 function buildMdx(mod) {
-  const placeholderBlocks = mod.placeholders
-    .slice(0, 2)
-    .map(
-      (label, index) =>
-        `<EngineMediaPlaceholder label={${yamlString(label)}}${index === 0 ? '' : ' compact'} />`
+  const images = engineImages[mod.slug]
+  if (!images) {
+    throw new Error(`Missing engine images for slug: ${mod.slug}`)
+  }
+
+  const heroUrl = images.imageUrl?.trim()
+  const figureBlocks = []
+  if (heroUrl) {
+    figureBlocks.push(
+      blogFigure({
+        src: heroUrl,
+        alt: images.imageAlt || mod.title,
+        caption: images.imageAlt || mod.title
+      })
     )
-    .join('\n\n')
+  }
+  figureBlocks.push(...images.figures.map(fig => blogFigure(fig)))
+
+  const hasFigures = figureBlocks.length > 0
+  const imageFrontmatter =
+    heroUrl && images.imageAlt
+      ? `imageUrl: ${yamlString(heroUrl)}\nimageAlt: ${yamlString(images.imageAlt)}\n`
+      : heroUrl
+        ? `imageUrl: ${yamlString(heroUrl)}\nimageAlt: ${yamlString(mod.title)}\n`
+        : ''
 
   const body = [
-    "import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'",
-    '',
+    ...(hasFigures ? ["import BlogFigure from '@/components/blog-media/blog-figure.astro'", ''] : []),
     '## Overview',
     '',
     mod.overview.join('\n\n'),
     '',
+    ...(hasFigures ? [...figureBlocks, ''] : []),
     '## How it works',
     '',
     bulletList(mod.howItWorks),
@@ -869,8 +901,6 @@ function buildMdx(mod) {
     '```',
     mod.architecture,
     '```',
-    '',
-    placeholderBlocks,
     '',
     '## Relationships',
     '',
@@ -892,8 +922,7 @@ title: ${yamlString(mod.title)}
 description: ${yamlString(mod.description)}
 moduleGroup: ${mod.moduleGroup}
 sortOrder: ${mod.sortOrder}
-heroPlaceholder: ${yamlString(mod.heroPlaceholder)}
----
+${imageFrontmatter}---
 
 ${body}`
 }

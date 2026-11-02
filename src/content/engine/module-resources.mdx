@@ -4,10 +4,9 @@ title: "ModuleResources"
 description: "Loads, creates, and maintains graphic resources such as buffers, textures, materials, and shaders."
 moduleGroup: graphics
 sortOrder: 6
-heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -18,6 +17,21 @@ Uses **DirectXTex** for texture upload paths and a **WeakCache** keyed by conten
 **Deferred GPU release:** `deferResourceRelease` queues `ID3D12Resource` until fence passes; `preRender` → `collectCompletedResources`.
 
 Shader compilation is generally **offline** (`.cso` blobs read in passes); this module focuses on resource objects, not HLSL compilation at runtime.
+
+<BlogFigure
+  src="/images/engine-images/shader-water-flowmap-before.png"
+  alt="Water flow-map material before the flow texture is assigned"
+  fullWidth={true}
+  fit="contain"
+  caption="Flow-map water material before the texture resource is bound"
+/>
+<BlogFigure
+  src="/images/engine-images/shader-water-flowmap-after.png"
+  alt="Water flow-map material after the flow texture is assigned"
+  fullWidth={true}
+  fit="contain"
+  caption="After the flow texture is uploaded and bound through ModuleResources"
+/>
 
 ## How it works
 
@@ -36,10 +50,6 @@ ModuleResources
 ├── WeakCache<MD5Hash, ICacheable>
 └── DeferredResource queue (fence-gated free)
 ```
-
-<EngineMediaPlaceholder label={"Before/after: resize viewport → GBuffer recreation."} />
-
-<EngineMediaPlaceholder label={"Diagram: upload → default heap → shader-visible SRV."} compact />
 
 ## Relationships
 

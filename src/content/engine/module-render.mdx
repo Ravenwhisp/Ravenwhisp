@@ -4,10 +4,11 @@ title: "ModuleRender"
 description: "Executes the full graphics pipeline and coordinates render passes. It is one of the engine's main modules."
 moduleGroup: presentation
 sortOrder: 15
-heroPlaceholder: "[RENDERING PIPELINE DIAGRAM]"
+imageUrl: "/images/engine-images/deferred-rendering.png"
+imageAlt: "Deferred rendering pipeline showing G-buffer channels composited into the final shaded scene"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,28 @@ Orchestrates **two rendering contexts**: editor/play viewports (off-screen `Rend
 Core scene drawing is **`renderScene()`**—a explicit multi-stage GPU sequence, then a loop over **`m_renderPasses`.**
 
 Pulls scene lists from `ModuleScene`, UI commands from `ModuleUI`/`ModuleParticleSystem`, settings from `Scene`, camera from `ModuleCamera` (editor) or default `CameraComponent` (game).
+
+<BlogFigure
+  src="/images/engine-images/deferred-rendering.png"
+  alt="Deferred rendering pipeline showing G-buffer channels composited into the final shaded scene"
+  fullWidth={true}
+  fit="contain"
+  caption="Deferred rendering pipeline showing G-buffer channels composited into the final shaded scene"
+/>
+<BlogFigure
+  src="/images/engine-images/shadow-cascade.png"
+  alt="Cascaded directional shadow maps in the viewport"
+  fullWidth={true}
+  fit="contain"
+  caption="Cascaded shadow map pass in the render pipeline"
+/>
+<BlogFigure
+  src="/images/engine-images/fog.png"
+  alt="Volumetric fog applied in the rendered scene"
+  fullWidth={true}
+  fit="contain"
+  caption="Volumetric fog pass"
+/>
 
 ## How it works
 
@@ -38,10 +61,6 @@ ModuleRender
 ├── RingBuffer
 └── GPU/CPU pass profiler
 ```
-
-<EngineMediaPlaceholder label={"Pipeline diagram (strong candidate for website hero graphic)."} />
-
-<EngineMediaPlaceholder label={"Side-by-side: GBuffer channel debug views."} compact />
 
 ## Relationships
 

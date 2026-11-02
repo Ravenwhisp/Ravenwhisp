@@ -4,10 +4,11 @@ title: "ModuleParticleSystem"
 description: "Updates and renders particle systems via emitters, behavior modules, and dedicated buffers."
 moduleGroup: simulation
 sortOrder: 13
-heroPlaceholder: "[MODULE DEMONSTRATION VIDEO]"
+imageUrl: "/images/engine-images/particle-system.png"
+imageAlt: "Particle system emitter cone and live particles in the scene editor"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,14 @@ Maintains a **fixed pool** of particle slots shared by **`ParticleSystemComponen
 **`update`** advances emitter modules (engine-specific `ParticleSystem` types).
 
 **`preRender`** builds **`ParticleEmitterCommand`** list for **`ParticlesPass`**. Supports editor time scaling separate from game delta.
+
+<BlogFigure
+  src="/images/engine-images/particle-system.png"
+  alt="Particle system emitter cone and live particles in the scene editor"
+  fullWidth={true}
+  fit="contain"
+  caption="Particle system emitter cone and live particles in the scene editor"
+/>
 
 ## How it works
 
@@ -33,10 +42,6 @@ ModuleParticleSystem
 ├── buildParticleCommands() — render prep
 └── ParticlesPass (GPU billboards)
 ```
-
-<EngineMediaPlaceholder label={"Video: burst emitter + trail combination."} />
-
-<EngineMediaPlaceholder label={"Debug: pool slot exhaustion behavior."} compact />
 
 ## Relationships
 

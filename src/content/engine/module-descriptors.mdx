@@ -4,16 +4,25 @@ title: "ModuleDescriptors"
 description: "Manages descriptor heaps and allocation of descriptors for textures, buffers, and GPU resources."
 moduleGroup: graphics
 sortOrder: 5
-heroPlaceholder: "[ARCHITECTURE DIAGRAM]"
+imageUrl: "/images/blog-post/descriptor-heap-cover.png"
+imageAlt: "Diagram linking pipeline shader stages to descriptor slots in GPU memory"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
 Central heap manager for **RTV, DSV, CBV/SRV/UAV, Sampler** heaps plus a **StagingDescriptorHeap** for dynamic SRV tables (e.g. render surface descriptor tables).
 
 Creates default samplers (`LINEAR/PPOINT` × `WRAP/CLAMP`). **`defferDescriptorRelease`** queues frees until GPU completes; **`preRender`** reclaims descriptors/blocks when `lastCompletedFrame` allows.
+
+<BlogFigure
+  src="/images/blog-post/descriptor-heap-cover.png"
+  alt="Diagram linking pipeline shader stages to descriptor slots in GPU memory"
+  fullWidth={true}
+  fit="contain"
+  caption="Diagram linking pipeline shader stages to descriptor slots in GPU memory"
+/>
 
 ## How it works
 
@@ -30,8 +39,6 @@ ModuleDescriptors
 ├── Default samplers
 └── Deferred release lists (handles + heap blocks)
 ```
-
-<EngineMediaPlaceholder label={"Infographic: heap types and what references them (GBuffer SRV table vs material SRVs)."} />
 
 ## Relationships
 

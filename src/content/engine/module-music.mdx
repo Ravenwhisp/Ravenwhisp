@@ -4,10 +4,11 @@ title: "ModuleMusic"
 description: "Integrates music playback and sound bank management via Wwise."
 moduleGroup: simulation
 sortOrder: 19
-heroPlaceholder: "[MODULE DEMONSTRATION VIDEO]"
+imageUrl: "/images/engine-images/music-integration.png"
+imageAlt: "Wwise bank integration and music library panels in the editor"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,14 @@ import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder
 Loads **`WwiseBank`** assets (Init bank + scene banks). **`stopAllSounds`** on simulation stop (called from `ModuleRender::preRender` stop path).
 
 **`MusicPlaybackTracker`** and grouped event cooldowns reduce SFX spam. Scene tracks loaded bank refs; crossfade via Wwise states.
+
+<BlogFigure
+  src="/images/engine-images/music-integration.png"
+  alt="Wwise bank integration and music library panels in the editor"
+  fullWidth={true}
+  fit="contain"
+  caption="Wwise bank integration and music library panels in the editor"
+/>
 
 ## How it works
 
@@ -32,10 +41,6 @@ ModuleMusic
 ├── Event posting + grouping/cooldown
 └── Scene bank refs (Scene::m_loadedBankRefs)
 ```
-
-<EngineMediaPlaceholder label={"Wwise profiler screenshot paired with in-engine event trigger."} />
-
-<EngineMediaPlaceholder label={"Diagram: GameObject → SoundSource → Wwise emitter ID."} compact />
 
 ## Relationships
 

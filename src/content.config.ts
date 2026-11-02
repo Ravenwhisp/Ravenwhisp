@@ -12,8 +12,7 @@ const engine = defineCollection({
     moduleGroup: engineModuleGroup,
     sortOrder: z.number(),
     imageUrl: z.string().optional(),
-    imageAlt: z.string().optional(),
-    heroPlaceholder: z.string().optional()
+    imageAlt: z.string().optional()
   })
 })
 

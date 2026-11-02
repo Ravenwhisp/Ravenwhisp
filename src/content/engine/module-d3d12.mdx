@@ -4,10 +4,7 @@ title: "ModuleD3D12"
 description: "Initializes DirectX 12 and manages the graphics device, command queues, command lists, swap chain, and GPU synchronization."
 moduleGroup: graphics
 sortOrder: 4
-heroPlaceholder: "[RENDERING PIPELINE DIAGRAM]"
 ---
-
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
 
 ## Overview
 
@@ -35,10 +32,6 @@ ModuleD3D12
     ├── preRender — wait, reset list
     └── postRender — execute, Present, Commit
 ```
-
-<EngineMediaPlaceholder label={"Diagram: CPU frame timeline vs GPU fences (two frames in flight)."} />
-
-<EngineMediaPlaceholder label={"PIX capture screenshot of command list markers (pass names use `BEGIN_EVENT`)."} compact />
 
 ## Relationships
 

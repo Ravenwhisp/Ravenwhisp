@@ -4,10 +4,11 @@ title: "ModuleNavigation"
 description: "Manages navmesh-based navigation using Recast/Detour. Allows building navigation meshes, querying paths, and applying dynamic blockers."
 moduleGroup: simulation
 sortOrder: 14
-heroPlaceholder: "[RENDERING PIPELINE DIAGRAM]"
+imageUrl: "/images/engine-images/navmesh-pathfinding.png"
+imageAlt: "Navmesh pathfinding visualization with a computed route in the scene"
 ---
 
-import EngineMediaPlaceholder from '@/components/engine/engine-media-placeholder.astro'
+import BlogFigure from '@/components/blog-media/blog-figure.astro'
 
 ## Overview
 
@@ -16,6 +17,21 @@ Wraps **`dtNavMesh`** / **`dtNavMeshQuery`** loaded from scene navmesh assets or
 Collects **`NavModifierVolume`** / runtime blockers from scene components. Exposes **`findStraightPath`**, runtime blocker tests, debug polyline generation, **`IDebugDrawable`** integration in **`DebugDrawPass`.**
 
 Agent profiles map to Detour include flags.
+
+<BlogFigure
+  src="/images/engine-images/navmesh-pathfinding.png"
+  alt="Navmesh pathfinding visualization with a computed route in the scene"
+  fullWidth={true}
+  fit="contain"
+  caption="Navmesh pathfinding visualization with a computed route in the scene"
+/>
+<BlogFigure
+  src="/images/engine-images/navmesh-creation.png"
+  alt="Navmesh authoring settings in the scene configuration panel"
+  fullWidth={true}
+  fit="contain"
+  caption="Navmesh generation settings in the editor"
+/>
 
 ## How it works
 
@@ -33,10 +49,6 @@ ModuleNavigation
 ├── Path debug + draw lines
 └── Editor build/load per scene name
 ```
-
-<EngineMediaPlaceholder label={"Overlay video: navmesh wireframe + computed path."} />
-
-<EngineMediaPlaceholder label={"Before/after: dynamic blocker carving effect (if used in project scenes)."} compact />
 
 ## Relationships
 
