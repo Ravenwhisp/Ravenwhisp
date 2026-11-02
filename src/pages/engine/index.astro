@@ -36,10 +36,24 @@ const groupedTopics = ENGINE_MODULE_GROUPS.map(group => ({
           <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>build.cfg</code> and renders directly to
           the swap chain.
         </p>
-        <EngineMediaPlaceholder
-          label='[ENGINE ARCHITECTURE DIAGRAM] — module init order vs shutdown order'
-          class='max-w-3xl'
-        />
+        <figure class='mx-auto w-full max-w-3xl'>
+          <div class='border-border bg-card overflow-hidden rounded-2xl border shadow-sm'>
+            <div class='aspect-video'>
+              <video
+                class='h-full w-full object-contain'
+                controls
+                playsinline
+                preload='metadata'
+                aria-label='Engine trailer — Ravenwhisp Studios custom engine'
+              >
+                <source src={withBasePath('/videos/Engine_Trailer.mp4')} type='video/mp4' />
+              </video>
+            </div>
+          </div>
+          <figcaption class='text-muted-foreground mt-3 text-center text-sm leading-6'>
+            Engine trailer
+          </figcaption>
+        </figure>
       </div>
 
       {
