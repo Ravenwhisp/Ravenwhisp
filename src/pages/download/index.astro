@@ -8,6 +8,7 @@ const pageDescription =
   'Download Bound By Death — a 3D top-down cooperative hack-and-slash from Ravenwhisp Studios. GitHub release or itch.io.'
 
 const githubReleaseUrl = 'https://github.com/Ravenwhisp/BoundByDeath/releases/tag/1.0'
+const itchGameUrl = 'https://ravenwhisp-studios.itch.io/bound-by-death'
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -69,32 +70,17 @@ const githubReleaseUrl = 'https://github.com/Ravenwhisp/BoundByDeath/releases/ta
           <div class='space-y-2'>
             <h2 id='itch-download-heading' class='text-foreground text-2xl font-semibold'>Download on itch.io</h2>
             <p class='text-muted-foreground leading-relaxed'>
-              Get Bound By Death through our itch.io page — updates, community tools, and an alternative download path.
+              Download Bound By Death on itch.io — an alternative download path with updates and community features.
             </p>
           </div>
-          <div class='w-full max-w-[550px]'>
-            <div class='aspect-[550/165] w-full overflow-hidden rounded-lg'>
-              <iframe
-                title='Bound by Death on itch.io — download widget by Ravenwhisp Studios'
-                class='h-full w-full'
-                frameborder='0'
-                src='https://itch.io/embed/4962845?border_width=0&bg_color=1C0E19&fg_color=ffffff&link_color=C4F6FF&border_color=1C0E19'
-                width='550'
-                height='165'
-              >
-                <a href='https://ravenwhisp-studios.itch.io/bound-by-death'>Bound by Death by Ravenwhisp Studios</a>
-              </iframe>
-            </div>
-          </div>
-          <p class='text-muted-foreground text-sm'>
-            <a
-              href='https://ravenwhisp-studios.itch.io/bound-by-death'
-              class='text-primary font-medium hover:underline'
-              rel='noopener noreferrer'
-            >
-              Open Bound By Death on itch.io
-            </a>
-          </p>
+          <a
+            href={itchGameUrl}
+            class={buttonVariants({ size: 'lg' })}
+            rel='noopener noreferrer'
+            target='_blank'
+          >
+            View on itch.io
+          </a>
         </section>
       </div>
 
