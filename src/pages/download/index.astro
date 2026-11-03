@@ -1,18 +1,114 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { buttonVariants } from '@/components/ui/button'
+import { withBasePath } from '@/lib/paths'
 
-const pageTitle = 'Download | Bound By Death'
-const pageDescription = 'Download information and platform availability for Bound By Death.'
+const pageTitle = 'Download Bound By Death | Ravenwhisp Studios'
+const pageDescription =
+  'Download Bound By Death — a 3D top-down cooperative hack-and-slash from Ravenwhisp Studios. GitHub release or itch.io.'
+
+const githubReleaseUrl = 'https://github.com/Ravenwhisp/BoundByDeath/releases/tag/1.0'
+
+const itchEmbedSrc =
+  'https://itch.io/embed/4962845?border_width=0&bg_color=1C0E19&fg_color=ffffff&link_color=C4F6FF&border_color=1C0E19'
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
-      <h1 class='text-foreground text-4xl font-bold'>Download</h1>
-      <p class='text-muted-foreground text-lg'>
-        Bound By Death is currently in development. Download links and platform availability will be published here.
+    <div class='mx-auto max-w-4xl space-y-10 px-4 sm:px-6 lg:px-8'>
+      <header class='space-y-6'>
+        <h1 class='text-foreground text-4xl font-bold'>Download Bound By Death</h1>
+        <div class='text-muted-foreground space-y-4 text-lg leading-relaxed'>
+          <p>
+            <strong class='text-foreground'>Bound By Death</strong> is a 3D top-down cooperative hack-and-slash game
+            where two very different souls must fight as one.
+          </p>
+          <p>
+            Set in the prosperous elven kingdom of Lýndoril, the story follows the consequences of a desperate king's
+            decision to use forbidden magic to save his dying daughter. Twenty years later, the price of that decision
+            begins to surface.
+          </p>
+          <p>
+            The game features local cooperative gameplay, combat, exploration and a world shaped by the consequences of
+            forbidden magic.
+          </p>
+        </div>
+        <p>
+          <a href={withBasePath('/bound-by-death')} class='text-primary font-medium hover:underline'>
+            Learn more about Bound By Death
+          </a>
+        </p>
+      </header>
+
+      <div class='grid gap-8 lg:grid-cols-2 lg:items-start'>
+        <section
+          class='bg-card border-border space-y-5 rounded-xl border p-6 sm:p-8'
+          aria-labelledby='github-download-heading'
+        >
+          <div class='space-y-2'>
+            <h2 id='github-download-heading' class='text-foreground text-2xl font-semibold'>Download on GitHub</h2>
+            <p class='text-muted-foreground leading-relaxed'>
+              Get the latest release from our GitHub repository. Download assets from the release page and follow the
+              instructions there.
+            </p>
+          </div>
+          <p class='text-muted-foreground text-sm'>
+            Release <span class='text-foreground font-medium'>1.0</span>
+          </p>
+          <a
+            href={githubReleaseUrl}
+            class={buttonVariants({ size: 'lg' })}
+            rel='noopener noreferrer'
+            target='_blank'
+          >
+            View release on GitHub
+          </a>
+        </section>
+
+        <section
+          class='bg-card border-border space-y-5 rounded-xl border p-6 sm:p-8'
+          aria-labelledby='itch-download-heading'
+        >
+          <div class='space-y-2'>
+            <h2 id='itch-download-heading' class='text-foreground text-2xl font-semibold'>Download on itch.io</h2>
+            <p class='text-muted-foreground leading-relaxed'>
+              Get Bound By Death through our itch.io page — updates, community tools, and an alternative download path.
+            </p>
+          </div>
+          <div class='w-full max-w-[550px]'>
+            <div class='aspect-[550/165] w-full overflow-hidden rounded-lg'>
+              <iframe
+                title='Bound by Death on itch.io — download widget by Ravenwhisp Studios'
+                class='h-full w-full'
+                frameborder='0'
+                src={itchEmbedSrc}
+                width='550'
+                height='165'
+              >
+                <a href='https://ravenwhisp-studios.itch.io/bound-by-death'>
+                  Bound by Death by Ravenwhisp Studios
+                </a>
+              </iframe>
+            </div>
+          </div>
+          <p class='text-muted-foreground text-sm'>
+            <a
+              href='https://ravenwhisp-studios.itch.io/bound-by-death'
+              class='text-primary font-medium hover:underline'
+              rel='noopener noreferrer'
+            >
+              Open Bound By Death on itch.io
+            </a>
+          </p>
+        </section>
+      </div>
+
+      <p class='text-muted-foreground text-sm'>
+        <a href={withBasePath('/bound-by-death')} class='text-primary font-medium hover:underline'>
+          Visit the Bound By Death game page
+        </a>
+        for more about the project.
       </p>
-      <p class='text-muted-foreground'>Follow Ravenwhisp Studios channels for release and playtest announcements.</p>
     </div>
   </section>
 </Layout>
