@@ -74,6 +74,24 @@ function getBriefingImageAlt(fileName: string): string {
   return `Ravenwhisp Studios visual identity briefing — ${formatAssetTitle(fileName)}`
 }
 
+function getCollectionImageAlt(folderName: string, fileName: string): string {
+  const label = formatAssetTitle(fileName)
+
+  if (folderName === 'screenshots') {
+    return `Bound By Death screenshot — ${label}`
+  }
+
+  if (folderName === 'key-art') {
+    return `Bound By Death key art — ${label}`
+  }
+
+  if (folderName === 'studio-shots') {
+    return `Ravenwhisp Studios — ${label}`
+  }
+
+  return label
+}
+
 function getPressKitImageAlt(folderName: string, fileName: string): string {
   if (fileName === 'placeholder.png') {
     return ''
@@ -87,6 +105,10 @@ function getPressKitImageAlt(folderName: string, fileName: string): string {
     return getBriefingImageAlt(fileName)
   }
 
+  if (folderName === 'screenshots' || folderName === 'key-art' || folderName === 'studio-shots') {
+    return getCollectionImageAlt(folderName, fileName)
+  }
+
   return ''
 }
 
@@ -95,6 +117,7 @@ export function getPressKitAssets(folderName: string): PressKitAsset[] {
 
   const fileNames = readdirSync(folderPath)
     .filter(fileName => /\.(png|jpe?g|webp|svg)$/i.test(fileName))
+    .filter(fileName => fileName !== 'placeholder.png')
     .sort((left, right) => {
       if (folderName === 'briefing') {
         return (getBriefingSlideNumber(left) ?? 0) - (getBriefingSlideNumber(right) ?? 0)
