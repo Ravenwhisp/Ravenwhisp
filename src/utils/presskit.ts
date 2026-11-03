@@ -40,6 +40,40 @@ function getLogoPackImageAlt(fileName: string): string {
   return formatAssetTitle(fileName)
 }
 
+const BRIEFING_SLIDE_TITLES: Record<number, string> = {
+  1: 'Title',
+  2: 'Brief explanation',
+  3: 'Logo',
+  4: 'Color palette',
+  5: 'Logo context',
+  6: 'Typography',
+  7: 'Motifs'
+}
+
+function getBriefingSlideNumber(fileName: string): number | undefined {
+  const match = fileName.match(/Visual-Identity-(\d+)\./i)
+  if (!match) return undefined
+  return Number(match[1])
+}
+
+function getBriefingImageTitle(fileName: string): string {
+  const slide = getBriefingSlideNumber(fileName)
+  if (slide && BRIEFING_SLIDE_TITLES[slide]) {
+    return BRIEFING_SLIDE_TITLES[slide]
+  }
+
+  return formatAssetTitle(fileName)
+}
+
+function getBriefingImageAlt(fileName: string): string {
+  const slide = getBriefingSlideNumber(fileName)
+  if (slide && BRIEFING_SLIDE_TITLES[slide]) {
+    return `Ravenwhisp Studios visual identity briefing — ${BRIEFING_SLIDE_TITLES[slide]}`
+  }
+
+  return `Ravenwhisp Studios visual identity briefing — ${formatAssetTitle(fileName)}`
+}
+
 function getPressKitImageAlt(folderName: string, fileName: string): string {
   if (fileName === 'placeholder.png') {
     return ''
@@ -49,19 +83,30 @@ function getPressKitImageAlt(folderName: string, fileName: string): string {
     return getLogoPackImageAlt(fileName)
   }
 
+  if (folderName === 'briefing') {
+    return getBriefingImageAlt(fileName)
+  }
+
   return ''
 }
 
 export function getPressKitAssets(folderName: string): PressKitAsset[] {
   const folderPath = join(publicDir, 'images', 'presskit', folderName)
 
-  return readdirSync(folderPath)
+  const fileNames = readdirSync(folderPath)
     .filter(fileName => /\.(png|jpe?g|webp|svg)$/i.test(fileName))
-    .sort((left, right) => left.localeCompare(right))
-    .map(fileName => ({
-      fileName,
-      src: `/images/presskit/${folderName}/${fileName}`,
-      title: formatAssetTitle(fileName),
-      alt: getPressKitImageAlt(folderName, fileName)
-    }))
+    .sort((left, right) => {
+      if (folderName === 'briefing') {
+        return (getBriefingSlideNumber(left) ?? 0) - (getBriefingSlideNumber(right) ?? 0)
+      }
+
+      return left.localeCompare(right)
+    })
+
+  return fileNames.map(fileName => ({
+    fileName,
+    src: `/images/presskit/${folderName}/${fileName}`,
+    title: folderName === 'briefing' ? getBriefingImageTitle(fileName) : formatAssetTitle(fileName),
+    alt: getPressKitImageAlt(folderName, fileName)
+  }))
 }

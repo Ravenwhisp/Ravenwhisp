@@ -8,6 +8,7 @@ const pageTitle = 'Press | Ravenwhisp Studios'
 const pageDescription = 'Press kit and media resources for Ravenwhisp Studios.'
 
 const logoPackAssets = getPressKitAssets('logo-pack')
+const briefingAssets = getPressKitAssets('briefing')
 const keyartAssets = getPressKitAssets('key-art')
 const screenshotsAssets = getPressKitAssets('screenshots')
 const studioShotsAssets = getPressKitAssets('studio-shots')
@@ -18,6 +19,12 @@ const pressKitItems = [
     image: withBasePath(logoPackAssets[0]?.src || '/images/placeholder.png'),
     href: '/press/press-kit/',
     alt: logoPackAssets[0]?.alt ?? '',
+  },
+  {
+    title: 'Visual Identity Briefing',
+    image: withBasePath(briefingAssets[0]?.src || '/images/placeholder.png'),
+    href: '/press/briefing/',
+    alt: briefingAssets[0]?.alt ?? '',
   },
   {
     title: 'Key Art',
@@ -50,7 +57,7 @@ const pressKitItems = [
         </p>
       </div>
 
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {pressKitItems.map((item) => (
           <article class="bg-card border-border overflow-hidden rounded-xl border">
             {item.href ? (
