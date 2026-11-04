@@ -11,7 +11,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
 <Layout title={pageTitle} description={pageDescription}>
   <section class='border-b bg-background' aria-labelledby='bound-hero-title'>
     <div
-      class='mx-auto grid min-h-[calc(100svh-4rem)] max-w-7xl grid-cols-1 items-center gap-0 px-4 py-12 sm:px-6 md:grid-cols-[0.9fr_1.1fr] md:gap-8 lg:px-8'
+      class='mx-auto grid max-w-7xl grid-cols-1 items-center gap-0 px-4 py-8 sm:px-6 md:grid-cols-[0.9fr_1.1fr] md:gap-8 md:py-10 lg:px-8'
     >
       <div class='mx-auto w-full max-w-2xl space-y-5 md:mx-0'>
         <p class='text-primary text-sm font-semibold tracking-widest uppercase'>A dark fantasy co-op adventure game</p>
@@ -26,7 +26,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
           <a href='#mechanics' class={buttonVariants({ variant: 'outline', size: 'lg' })}>Explore the mechanics</a>
         </nav>
       </div>
-      <div class='mx-auto grid w-full max-w-[39rem] place-items-center'>
+      <div class='mx-auto grid w-full max-w-[18rem] place-items-center md:max-w-[30rem]'>
         <img
           class='h-auto w-full object-contain drop-shadow-lg'
           src={withBasePath('/images/DeathAndLyriel_side-by-side.png')}
@@ -40,7 +40,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
     </div>
   </section>
 
-  <section id='story' class='scroll-mt-24 py-16 sm:py-24' aria-labelledby='story-title'>
+  <section id='story' class='scroll-mt-24 pt-8 pb-16 sm:pt-12 sm:pb-24' aria-labelledby='story-title'>
     <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
       <div class='max-w-7xl space-y-3'>
         <header class='space-y-2'>
