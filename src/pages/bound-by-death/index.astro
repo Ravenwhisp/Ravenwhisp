@@ -1,66 +1,241 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { buttonVariants } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Bound By Death'
 const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
-      <h1 class='text-foreground text-4xl font-bold'>Bound By Death</h1>
-      <p class='text-muted-foreground text-lg'>
-        In a world where death is not the end, you must face the consequences of the past.
-      </p>
-      <p class='text-muted-foreground text-lg'>
-        If you want to learn more about the game, it's characters, enemies, how the world works and more you are in the correct page.
-      </p>
-      <h2 class='text-foreground text-4xl font-bold'>About the game</h2>
-      <p class='text-muted-foreground italic'>
-      In the prosperous Elven Kingdom of Lýndoril, <strong class='text-foreground'>King Aelorin</strong> lived peacefully with his newborn daughter, <strong class='text-foreground'>Lýriel</strong>.
-      The child was celebrated as the kingdom’s future heir—until, only weeks after her birth, she fell gravely ill. The healers were unanimous: <strong class='text-foreground'>no magic known to the elves could save her</strong>. Her soul was fading, and there was nothing they could do.
-      </p>
-      <p class='text-muted-foreground italic'>
-      Aelorin, a king-sorcerer renowned for his calm judgment, isolated himself for months inside his arcane library, poring over forbidden scrolls and attempting rituals he would never have considered in saner times.
-      One night, he uncovered an ancestral manuscript describing a forbidden ritual meant to <strong class='text-foreground'>summon and bind Death itself</strong>, using its primordial essence to sustain a failing soul. Aelorin understood exactly what the ritual was designed to do; but in his desperation to save his daughter, he chose to ignore the consequences.
-      </p>
-      <p class='text-muted-foreground italic'>
-      On a night of violent spiritual storm, Aelorin carried the dying child into a hidden ritual chamber and invoked the spell. Death appeared—an ancient, serene, hooded figure whose presence made the very stones tremble.
-      </p>
-      <p class='text-muted-foreground italic'>
-      <strong class='text-foreground'>Death:</strong> “Her fate is sealed. I cannot save her.”
-      </p>
-      <p class='text-muted-foreground italic'>
-      Driven by terror and love, Aelorin repeated the forbidden incantation. The runes ignited with blinding light as arcane chains erupted from the floor, wrapping around the entity. For the first time, Death lost its balance. A violent eruption of light and shadow followed, as though both worlds collided in a single heartbeat.
-      </p>
-      <p class='text-muted-foreground italic'>
-      When the ritual finally subsided, <strong class='text-foreground'>Lýriel was breathing</strong>, and <strong class='text-foreground'>Death had been torn from its throne and imprisoned inside the child</strong>.
-      Aelorin had saved his daughter—and, without realizing it, had condemned the world.
-      </p>
-      <p class='text-muted-foreground'>
-      Bound By Death is a <strong class='text-foreground'>top-down cooperative hack 'n' slash </strong> built around fast, action-driven combat and tight interaction between the protagonists.
-      The players control Lyriel and Death, 20 years after the events of the prologue, in a world where souls can not cross to the other side.
-      Descend to the depths of the castle and confront Aelorin, fighting enemies and dealing with puzzles, traps and other challenges along the way.
-      Each character has a distinct role, so collaboration will be needed to advance.
-    </p>
+  <section class='border-b bg-background' aria-labelledby='bound-hero-title'>
+    <div
+      class='mx-auto grid min-h-[calc(100svh-4rem)] max-w-7xl grid-cols-1 items-center gap-0 px-4 py-12 sm:px-6 md:grid-cols-[0.9fr_1.1fr] md:gap-8 lg:px-8'
+    >
+      <div class='mx-auto w-full max-w-2xl space-y-5 md:mx-0'>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>A dark fantasy co-op adventure game</p>
+        <h1 class='text-foreground text-4xl font-bold'>
+          Bound By Death
+        </h1>
+        <p class='text-muted-foreground max-w-xl text-lg leading-relaxed sm:text-xl'>
+          In a world where death is not the end, you must face the consequences of the past.
+        </p>
+        <nav class='flex flex-col gap-3 pt-1 sm:flex-row' aria-label='Explore Bound By Death'>
+          <a href='#story' class={buttonVariants({ size: 'lg' })}>Read the story</a>
+          <a href='#mechanics' class={buttonVariants({ variant: 'outline', size: 'lg' })}>Explore the mechanics</a>
+        </nav>
+      </div>
+      <div class='mx-auto grid w-full max-w-[39rem] place-items-center'>
+        <img
+          class='h-auto w-full object-contain drop-shadow-lg'
+          src={withBasePath('/images/DeathAndLyriel_side-by-side.png')}
+          alt='Lyriel and Death together, bound by swirling blue magic'
+          width='1920'
+          height='1920'
+          fetchpriority='high'
+          decoding='async'
+        />
+      </div>
     </div>
   </section>
 
-   <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8'>
-      <h2 class='text-foreground text-4xl font-bold'>Mechanics</h2>
-      <p class='text-muted-foreground'>
-        The core mechanic uniting the entire experience is <strong class='text-foreground'>the Bound</strong>, a shared system that links both characters and influences how they fight, move, and interact with the world.
-        Lyriel and Death are connected by it, which does not let them move away too much; if they do, they will start to weaken.
-      </p>
-      <p class='text-muted-foreground'>
-        The link between Lyriel and Death also awards them a shared ability: <strong class='text-foreground'>the shadow mark</strong>.
-        When Lyriel or Death attack an enemy, they leave a spectral mark over it; a mark that is incomplete. If both characters attack the same one, this mark is completed, and can be exploited.
-        Any strong attack can then gather souls from that foe, which are incorporated to the <strong class='text-foreground'>Death gauge</strong>.
-      </p>
-      <p class='text-muted-foreground'>
-        Filling this bar, Lyriel and Death can perform a powerful joint ability: <strong class='text-foreground'>the shadow execution</strong>. A devastating attack that deals damage to all the enemies in the current bound’s radius.
-      </p>
+  <section id='story' class='scroll-mt-24 py-16 sm:py-24' aria-labelledby='story-title'>
+    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
+      <div class='max-w-7xl space-y-3'>
+        <header class='space-y-2'>
+          <h2 id='story-title' class='text-primary text-sm font-semibold tracking-widest uppercase'>The Game</h2>
+          <p class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'>Two Heroes, One Fate</p>
+        </header>
+        <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
+          <p>
+            Bound By Death is a <strong class='text-foreground'>top-down cooperative hack 'n' slash </strong> built around fast, action-driven combat and tight interaction between the protagonists.
+            The players control Lyriel and Death, 20 years after the events of the prologue, in a world where souls can not cross to the other side.
+            Descend to the depths of the castle and confront Aelorin, fighting enemies and dealing with puzzles, traps and other challenges along the way.
+            Each character has a distinct role, so collaboration will be needed to advance.
+          </p>
+          <p>
+            If you want to learn more about the game, it's characters, enemies, how the world works and more you are in the correct page.
+          </p>
+        </div>
+      </div>
+
+      <Card className='border-primary/30 bg-card shadow-lg' aria-labelledby='chronicle-title'>
+        <CardHeader className='gap-2 border-b border-border px-6 pb-5 sm:px-8'>
+          <p class='text-primary text-xs font-semibold tracking-widest uppercase'>The story</p>
+          <h2 id='chronicle-title' class='text-foreground text-2xl leading-tight font-semibold text-balance sm:text-3xl'>
+            A Chronicle of the Binding
+          </h2>
+          <p class='text-muted-foreground font-serif text-base italic'>The price of defying death</p>
+        </CardHeader>
+        <CardContent className='space-y-5 px-6 sm:px-8'>
+          <p class='text-muted-foreground border-b border-border pb-5 font-serif text-base leading-relaxed italic'>
+            In the prosperous Elven Kingdom of Lýndoril, <strong class='text-foreground'>King Aelorin</strong> lived peacefully with his newborn daughter, <strong class='text-foreground'>Lýriel</strong>.
+            The child was celebrated as the kingdom’s future heir—until, only weeks after her birth, she fell gravely ill. The healers were unanimous: <strong class='text-foreground'>no magic known to the elves could save her</strong>. Her soul was fading, and there was nothing they could do.
+          </p>
+          <p class='text-muted-foreground border-b border-border pb-5 font-serif text-base leading-relaxed italic'>
+            Aelorin, a king-sorcerer renowned for his calm judgment, isolated himself for months inside his arcane library, poring over forbidden scrolls and attempting rituals he would never have considered in saner times.
+            One night, he uncovered an ancestral manuscript describing a forbidden ritual meant to <strong class='text-foreground'>summon and bind Death itself</strong>, using its primordial essence to sustain a failing soul. Aelorin understood exactly what the ritual was designed to do; but in his desperation to save his daughter, he chose to ignore the consequences.
+          </p>
+          <p class='text-muted-foreground border-b border-border pb-5 font-serif text-base leading-relaxed italic'>
+            On a night of violent spiritual storm, Aelorin carried the dying child into a hidden ritual chamber and invoked the spell. Death appeared—an ancient, serene, hooded figure whose presence made the very stones tremble.
+          </p>
+          <blockquote class='border-l-4 border-primary bg-muted px-4 py-3 font-serif leading-relaxed text-foreground italic'>
+            <strong>Death:</strong> “Her fate is sealed. I cannot save her.”
+          </blockquote>
+          <p class='text-muted-foreground border-b border-border pb-5 font-serif text-base leading-relaxed italic'>
+            Driven by terror and love, Aelorin repeated the forbidden incantation. The runes ignited with blinding light as arcane chains erupted from the floor, wrapping around the entity. For the first time, Death lost its balance. A violent eruption of light and shadow followed, as though both worlds collided in a single heartbeat.
+          </p>
+          <p class='text-muted-foreground font-serif text-base leading-relaxed italic'>
+            When the ritual finally subsided, <strong class='text-foreground'>Lýriel was breathing</strong>, and <strong class='text-foreground'>Death had been torn from its throne and imprisoned inside the child</strong>.
+            Aelorin had saved his daughter—and, without realizing it, had condemned the world.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </section>
+
+  <section id='mechanics' class='scroll-mt-24 border-y bg-card py-16 sm:py-24' aria-labelledby='mechanics-title'>
+    <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <header class='space-y-3'>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Combat &amp; cooperation</p>
+        <h2 id='mechanics-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>Mechanics</h2>
+      </header>
+
+      <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
+
+        <p>
+          The core mechanic uniting the entire experience is <strong class='text-foreground'>the Bound</strong>, a shared system that links both characters and influences how they fight, move, and interact with the world.
+          Lyriel and Death are connected by it, which does not let them move away too much; if they do, they will start to weaken.
+        </p>
+
+        <p>
+          The link between Lyriel and Death also awards them a shared ability: <strong class='text-foreground'>the shadow mark</strong>. When Lyriel or Death attack an enemy, they leave a spectral mark over it; a mark that is incomplete. If both characters attack the same one, this mark is completed, and can be exploited. Any strong attack can then gather souls from that foe, which are incorporated to the <strong class='text-foreground'>Death gauge</strong>.
+        </p>
+        <p>
+          Filling this bar, Lyriel and Death can perform a powerful joint ability: <strong class='text-foreground'>the shadow execution</strong>. A devastating attack that deals damage to all the enemies in the current bound’s radius.
+        </p>
+      </div>
+
+      <section class='space-y-6 pt-6' aria-labelledby='core-loop-title'>
+        <header class='space-y-3'>
+          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Loop</h3>
+        </header>
+
+        <div class='grid gap-5 lg:grid-cols-2'>
+          <Card className='bg-card'>
+            <CardContent className='space-y-4 px-6'>
+              <h3 class='text-foreground text-xl font-semibold'>Main Loop</h3>
+              <div class='text-muted-foreground space-y-4 leading-relaxed'>
+                <p>
+                  Explore a linear path, facing combat encounters and cooperative challenges. Use quieter moments to regroup, while optional routes offer brief detours before reconnecting to the main path.
+                </p>
+                <p>
+                  In combat, both players complete Shadow Marks on shared enemies, then exploit them with charged attacks to gather souls and fill the Death Gauge. Once full, they can unleash Shadow Execution. Defeat sends both players back to the latest checkpoint.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className='bg-card'>
+            <CardContent className='space-y-4 px-6'>
+              <h3 class='text-foreground text-xl font-semibold'>Environmental Cooperation</h3>
+              <p class='text-muted-foreground leading-relaxed'>
+                Work together to overcome puzzles, traps, and environmental obstacles. These challenges extend cooperation beyond combat and add variety to the journey.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section class='space-y-6 pt-6' aria-labelledby='core-loop-title'>
+        <header class='space-y-3'>
+          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Abilities</h3>
+        </header>
+
+        <p class='text-muted-foreground leading-relaxed'>
+          Bound By Death features two asymmetrical characters: Lýriel, who specializes in ranged combat, and Death, who excels in melee. Each character has a unique set of abilities designed to complement one another, encouraging players to work together seamlessly.
+        </p>
+
+        <div class="prose max-w-none overflow-x-auto">
+          <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Lýriel</h4>
+          <p class='text-muted-foreground leading-relaxed'>
+            Armed with her bow and arrows, Lyriel is an agile character, able to cover great distances quickly and jump across gaps with her dash. She is ideal for ranged attacks.
+          </p>
+          <table>
+            <caption class="sr-only">Overview of Lýriels abilities</caption>
+            <thead>
+              <tr>
+                <th scope="col">Ability</th>
+                <th scope="col">Controller</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Basic Arrow</th>
+                <td>[R1] [+ aim]</td>
+                <td>Shoots an arrow in the aimed direction.</td>
+              </tr>
+              <tr>
+                <th scope="row">Charged Arrow</th>
+                <td>[R2 hold and release]</td>
+                <td>Shoots a strong charged arrow. At full charge, it can pierce enemies in its path. It has a cooldown. </td>
+              </tr>
+              <tr>
+                <th scope="row">Arrow volley</th>
+                <td>[L2]</td>
+                <td>Fires a fan of five arrows in various directions. It has a cooldown. </td>
+              </tr>
+              <tr>
+                <th scope="row">Dash</th>
+                <td>[L1]</td>
+                <td>Quick move in the aimed direction that lets you evade attacks, as well as traverse small gaps. Can be performed up to 3 consecutive times. It has a cooldown after the three dashes. </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose max-w-none overflow-x-auto">
+          <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Death</h4>
+          <p class='text-muted-foreground leading-relaxed'>
+            Death is a heavy, but powerful melee character. Armed with its spectral scythe, it does wide arcs against its foes that can be chained. Its taunt can attract enemies nearby, useful if you want to clear the way for your partner.
+          </p>
+          <table>
+            <caption class="sr-only">Overview of Lýriels abilities</caption>
+            <thead>
+              <tr>
+                <th scope="col">Ability</th>
+                <th scope="col">Controller</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Basic Scythe</th>
+                <td>[R1] </td>
+                <td>Does an arc with its scythe in the aimed direction. Can be chained up to 3 times for combos. </td>
+              </tr>
+              <tr>
+                <th scope="row">Circular scythe</th>
+                <td>[R2 hold and release]</td>
+                <td>Does a circular attack with its scythe. Can be performed 2 consecutive times. At full charge, it does moderate damage. It has a cooldown.</td>
+              </tr>
+              <tr>
+                <th scope="row">Taunt</th>
+                <td>[L2]</td>
+                <td>Roar that draws with shakels nearby enemies within the aimed range while dealing some damage. It has a cooldown. Useful for deflecting attention from Lyriel.</td>
+              </tr>
+              <tr>
+                <th scope="row">Dash</th>
+                <td>[L1]</td>
+                <td>Quick move in the aimed direction that damages all the enemies that it touches. Unlike Lyriel’s, it can not be chained. It has a cooldown. </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </div>
   </section>
 </Layout>
