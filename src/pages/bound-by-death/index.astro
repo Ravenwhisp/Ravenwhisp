@@ -102,7 +102,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         <h2 id='mechanics-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>Gameplay Mechanics &amp Experience</h2>
       </header>
       <header class='space-y-3'>
-        <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Mechanics</h3>
+        <h3 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Mechanics</h3>
       </header>
       <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
 
@@ -150,9 +150,9 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         </div>
       </section>
 
-      <section class='space-y-6 pt-6' aria-labelledby='core-loop-title'>
+      <section class='space-y-6 pt-6' aria-labelledby='characters-abilities-title'>
         <header class='space-y-3'>
-          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Characters &amp Abilities</h3>
+          <h3 id='characters-abilities-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Characters &amp Abilities</h3>
         </header>
 
         <p class='text-muted-foreground leading-relaxed'>
@@ -160,7 +160,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         </p>
 
         <div class="prose max-w-none overflow-x-auto">
-          <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Lýriel</h4>
+          <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Lýriel</h4>
           <p class='text-muted-foreground leading-relaxed'>
             Armed with her bow and arrows, Lyriel is an agile character, able to cover great distances quickly and jump across gaps with her dash. She is ideal for ranged attacks.
           </p>
@@ -199,7 +199,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         </div>
 
         <div class="prose max-w-none overflow-x-auto">
-          <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Death</h4>
+          <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Death</h4>
           <p class='text-muted-foreground leading-relaxed'>
             Death is a heavy, but powerful melee character. Armed with its spectral scythe, it does wide arcs against its foes that can be chained. Its taunt can attract enemies nearby, useful if you want to clear the way for your partner.
           </p>
@@ -238,7 +238,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         </div>
       </section>
       <div class="prose max-w-none overflow-x-auto">
-        <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Shadow Execution</h4>
+        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Shadow Execution</h4>
         <p class='text-muted-foreground leading-relaxed'>
           This joint ability has to be activated by both characters, and requires a full death gauge to be used. The death gauge is a bar that is visible at all times on the lower side of the screen, and that is filled by exploiting shadow marks.
         </p>
@@ -278,7 +278,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
           </div>
       </div>
       <div class="prose max-w-none overflow-x-auto">
-        <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Targeting system</h4>
+        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Targeting system</h4>
         <p class='text-muted-foreground leading-relaxed'>
           The aim system is different depending on the character used:
         </p>
@@ -305,7 +305,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         </div>
       </div>
       <div class="prose max-w-none overflow-x-auto">
-        <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Healing &amp recovery</h4>
+        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Healing &amp recovery</h4>
         <div class='grid gap-5 lg:grid-cols-2'>
          <div class='mx-auto grid w-full max-w-[18rem] place-items-center md:max-w-[18rem]'>
             <img
@@ -326,6 +326,47 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
               You can recover health by collecting health orbs, left by the defeated enemies or found scattered within destructible objects of the scenery.
             </p>
           </div>
+        </div>
+      </div>
+      <div class="prose max-w-none overflow-x-auto">
+        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>The shadow mark beyond combat</h4>
+        <div class='grid gap-5 lg:grid-cols-2'>
+          <div class='prose max-w-none overflow-x-auto'>
+            <p>
+              The shadow mark can also be applied to certain objects, to activate certain mechanisms or solving puzzles.
+            </p>
+          </div>
+          <div class='mx-auto grid w-full max-w-[24rem] place-items-center md:max-w-[30rem]'>
+            <img
+              class='h-auto w-full object-contain drop-shadow-lg'
+              src={withBasePath('/images/bound-by-death/puzzle.png')}
+              alt='Lyriel and Death together, bound by swirling blue magic'
+              width='949'
+              height='559'
+              fetchpriority='high'
+              decoding='async'
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class='space-y-6 pt-6' aria-labelledby='world-lore-title'>
+    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
+      <div class='max-w-7xl space-y-3'>
+        <header class='space-y-2'>
+          <h2 id='world-lore-title' class='text-primary text-sm font-semibold tracking-widest uppercase'>A KINGDOM LOST TO ITS PAST</h2>
+          <p class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'>World &amp Lore</p>
+        </header>
+       <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
+           <h3 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Enviroment</h2>
+          <p>
+            The game takes place within the royal castle of Lýndoril, the capital of the elven kingdom. The world Lýriel knows… or believed she knew.
+            The castle’s locations are inspired by dark fantasy tales, with a stylished look, combined with elements from medieval castles, especially in the upper floors.
+          </p>
+          <p>
+            As we descend through the castle, the ambience becomes darker, and hints from the past are slowly revealed; parts of the history of the kingdom, and what happened in the last 20 years.
+          </p>
         </div>
       </div>
     </div>
