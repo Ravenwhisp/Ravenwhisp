@@ -2,10 +2,81 @@
 import Layout from '@/layouts/Layout.astro'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Bound By Death'
 const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
+
+const lyrielAbilities = [
+  {
+    name: 'Basic Arrow',
+    key: 'RB-key.png',
+    keyLabel: 'RB',
+    controlNote: 'Aim',
+    image: 'lyriel-basic-arrow.gif',
+    imageAlt: 'Lýriel firing a basic arrow'
+  },
+  {
+    name: 'Charged Arrow',
+    key: 'RT-key.png',
+    keyLabel: 'RT',
+    controlNote: 'Hold and release',
+    image: 'lyriel-charged-arrow.gif',
+    imageAlt: 'Lýriel charging and firing an arrow'
+  },
+  {
+    name: 'Arrow Volley',
+    key: 'Lt-key.png',
+    keyLabel: 'LT',
+    controlNote: '',
+    image: 'lyriel-arrow-voleey.gif',
+    imageAlt: 'Lýriel firing a volley of arrows'
+  },
+  {
+    name: 'Dash',
+    key: 'LB-key.png',
+    keyLabel: 'LB',
+    controlNote: '',
+    image: 'lyriel-dash.gif',
+    imageAlt: 'Lýriel dashing across the battlefield'
+  }
+]
+
+const deathAbilities = [
+  {
+    name: 'Basic Scythe',
+    key: 'RB-key.png',
+    keyLabel: 'RB',
+    controlNote: '',
+    image: 'death-basic-scythe.gif',
+    imageAlt: 'Death attacking with a basic scythe swing'
+  },
+  {
+    name: 'Circular Scythe',
+    key: 'RT-key.png',
+    keyLabel: 'RT',
+    controlNote: 'Hold and release',
+    image: 'death-cyrcular-scythe.gif',
+    imageAlt: 'Death performing a circular scythe attack'
+  },
+  {
+    name: 'Taunt',
+    key: 'Lt-key.png',
+    keyLabel: 'LT',
+    controlNote: '',
+    image: 'death-taunt.gif',
+    imageAlt: 'Death using a taunt to draw nearby enemies'
+  },
+  {
+    name: 'Dash',
+    key: 'LB-key.png',
+    keyLabel: 'LB',
+    controlNote: '',
+    image: 'death-dash.gif',
+    imageAlt: 'Death dashing through enemies'
+  }
+]
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -96,38 +167,36 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
   </section>
 
   <section id='mechanics' class='scroll-mt-24 border-y bg-card py-16 sm:py-24' aria-labelledby='mechanics-title'>
-    <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
       <header class='space-y-3'>
-        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>THE HEART OF THE EXPERIENCE</p>
-        <h2 id='mechanics-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>Gameplay Mechanics &amp Experience</h2>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>The heart of the experience</p>
+        <h2 id='mechanics-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>
+          Gameplay Mechanics &amp; Experience
+        </h2>
       </header>
-      <header class='space-y-3'>
-        <h3 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Mechanics</h3>
-      </header>
-      <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
 
-        <p>
-          The core mechanic of Bound By Death is <strong class='text-foreground'>the Bound</strong>, a shared system that links both characters and influences how they fight, move, and interact with the world.
-          Lyriel and Death are connected by it, which does not let them move away too much; if they do, they will start to weaken.
-        </p>
+      <section class='space-y-5' aria-labelledby='core-mechanics-title'>
+        <h3 id='core-mechanics-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Mechanics</h3>
+        <div class='space-y-4 text-muted-foreground leading-relaxed'>
+          <p>
+            The core mechanic of Bound By Death is <strong class='text-foreground'>the Bound</strong>, a shared system that links both characters and influences how they fight, move, and interact with the world.
+            Lýriel and Death are connected by it and cannot move too far apart; if they do, they begin to weaken.
+          </p>
+          <p>
+            The link also grants them a shared ability: <strong class='text-foreground'>the shadow mark</strong>. When either character attacks an enemy, they leave an incomplete spectral mark. If both attack the same enemy, the mark is completed and can be exploited with a strong attack to gather souls for the <strong class='text-foreground'>Death Gauge</strong>.
+          </p>
+          <p>
+            Once the gauge is full, Lýriel and Death can perform <strong class='text-foreground'>Shadow Execution</strong>, a powerful joint attack that damages enemies within the Bound’s radius.
+          </p>
+        </div>
+      </section>
 
-        <p>
-          The link between Lyriel and Death also awards them a shared ability: <strong class='text-foreground'>the shadow mark</strong>. When Lyriel or Death attack an enemy, they leave a spectral mark over it; a mark that is incomplete. If both characters attack the same one, this mark is completed, and can be exploited. Any strong attack can then gather souls from that foe, which are incorporated to the <strong class='text-foreground'>Death gauge</strong>.
-        </p>
-        <p>
-          Filling this bar, Lyriel and Death can perform a powerful joint ability: <strong class='text-foreground'>the shadow execution</strong>. A devastating attack that deals damage to all the enemies in the current bound’s radius.
-        </p>
-      </div>
-
-      <section class='space-y-6 pt-6' aria-labelledby='core-loop-title'>
-        <header class='space-y-3'>
-          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Gameplay Loop</h3>
-        </header>
-
+      <section class='space-y-6' aria-labelledby='gameplay-loop-title'>
+        <h3 id='gameplay-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Gameplay Loop</h3>
         <div class='grid gap-5 lg:grid-cols-2'>
-          <Card className='bg-card'>
+          <Card className='bg-background'>
             <CardContent className='space-y-4 px-6'>
-              <h3 class='text-foreground text-xl font-semibold'>Main Loop</h3>
+              <h4 class='text-foreground text-xl font-semibold'>Main Loop</h4>
               <div class='text-muted-foreground space-y-4 leading-relaxed'>
                 <p>
                   Explore a linear path, facing combat encounters and cooperative challenges. Use quieter moments to regroup, while optional routes offer brief detours before reconnecting to the main path.
@@ -138,10 +207,9 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
               </div>
             </CardContent>
           </Card>
-
-          <Card className='bg-card'>
+          <Card className='bg-background'>
             <CardContent className='space-y-4 px-6'>
-              <h3 class='text-foreground text-xl font-semibold'>Environmental Cooperation</h3>
+              <h4 class='text-foreground text-xl font-semibold'>Environmental Cooperation</h4>
               <p class='text-muted-foreground leading-relaxed'>
                 Work together to overcome puzzles, traps, and environmental obstacles. These challenges extend cooperation beyond combat and add variety to the journey.
               </p>
@@ -150,225 +218,528 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
         </div>
       </section>
 
-      <section class='space-y-6 pt-6' aria-labelledby='characters-abilities-title'>
+      <section class='space-y-6' aria-labelledby='characters-abilities-title'>
         <header class='space-y-3'>
-          <h3 id='characters-abilities-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Characters &amp Abilities</h3>
+          <h3 id='characters-abilities-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>
+            Characters &amp; Abilities
+          </h3>
+          <p class='text-muted-foreground leading-relaxed'>
+            Lýriel specializes in ranged combat, while Death excels in melee. Their distinct abilities are designed to complement one another and reward cooperation.
+          </p>
         </header>
 
-        <p class='text-muted-foreground leading-relaxed'>
-          Bound By Death features two asymmetrical characters: Lýriel, who specializes in ranged combat, and Death, who excels in melee. Each character has a unique set of abilities designed to complement one another, encouraging players to work together seamlessly.
-        </p>
+        <Card className='bg-background'>
+          <CardHeader>
+            <h4 class='text-foreground text-xl font-semibold'>Lýriel</h4>
+            <p class='text-muted-foreground leading-relaxed'>
+              Armed with her bow and arrows, Lýriel is agile and can cover great distances or jump across gaps with her dash. She is ideal for ranged attacks.
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div class='prose max-w-none overflow-x-auto'>
+              <table class='my-0 w-full min-w-[44rem]'>
+                <caption class='sr-only'>Lýriel’s abilities, controller inputs, and descriptions</caption>
+                <thead>
+                  <tr>
+                    <th scope='col'>Ability</th>
+                    <th scope='col'>Controller</th>
+                    <th scope='col'>Description &amp; preview</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lyrielAbilities.map((ability) => (
+                    <tr>
+                      <th scope='row' class='whitespace-nowrap'>{ability.name}</th>
+                      <td class='whitespace-nowrap'>
+                        <span class='inline-flex items-center gap-2'>
+                          <img
+                            class='h-8 w-auto rounded-none'
+                            src={withBasePath(`/images/bound-by-death/${ability.key}`)}
+                            alt={`${ability.keyLabel} controller button`}
+                            width='78'
+                            height='44'
+                            loading='lazy'
+                            decoding='async'
+                          />
+                          {ability.controlNote && <span>{ability.controlNote}</span>}
+                        </span>
+                      </td>
+                      <td>
+                        <div class='flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center'>
+                          <p class='mb-0 min-w-48 flex-1'>
+                            {ability.name === 'Basic Arrow' && 'Shoots an arrow in the aimed direction.'}
+                            {ability.name === 'Charged Arrow' &&
+                              'Shoots a powerful charged arrow that can pierce enemies at full charge. It has a cooldown.'}
+                            {ability.name === 'Arrow Volley' &&
+                              'Fires a fan of five arrows in different directions. It has a moderate cooldown.'}
+                            {ability.name === 'Dash' &&
+                              'Evades attacks and crosses small gaps. Can be performed up to three times in a row before its cooldown.'}
+                          </p>
+                          <img
+                            class='h-auto w-32 shrink-0 rounded-md border border-border object-contain sm:w-36'
+                            src={withBasePath(`/images/bound-by-death/${ability.image}`)}
+                            alt={ability.imageAlt}
+                            width='800'
+                            height='450'
+                            loading='lazy'
+                            decoding='async'
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
 
-        <div class="prose max-w-none overflow-x-auto">
-          <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Lýriel</h4>
-          <p class='text-muted-foreground leading-relaxed'>
-            Armed with her bow and arrows, Lyriel is an agile character, able to cover great distances quickly and jump across gaps with her dash. She is ideal for ranged attacks.
-          </p>
-          <table>
-            <caption class="sr-only">Overview of Lýriels abilities</caption>
-            <thead>
-              <tr>
-                <th scope="col">Ability</th>
-                <th scope="col">Controller</th>
-                <th scope="col">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Basic Arrow</th>
-                <td>[R1] [+ aim]</td>
-                <td>Shoots an arrow in the aimed direction.</td>
-              </tr>
-              <tr>
-                <th scope="row">Charged Arrow</th>
-                <td>[R2 hold and release]</td>
-                <td>Shoots a strong charged arrow. At full charge, it can pierce enemies in its path. It has a cooldown. </td>
-              </tr>
-              <tr>
-                <th scope="row">Arrow volley</th>
-                <td>[L2]</td>
-                <td>Fires a fan of five arrows in various directions. It has a cooldown. </td>
-              </tr>
-              <tr>
-                <th scope="row">Dash</th>
-                <td>[L1]</td>
-                <td>Quick move in the aimed direction that lets you evade attacks, as well as traverse small gaps. Can be performed up to 3 consecutive times. It has a cooldown after the three dashes. </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="prose max-w-none overflow-x-auto">
-          <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Death</h4>
-          <p class='text-muted-foreground leading-relaxed'>
-            Death is a heavy, but powerful melee character. Armed with its spectral scythe, it does wide arcs against its foes that can be chained. Its taunt can attract enemies nearby, useful if you want to clear the way for your partner.
-          </p>
-          <table>
-            <caption class="sr-only">Overview of Death abilities</caption>
-            <thead>
-              <tr>
-                <th scope="col">Ability</th>
-                <th scope="col">Controller</th>
-                <th scope="col">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Basic Scythe</th>
-                <td>[R1] </td>
-                <td>Does an arc with its scythe in the aimed direction. Can be chained up to 3 times for combos. </td>
-              </tr>
-              <tr>
-                <th scope="row">Circular scythe</th>
-                <td>[R2 hold and release]</td>
-                <td>Does a circular attack with its scythe. Can be performed 2 consecutive times. At full charge, it does moderate damage. It has a cooldown.</td>
-              </tr>
-              <tr>
-                <th scope="row">Taunt</th>
-                <td>[L2]</td>
-                <td>Roar that draws with shakels nearby enemies within the aimed range while dealing some damage. It has a cooldown. Useful for deflecting attention from Lyriel.</td>
-              </tr>
-              <tr>
-                <th scope="row">Dash</th>
-                <td>[L1]</td>
-                <td>Quick move in the aimed direction that damages all the enemies that it touches. Unlike Lyriel’s, it can not be chained. It has a cooldown. </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Card className='bg-background'>
+          <CardHeader>
+            <h4 class='text-foreground text-xl font-semibold'>Death</h4>
+            <p class='text-muted-foreground leading-relaxed'>
+              Death is a heavy but powerful melee fighter. Its spectral scythe makes wide, chainable attacks, and its taunt can draw nearby enemies away from Lýriel.
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div class='prose max-w-none overflow-x-auto'>
+              <table class='my-0 w-full min-w-[44rem]'>
+                <caption class='sr-only'>Death’s abilities, controller inputs, and descriptions</caption>
+                <thead>
+                  <tr>
+                    <th scope='col'>Ability</th>
+                    <th scope='col'>Controller</th>
+                    <th scope='col'>Description &amp; preview</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {deathAbilities.map((ability) => (
+                    <tr>
+                      <th scope='row' class='whitespace-nowrap'>{ability.name}</th>
+                      <td class='whitespace-nowrap'>
+                        <span class='inline-flex items-center gap-2'>
+                          <img
+                            class='h-8 w-auto rounded-none'
+                            src={withBasePath(`/images/bound-by-death/${ability.key}`)}
+                            alt={`${ability.keyLabel} controller button`}
+                            width='78'
+                            height='44'
+                            loading='lazy'
+                            decoding='async'
+                          />
+                          {ability.controlNote && <span>{ability.controlNote}</span>}
+                        </span>
+                      </td>
+                      <td>
+                        <div class='flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center'>
+                          <p class='mb-0 min-w-48 flex-1'>
+                            {ability.name === 'Basic Scythe' &&
+                              'Swings the scythe in an arc and can be chained up to three times for combos.'}
+                            {ability.name === 'Circular Scythe' &&
+                              'Performs a circular scythe attack, usable twice in succession. A fully charged attack deals moderate damage and has a cooldown.'}
+                            {ability.name === 'Taunt' &&
+                              'A roar that draws enemies within the aimed range for five seconds. It has a moderate cooldown and helps divert attention from Lýriel.'}
+                            {ability.name === 'Dash' &&
+                              'Moves in the aimed direction and damages enemies touched. Unlike Lýriel’s dash, it cannot be chained and has a cooldown.'}
+                          </p>
+                          <img
+                            class='h-auto w-32 shrink-0 rounded-md border border-border object-contain sm:w-36'
+                            src={withBasePath(`/images/bound-by-death/${ability.image}`)}
+                            alt={ability.imageAlt}
+                            width='800'
+                            height='450'
+                            loading='lazy'
+                            decoding='async'
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
       </section>
-      <div class="prose max-w-none overflow-x-auto">
-        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Shadow Execution</h4>
-        <p class='text-muted-foreground leading-relaxed'>
-          This joint ability has to be activated by both characters, and requires a full death gauge to be used. The death gauge is a bar that is visible at all times on the lower side of the screen, and that is filled by exploiting shadow marks.
-        </p>
-        <p class='text-muted-foreground leading-relaxed'>
-          When launched, generates an impact that affects all foes surrounding the bound radius, the visible line that links both characters. Since the area depends on this line, positioning is key to make the most of it.
-        </p>
-        <p class='text-muted-foreground leading-relaxed'>
-          The impact that enemies receive depends on each case: enemies with 20% health are executed instantly, while others lose around 10% health. Major enemies are more resistant, losing around 5%.
-        </p>
-        <table>
-          <caption class="sr-only">Overview of Shadow execution</caption>
-          <thead>
-            <tr>
-              <th scope="col">Ability</th>
-              <th scope="col">Controller</th>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Shadow Execution</th>
-              <td>[X] or [Y]</td>
-              <td>Creates and expostion between both characters. To use, the bar has to be full.</td>
-            </tr>
-          </tbody>
-        </table>
-           <div class='mx-auto grid w-full place-items-center '>
+
+      <section class='space-y-5' aria-labelledby='shadow-execution-title'>
+        <h3 id='shadow-execution-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>
+          Shadow Execution: Shared Ability
+        </h3>
+        <div class='space-y-4 text-muted-foreground leading-relaxed'>
+          <p>
+            Both characters must activate this joint ability while the Death Gauge is full. The gauge remains visible at the bottom of the screen and fills by exploiting Shadow Marks.
+          </p>
+          <p>
+            Shadow Execution affects foes around the Bound, the visible line linking the characters, so positioning matters. Enemies at or below 20% health are executed instantly; other enemies lose around 10% health, while major enemies lose around 5%.
+          </p>
+        </div>
+        <Card className='bg-background'>
+         <CardHeader>
+            <h4 class='text-foreground text-xl font-semibold'>Shadow Execution</h4>
+            <p class='text-muted-foreground leading-relaxed'>
+             This ability shows the power they have together.
+            </p>
+          </CardHeader>
+          <CardContent className='space-y-5 px-6'>
+            <div class='prose max-w-none overflow-x-auto'>
+              <table class='my-0 w-full min-w-[44rem]'>
+                <caption class='sr-only'>Shadow Execution ability, controller inputs, and effect</caption>
+                <thead>
+                  <tr>
+                    <th scope='col'>Ability</th>
+                    <th scope='col'>Controller</th>
+                    <th scope='col'>Description &amp; preview</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope='row' class='whitespace-nowrap'>Shadow Execution</th>
+                    <td class='whitespace-nowrap'>
+                      <span class='inline-flex items-center gap-3'>
+                        <img
+                          class='h-8 w-8 rounded-none'
+                          src={withBasePath('/images/bound-by-death/triangle-key.png')}
+                          alt='Triangle controller button'
+                          width='64'
+                          height='64'
+                          loading='lazy'
+                          decoding='async'
+                        />
+                        <span aria-hidden='true'>or</span>
+                        <img
+                          class='h-8 w-8 rounded-none'
+                          src={withBasePath('/images/bound-by-death/y-key.png')}
+                          alt='Y controller button'
+                          width='64'
+                          height='64'
+                          loading='lazy'
+                          decoding='async'
+                        />
+                      </span>
+                    </td>
+                    <td>
+                      <p class='mb-0'>
+                        Both players activate with a full Death Gauge to damage foes around the Bound. Enemies at or below 20% health are executed; others lose around 10%, and major enemies around 5%.
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <img
-              class='h-auto w-full object-contain drop-shadow-lg'
+              class='mx-auto h-auto w-full max-w-xl rounded-lg border border-border bg-muted object-contain'
               src={withBasePath('/images/bound-by-death/shadow-bar.png')}
-              alt='Lyriel and Death together, bound by swirling blue magic'
+              alt='The Death Gauge shown as a segmented bar'
               width='555'
               height='71'
-              fetchpriority='high'
+              loading='lazy'
+              decoding='async'
+            />
+          </CardContent>
+        </Card>
+      </section>
+
+      <section class='space-y-5' aria-labelledby='targeting-title'>
+        <h3 id='targeting-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Targeting System</h3>
+        <div class='grid gap-5 lg:grid-cols-2'>
+          <Card className='bg-background'>
+            <CardContent className='space-y-3 px-6'>
+              <h4 class='text-foreground text-xl font-semibold'>Death</h4>
+              <p class='text-muted-foreground leading-relaxed'>
+                Attacks in the direction of movement when no targets are close. Otherwise, auto-aim activates, and the right stick can be used to change targets.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className='bg-background'>
+            <CardContent className='space-y-3 px-6'>
+              <h4 class='text-foreground text-xl font-semibold'>Lýriel</h4>
+              <p class='text-muted-foreground leading-relaxed'>
+                Manually aims with the right stick when no targets are close; otherwise, auto-aim activates and the stick changes the target. Charged Arrows and Arrow Volley always use manual aim.
+              </p>
+              <img
+                class='h-auto w-full max-w-xs rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/lyriel-aim.png')}
+                alt='Lýriel aiming an arrow with the directional reticle'
+                width='196'
+                height='164'
+                loading='lazy'
+                decoding='async'
+              />
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section class='space-y-5' aria-labelledby='healing-title'>
+        <h3 id='healing-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Healing &amp; Recovery</h3>
+        <div class='grid items-center gap-5 md:grid-cols-[10rem_1fr]'>
+          <img
+            class='mx-auto h-auto w-28 object-contain'
+            src={withBasePath('/images/bound-by-death/health-orb.png')}
+            alt='A health orb dropped by an enemy'
+            width='109'
+            height='97'
+            loading='lazy'
+            decoding='async'
+          />
+          <div class='space-y-3 text-muted-foreground leading-relaxed'>
+            <p>
+              If a character weakens, it faints and gets back up after some time. The other player can shorten this time by standing beside them. If both characters fall, it is game over.
+            </p>
+            <p>
+              Recover health by collecting orbs left by defeated enemies or found inside destructible objects in the scenery.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class='space-y-5' aria-labelledby='shadow-mark-puzzles-title'>
+        <h3 id='shadow-mark-puzzles-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>
+          The Shadow Mark Beyond Combat
+        </h3>
+        <div class='grid items-center gap-5 lg:grid-cols-2'>
+          <p class='text-muted-foreground leading-relaxed'>
+            Shadow Marks can also be applied to certain objects to activate mechanisms and solve puzzles, bringing the characters’ shared ability into environmental challenges.
+          </p>
+          <div class='flex items-center justify-center'>
+            <img
+              class='h-auto w-full max-w-lg rounded-lg border border-border object-contain'
+              src={withBasePath('/images/bound-by-death/puzzle.png')}
+              alt='A castle puzzle area with a mechanism to solve'
+              width='949'
+              height='559'
+              loading='lazy'
               decoding='async'
             />
           </div>
-      </div>
-      <div class="prose max-w-none overflow-x-auto">
-        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Targeting system</h4>
-        <p class='text-muted-foreground leading-relaxed'>
-          The aim system is different depending on the character used:
-        </p>
-        <div class='grid gap-5 lg:grid-cols-2'>
-          <Card className='bg-card'>
-            <CardContent className='space-y-4 px-6'>
-              <h3 class='text-foreground text-xl font-semibold'>Death</h3>
-              <div class='text-muted-foreground space-y-4 leading-relaxed'>
-                <p>
-                 Attacks in the direction of movement when there are no targets close; otherwise, auto aim is activated, and you can use the right stick to change target.
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class='border-b bg-background py-16 sm:py-24' aria-labelledby='world-lore-title'>
+    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
+      <header class='space-y-3'>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>A kingdom lost to its past</p>
+        <h2 id='world-lore-title' class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'>
+          World &amp; Lore
+        </h2>
+      </header>
+
+      <section class='space-y-5' aria-labelledby='environment-title'>
+        <h3 id='environment-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Environment</h3>
+        <div class='space-y-4 text-muted-foreground leading-relaxed'>
+          <p>
+            The game takes place within the royal castle of Lýndoril, capital of the elven kingdom—the world Lýriel knows, or believed she knew. Its locations draw on dark fantasy and medieval castle architecture, especially in the upper floors.
+          </p>
+          <p>
+            As the heroes descend through the castle, the atmosphere grows darker and clues about the kingdom’s history and the events of the last 20 years emerge.
+          </p>
+        </div>
+      </section>
+
+      <section class='space-y-6' aria-labelledby='main-characters-title'>
+        <h3 id='main-characters-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Main Characters</h3>
+        <div class='grid gap-5 md:grid-cols-2'>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-5 px-6 sm:grid-cols-[8rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto aspect-square w-32 rounded-full border border-border object-cover'
+                src={withBasePath('/images/bound-by-death/lyriel-face.png')}
+                alt='Portrait of Lýriel, heir to the throne of Lýndoril'
+                width='180'
+                height='180'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Lýriel</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  Heir to the throne of Lýndoril, Lýriel has always felt that something within her did not belong. On a fateful day, Death appeared to her—the beginning of a journey to uncover the truth inside her.
                 </p>
               </div>
             </CardContent>
           </Card>
-
-          <Card className='bg-card'>
-            <CardContent className='space-y-4 px-6'>
-              <h3 class='text-foreground text-xl font-semibold'>Lýriel</h3>
-              <p class='text-muted-foreground leading-relaxed'>
-                Manually aims with the right stick when there are no targets close; otherwise, auto aim is activated, and you can use the stick to change target. The exceptions are the charged attack and arrow volley: these have manual aim, regardless of if there are targets or not.
-              </p>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-5 px-6 sm:grid-cols-[8rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto aspect-square w-32 rounded-full border border-border object-cover'
+                src={withBasePath('/images/bound-by-death/death-face.png')}
+                alt='Portrait of Death, the ancient entity bound to Lýriel'
+                width='180'
+                height='180'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Death</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  A calm, ancient entity, Death was trapped inside Lýriel for 20 years by a forbidden ritual. Now the seal has broken, Death must guide her in amending the mistakes of the past.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-5 px-6 sm:grid-cols-[8rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto aspect-square w-32 rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/Aerolin.png')}
+                alt='Aelorin, king of Lýndoril'
+                width='248'
+                height='251'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Aelorin</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  Lýriel’s father, the king and a powerful sorcerer, invoked a forbidden spell 20 years ago to save her and condemned the world. The broken seal has freed Death and left Aelorin in despair; he will stop at nothing to keep his daughter alive, even if it costs his kingdom and humanity.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-5 px-6 sm:grid-cols-[8rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto aspect-square w-32 rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/arthur.png')}
+                alt='Arthur, the king’s finest soldier transformed into a bear'
+                width='672'
+                height='582'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Arthur</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  The king’s finest soldier was transformed into a bear after discovering the ritual, as punishment and to make him obey. He guards the throne room and holds the keys to the main hall, preventing Lýriel and Death from following the king into the dungeons.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
-      </div>
-      <div class="prose max-w-none overflow-x-auto">
-        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Healing &amp recovery</h4>
-        <div class='grid gap-5 lg:grid-cols-2'>
-         <div class='mx-auto grid w-full max-w-[18rem] place-items-center md:max-w-[18rem]'>
-            <img
-              class='h-auto w-full object-contain drop-shadow-lg'
-              src={withBasePath('/images/bound-by-death/health-orb.png')}
-              alt='Lyriel and Death together, bound by swirling blue magic'
-              width='109'
-              height='97'
-              fetchpriority='high'
-              decoding='async'
-            />
-          </div>
-          <div class='prose max-w-none overflow-x-auto'>
-            <p>
-              If a character weakens, it will faint, and will get up again after some time. This time can be reduced if the other player stands next to it. If both characters fall, it is game over.
-            </p>
-            <p>
-              You can recover health by collecting health orbs, left by the defeated enemies or found scattered within destructible objects of the scenery.
-            </p>
-          </div>
+      </section>
+
+      <section class='space-y-6' aria-labelledby='enemies-title'>
+        <h3 id='enemies-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Enemies</h3>
+        <div class='grid gap-5 md:grid-cols-2'>
+          <Card className='h-full bg-card'>
+            <CardContent className='space-y-4 px-6'>
+              <div class='flex flex-wrap items-center gap-4'>
+                <img
+                  class='h-24 w-24 rounded-lg border border-border object-contain'
+                  src={withBasePath('/images/bound-by-death/paladin.png')}
+                  alt='An armored paladin serving as a castle guard'
+                  width='168'
+                  height='184'
+                  loading='lazy'
+                  decoding='async'
+                />
+                <img
+                  class='h-24 w-24 rounded-lg border border-border object-contain'
+                  src={withBasePath('/images/bound-by-death/paladin-commoner.png')}
+                  alt='A commoner-form castle guard'
+                  width='202'
+                  height='214'
+                  loading='lazy'
+                  decoding='async'
+                />
+                <h4 class='text-foreground text-xl font-semibold'>Paladins</h4>
+              </div>
+              <p class='text-muted-foreground leading-relaxed'>
+                The castle guards’ knights have been ordered to stop Lýriel. They believe the dark figure beside her is an unnatural threat that must be contained—or eliminated—before it harms the princess or the castle.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-4 px-6 sm:grid-cols-[7rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto h-28 w-28 rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/archer.png')}
+                alt='An archer from the royal army'
+                width='168'
+                height='144'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Archers</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  A division of the royal army specialized in bows and arrows. They focus on ranged combat and try to keep their distance.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-4 px-6 sm:grid-cols-[7rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto h-28 w-28 rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/brood-spider.png')}
+                alt='A small brood spider from the catacombs'
+                width='95'
+                height='88'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Brood Spiders</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  Native vermin of the catacombs, these small, carapaced creatures nest in cracks among the bone piles. Lost souls reaching into their nests cause them to respond.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className='h-full bg-card'>
+            <CardContent className='grid gap-4 px-6 sm:grid-cols-[7rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto h-28 w-28 rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/skeleton.png')}
+                alt='A skeleton of a fallen soldier'
+                width='122'
+                height='106'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Skeletons</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  Souls of fallen soldiers who could not cross over while Death was bound to Lýriel. They act by reflex, not choice, and rise again after defeat unless finished off.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className='h-full bg-card md:col-span-2'>
+            <CardContent className='grid gap-4 px-6 sm:grid-cols-[7rem_1fr] sm:items-start'>
+              <img
+                class='mx-auto h-28 w-28 rounded-lg border border-border object-contain'
+                src={withBasePath('/images/bound-by-death/summoner.png')}
+                alt='A hooded summoner carrying a staff'
+                width='165'
+                height='183'
+                loading='lazy'
+                decoding='async'
+              />
+              <div class='space-y-2'>
+                <h4 class='text-foreground text-xl font-semibold'>Summoners</h4>
+                <p class='text-muted-foreground leading-relaxed'>
+                  Souls trapped in the catacombs until their forms collapsed into hooded, staff-bearing figures. They can summon spiders, whose nests answer their presence.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-      <div class="prose max-w-none overflow-x-auto">
-        <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>The shadow mark beyond combat</h4>
-        <div class='grid gap-5 lg:grid-cols-2'>
-          <div class='prose max-w-none overflow-x-auto'>
-            <p>
-              The shadow mark can also be applied to certain objects, to activate certain mechanisms or solving puzzles.
-            </p>
-          </div>
-          <div class='mx-auto grid w-full max-w-[24rem] place-items-center md:max-w-[30rem]'>
-            <img
-              class='h-auto w-full object-contain drop-shadow-lg'
-              src={withBasePath('/images/bound-by-death/puzzle.png')}
-              alt='Lyriel and Death together, bound by swirling blue magic'
-              width='949'
-              height='559'
-              fetchpriority='high'
-              decoding='async'
-            />
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   </section>
-  <section class='space-y-6 pt-6' aria-labelledby='world-lore-title'>
-    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
-      <div class='max-w-7xl space-y-3'>
-        <header class='space-y-2'>
-          <h2 id='world-lore-title' class='text-primary text-sm font-semibold tracking-widest uppercase'>A KINGDOM LOST TO ITS PAST</h2>
-          <p class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'>World &amp Lore</p>
-        </header>
-       <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
-           <h3 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Enviroment</h2>
-          <p>
-            The game takes place within the royal castle of Lýndoril, the capital of the elven kingdom. The world Lýriel knows… or believed she knew.
-            The castle’s locations are inspired by dark fantasy tales, with a stylished look, combined with elements from medieval castles, especially in the upper floors.
-          </p>
-          <p>
-            As we descend through the castle, the ambience becomes darker, and hints from the past are slowly revealed; parts of the history of the kingdom, and what happened in the last 20 years.
-          </p>
-        </div>
-      </div>
+
+  <section class='border-y bg-card py-16 sm:py-24' aria-labelledby='walkthrough-title'>
+    <div class='mx-auto max-w-5xl space-y-6 px-4 sm:px-6 lg:px-8'>
+      <header class='space-y-3'>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>See the journey</p>
+        <h2 id='walkthrough-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>Walkthrough</h2>
+      </header>
+      <BlogYouTube url='https://youtu.be/nHLmDxxSX4s?si=6ufbiSbVGAj2XWKB' title='Bound By Death walkthrough' />
     </div>
   </section>
 </Layout>
