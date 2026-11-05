@@ -98,14 +98,16 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
   <section id='mechanics' class='scroll-mt-24 border-y bg-card py-16 sm:py-24' aria-labelledby='mechanics-title'>
     <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
       <header class='space-y-3'>
-        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Combat &amp; cooperation</p>
-        <h2 id='mechanics-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>Mechanics</h2>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>THE HEART OF THE EXPERIENCE</p>
+        <h2 id='mechanics-title' class='text-foreground text-3xl font-semibold text-balance sm:text-4xl'>Gameplay Mechanics &amp Experience</h2>
       </header>
-
+      <header class='space-y-3'>
+        <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Mechanics</h3>
+      </header>
       <div class='grid gap-5 lg:grid-cols-1 text-muted-foreground leading-relaxed'>
 
         <p>
-          The core mechanic uniting the entire experience is <strong class='text-foreground'>the Bound</strong>, a shared system that links both characters and influences how they fight, move, and interact with the world.
+          The core mechanic of Bound By Death is <strong class='text-foreground'>the Bound</strong>, a shared system that links both characters and influences how they fight, move, and interact with the world.
           Lyriel and Death are connected by it, which does not let them move away too much; if they do, they will start to weaken.
         </p>
 
@@ -119,7 +121,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
 
       <section class='space-y-6 pt-6' aria-labelledby='core-loop-title'>
         <header class='space-y-3'>
-          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Core Loop</h3>
+          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Gameplay Loop</h3>
         </header>
 
         <div class='grid gap-5 lg:grid-cols-2'>
@@ -150,7 +152,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
 
       <section class='space-y-6 pt-6' aria-labelledby='core-loop-title'>
         <header class='space-y-3'>
-          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Abilities</h3>
+          <h3 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Characters &amp Abilities</h3>
         </header>
 
         <p class='text-muted-foreground leading-relaxed'>
@@ -202,7 +204,7 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
             Death is a heavy, but powerful melee character. Armed with its spectral scythe, it does wide arcs against its foes that can be chained. Its taunt can attract enemies nearby, useful if you want to clear the way for your partner.
           </p>
           <table>
-            <caption class="sr-only">Overview of Lýriels abilities</caption>
+            <caption class="sr-only">Overview of Death abilities</caption>
             <thead>
               <tr>
                 <th scope="col">Ability</th>
@@ -235,7 +237,97 @@ const pageDescription = 'Bound By Death is the game done by Ravenwhisp Studios.'
           </table>
         </div>
       </section>
+      <div class="prose max-w-none overflow-x-auto">
+        <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Shadow Execution</h4>
+        <p class='text-muted-foreground leading-relaxed'>
+          This joint ability has to be activated by both characters, and requires a full death gauge to be used. The death gauge is a bar that is visible at all times on the lower side of the screen, and that is filled by exploiting shadow marks.
+        </p>
+        <p class='text-muted-foreground leading-relaxed'>
+          When launched, generates an impact that affects all foes surrounding the bound radius, the visible line that links both characters. Since the area depends on this line, positioning is key to make the most of it.
+        </p>
+        <p class='text-muted-foreground leading-relaxed'>
+          The impact that enemies receive depends on each case: enemies with 20% health are executed instantly, while others lose around 10% health. Major enemies are more resistant, losing around 5%.
+        </p>
+        <table>
+          <caption class="sr-only">Overview of Shadow execution</caption>
+          <thead>
+            <tr>
+              <th scope="col">Ability</th>
+              <th scope="col">Controller</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Shadow Execution</th>
+              <td>[X] or [Y]</td>
+              <td>Creates and expostion between both characters. To use, the bar has to be full.</td>
+            </tr>
+          </tbody>
+        </table>
+           <div class='mx-auto grid w-full place-items-center '>
+            <img
+              class='h-auto w-full object-contain drop-shadow-lg'
+              src={withBasePath('/images/bound-by-death/shadow-bar.png')}
+              alt='Lyriel and Death together, bound by swirling blue magic'
+              width='555'
+              height='71'
+              fetchpriority='high'
+              decoding='async'
+            />
+          </div>
+      </div>
+      <div class="prose max-w-none overflow-x-auto">
+        <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Targeting system</h4>
+        <p class='text-muted-foreground leading-relaxed'>
+          The aim system is different depending on the character used:
+        </p>
+        <div class='grid gap-5 lg:grid-cols-2'>
+          <Card className='bg-card'>
+            <CardContent className='space-y-4 px-6'>
+              <h3 class='text-foreground text-xl font-semibold'>Death</h3>
+              <div class='text-muted-foreground space-y-4 leading-relaxed'>
+                <p>
+                 Attacks in the direction of movement when there are no targets close; otherwise, auto aim is activated, and you can use the right stick to change target.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
+          <Card className='bg-card'>
+            <CardContent className='space-y-4 px-6'>
+              <h3 class='text-foreground text-xl font-semibold'>Lýriel</h3>
+              <p class='text-muted-foreground leading-relaxed'>
+                Manually aims with the right stick when there are no targets close; otherwise, auto aim is activated, and you can use the stick to change target. The exceptions are the charged attack and arrow volley: these have manual aim, regardless of if there are targets or not.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      <div class="prose max-w-none overflow-x-auto">
+        <h4 id='core-loop-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Healing &amp recovery</h4>
+        <div class='grid gap-5 lg:grid-cols-2'>
+         <div class='mx-auto grid w-full max-w-[18rem] place-items-center md:max-w-[18rem]'>
+            <img
+              class='h-auto w-full object-contain drop-shadow-lg'
+              src={withBasePath('/images/bound-by-death/health-orb.png')}
+              alt='Lyriel and Death together, bound by swirling blue magic'
+              width='109'
+              height='97'
+              fetchpriority='high'
+              decoding='async'
+            />
+          </div>
+          <div class='prose max-w-none overflow-x-auto'>
+            <p>
+              If a character weakens, it will faint, and will get up again after some time. This time can be reduced if the other player stands next to it. If both characters fall, it is game over.
+            </p>
+            <p>
+              You can recover health by collecting health orbs, left by the defeated enemies or found scattered within destructible objects of the scenery.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </Layout>

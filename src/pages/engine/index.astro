@@ -20,28 +20,32 @@ const groupedTopics = ENGINE_MODULE_GROUPS.map(group => ({
 
 <Layout title={pageTitle} description={pageDescription}>
   <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-5xl space-y-12 px-4 sm:px-6 lg:px-8'>
+    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
       <div class='space-y-6'>
-        <h1 class='text-foreground text-4xl font-bold'>Engine</h1>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Built From the Ground Up</p>
+        <h1 class='text-foreground text-4xl font-bold'>RavEngine</h1>
         <p class='text-muted-foreground text-lg leading-relaxed'>
-          <strong class='text-foreground'>RavEngine</strong> is a Windows-native game engine and editor built
-          around a modular <strong class='text-foreground'>Application</strong> class. Each subsystem inherits from
-          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>Module</code> and shares a common
-          lifecycle—initialization, update, pre-render, render, post-render, and shutdown—driven from a classic Win32
-          main loop where each <strong class='text-foreground'>WM_PAINT</strong> advances one full frame.
+          <strong class='text-foreground'>RavEngine</strong> is our custom Windows-native game engine and editor, built around a modular
+          <strong class='text-foreground'>Application</strong> class. Each subsystem inherits from
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>Module</code>,
+          following a shared lifecycle that handles initialization, updates, pre-rendering, rendering, post-rendering, and shutdown.
+          This process is managed by a classic Win32 main loop, where each
+          <strong class='text-foreground'>WM_PAINT</strong> message triggers a complete frame.
         </p>
+
         <p class='text-muted-foreground text-lg leading-relaxed'>
-          Rendering targets <strong class='text-foreground'>DirectX 12</strong>. Gameplay and editor data live in a
-          component-based scene graph. The default editor build composes ImGui docked windows and scene viewports; the
-          <strong class='text-foreground'>GAME_RELEASE</strong> build loads scenes and audio from
-          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>build.cfg</code> and renders directly to
-          the swap chain.
+          The engine uses <strong class='text-foreground'>DirectX 12</strong> for rendering and a component-based scene graph
+          to manage gameplay and editor data. Its editor build features dockable
+          <strong class='text-foreground'>ImGui</strong> windows and scene viewports, while the
+          <strong class='text-foreground'>GAME_RELEASE</strong> build loads scenes and audio through
+          <code class='text-foreground bg-muted rounded px-1.5 py-0.5 text-sm'>build.cfg</code>,
+          rendering directly to the swap chain.
         </p>
         <div class='mx-auto w-full max-w-3xl'>
           <BlogYouTube
             url='https://youtu.be/T8rWmCnGA00'
             title='Engine trailer — Ravenwhisp Studios custom engine'
-            caption='Engine trailer'
+            caption='Official RavEngine trailer'
           />
         </div>
       </div>
