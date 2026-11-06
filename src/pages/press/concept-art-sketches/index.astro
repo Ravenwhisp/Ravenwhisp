@@ -1,0 +1,61 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { DownloadIcon } from 'lucide-react'
+import { getPressKitAssets } from '@/utils/presskit'
+import { withBasePath } from '@/lib/paths'
+
+const pageTitle = 'Concept Art and Sketches | Press Kit | Ravenwhisp Studios'
+const pageDescription =
+  'Early designs and visual development materials.'
+const sketchesDescription =
+  "Discover the creative process behind Bound By Death through a collection of concept art, early sketches, character explorations, and visual development materials. This collection offers a glimpse into how the world of Bound By Death took shape, from the first artistic ideas to the environments, characters, and visual elements that define the final game."
+const sketchesAssets = getPressKitAssets('sketches')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <section class='py-12 sm:py-16'>
+    <div class='mx-auto max-w-5xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <div class='space-y-3'>
+        <div class='flex'>
+          <a href={withBasePath('/press')} class='text-muted-foreground text-sm hover:underline'>← Press Kit</a>
+        </div>
+        <h1 class='text-foreground text-4xl font-bold'>Concept Art &amp; Development Sketches</h1>
+        <p class='text-muted-foreground max-w-3xl text-lg'>{sketchesDescription}</p>
+      </div>
+
+      <div class='space-y-8'>
+        <div class='grid gap-6 lg:grid-cols-2'>
+          {
+            sketchesAssets.map(asset => (
+            <article class='bg-card border-border overflow-hidden rounded-xl border'>
+              <div class='relative flex min-h-56 flex-col justify-center bg-[#1d1f24] sm:min-h-72'>
+                <img
+                  src={withBasePath(asset.src)}
+                  alt={asset.alt}
+                  class='h-full w-full object-contain'
+                  loading='lazy'
+                />
+                <a
+                  class='absolute right-4 bottom-4 rounded-full shadow-lg'
+                  href={withBasePath(asset.src)}
+                  download={asset.fileName}
+                  aria-label={`Download ${asset.title}`}
+                >
+                  <DownloadIcon className='size-6' />
+                </a>
+              </div>
+
+              <div class='flex items-center justify-between px-4 py-3'>
+                <div>
+                  <h2 class='text-foreground font-medium'>{asset.title}</h2>
+                  <p class='text-muted-foreground text-sm'>{asset.fileName}</p>
+                </div>
+              </div>
+            </article>
+          ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
