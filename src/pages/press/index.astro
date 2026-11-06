@@ -16,311 +16,378 @@ const sketchesAssets = getPressKitAssets('sketches')
 const officialTrailerUrl = 'https://www.youtube.com/embed/B4YMVQ2Zsjg'
 const engineTrailerUrl = 'https://www.youtube.com/embed/T8rWmCnGA00'
 const trailerDownloadUrl = 'https://drive.google.com/file/d/1nFmBhJcRKds8dCde2PcQyHWj7UflRC7-/view?usp=sharing'
-const conceptArtDownloadUrl = '#'
 
 const pressKitItems = [
   {
-    title: 'Logo Pack',
-    shortDescription: 'Download the different logos of Ravenwhisp Studios',
-    image: withBasePath(logoPackAssets[0]?.src || '/images/placeholder.png'),
-    href: '/press/press-kit/',
-    alt: logoPackAssets[0]?.alt ?? '',
-  },
-  {
-    title: 'Visual Identity Briefing',
-    shortDescription: 'Because visual identiy is important, check ours.',
-    image: withBasePath(briefingAssets[0]?.src || '/images/placeholder.png'),
-    href: '/press/briefing/',
-    alt: briefingAssets[0]?.alt ?? '',
+    title: 'Screenshots',
+    shortDescription: 'Few images of the game and engine',
+    image: withBasePath(screenshotsAssets[0]?.src || '/images/placeholder.png'),
+    href: '/press/screenshots/',
+    alt: screenshotsAssets[0]?.alt ?? ''
   },
   {
     title: 'Key Art',
     shortDescription: 'Ilustrations of the characters, story and more',
     image: withBasePath(keyartAssets[0]?.src || '/images/placeholder.png'),
     href: '/press/key-art/',
-    alt: keyartAssets[0]?.alt ?? '',
+    alt: keyartAssets[0]?.alt ?? ''
   },
   {
-    title: 'Screenshots',
-    shortDescription: 'Few images of the game and engine',
-    image: withBasePath(screenshotsAssets[0]?.src || '/images/placeholder.png'),
-    href: '/press/screenshots/',
-    alt: screenshotsAssets[0]?.alt ?? '',
+    title: 'Logo Pack',
+    shortDescription: 'Download the different logos of Ravenwhisp Studios',
+    image: withBasePath(logoPackAssets[0]?.src || '/images/placeholder.png'),
+    href: '/press/press-kit/',
+    alt: logoPackAssets[0]?.alt ?? ''
   },
   {
     title: 'Concept Art & Sketches',
     shortDescription: 'Early designs and visual development materials.',
     image: withBasePath(sketchesAssets[0]?.src || '/images/placeholder.png'),
     href: '/press/concept-art-sketches/',
-    alt: sketchesAssets[0]?.alt ?? '',
+    alt: sketchesAssets[0]?.alt ?? ''
   }
 ]
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class='py-16 sm:py-24'>
-    <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+  <section class='bg-background border-b' aria-labelledby='press-kit-title'>
+    <div class='mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-10 lg:px-8'>
       <div class='max-w-4xl space-y-4'>
-        <h1 class='text-foreground text-4xl font-bold'>Press Kit</h1>
-        <p class='text-muted-foreground text-lg'>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Press &amp; Media</p>
+        <h1 id='press-kit-title' class='text-foreground text-4xl font-bold tracking-tight text-balance sm:text-5xl'>
+          Press Kit
+        </h1>
+        <p class='text-muted-foreground text-lg leading-relaxed'>
           Find Ravenwhisp Studios' press materials, artwork, screenshots, and studio images here.
         </p>
-        <p class='text-muted-foreground'>
+        <p class='text-muted-foreground leading-relaxed'>
           For press inquiries, partnerships, or additional materials, please contact our studio.
         </p>
       </div>
+    </div>
+  </section>
 
-      <div class='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5'>
-        {pressKitItems.map(item => (
-          <article class='bg-card border-border overflow-hidden rounded-xl border'>
-            {item.href ? (
-              <a href={item.href.startsWith('#') ? item.href : withBasePath(item.href)} class='group block'>
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  class='h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105'
-                  loading='lazy'
-                />
-                <div class='flex items-center justify-between px-4 py-4'>
-                  <div class='min-w-0'>
-                    <h2 class='text-foreground font-semibold'>{item.title}</h2>
-                    {item.shortDescription && (
-                      <p class='text-muted-foreground mt-1 text-xs leading-relaxed'>{item.shortDescription}</p>
-                    )}
-                  </div>
-                  <ExternalLinkIcon className='text-muted-foreground size-4 shrink-0' />
-                </div>
-              </a>
-            ) : (
-              <div>
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  class='h-48 w-full object-cover'
-                  loading='lazy'
-                />
-                <div class='px-4 py-4'>
-                  <h2 class='text-foreground font-semibold'>{item.title}</h2>
-                </div>
-              </div>
-            )}
-          </article>
-        ))}
-      </div>
+  <section class='pt-8 pb-16 sm:pt-12 sm:pb-24'>
+    <div class='mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8'>
+      <section id='game-information' class='space-y-5' aria-labelledby='game-information-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>The Game</p>
+          <h2
+            id='game-information-heading'
+            class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'
+          >
+            Bound By Death
+          </h2>
+        </header>
 
-      <div class='space-y-8'>
-        <section class='space-y-4' aria-labelledby='studio-info-heading'>
-          <h2 id='studio-info-heading' class='text-foreground text-3xl font-semibold'>About Ravenwhisp Studios</h2>
-          <div class='text-muted-foreground space-y-4 text-base leading-relaxed'>
-            <p>
-              <strong class='text-foreground'>Ravenwhisp Studios</strong> is an independent game development team
-              based in Barcelona, Spain, formed through the Master's Degree in Advanced Programming for AAA Video Games
-              at UPC School.
-            </p>
-            <p>
-              Bringing together programmers, artists, designers, and audio collaborators, the studio focuses on
-              creating original interactive experiences by combining technical innovation with creative vision.
-            </p>
-            <p>
-              Its work spans gameplay programming, custom engine development, level design, visual effects,
-              environment creation, and audio integration. Through collaboration and experimentation, Ravenwhisp Studios
-              aims to transform ambitious ideas into immersive and engaging game experiences.
-            </p>
-            <p>
-              <strong class='text-foreground'>Current Project:</strong> Bound By Death
-            </p>
-          </div>
-        </section>
-
-        <section class='space-y-4' aria-labelledby='factsheet-heading'>
-          <h2 id='factsheet-heading' class='text-foreground text-3xl font-semibold'>Bound By Death</h2>
-          <p class='text-muted-foreground text-xl'>Factsheet</p>
-          <div class='bg-card border-border rounded-xl border p-6'>
-            <dl class='grid gap-3 sm:grid-cols-[180px_1fr]'>
-              <dt class='text-foreground font-medium'>Developer</dt>
-              <dd class='text-muted-foreground'>Ravenwhisp Studios</dd>
-
-              <dt class='text-foreground font-medium'>Location</dt>
-              <dd class='text-muted-foreground'>Barcelona, Spain</dd>
-
-              <dt class='text-foreground font-medium'>Genre</dt>
-              <dd class='text-muted-foreground'>Action / Hack and Slash / Dark Fantasy</dd>
-
-              <dt class='text-foreground font-medium'>Perspective</dt>
-              <dd class='text-muted-foreground'>3D Top-Down</dd>
-
-              <dt class='text-foreground font-medium'>Game Mode</dt>
-              <dd class='text-muted-foreground'>Cooperative</dd>
-
-              <dt class='text-foreground font-medium'>Players</dt>
-              <dd class='text-muted-foreground'>2</dd>
-
-              <dt class='text-foreground font-medium'>Platform</dt>
-              <dd class='text-muted-foreground'>PC</dd>
-
-              <dt class='text-foreground font-medium'>Release Date</dt>
-              <dd class='text-muted-foreground'>November 7, 2026</dd>
-
-              <dt class='text-foreground font-medium'>Game Engine</dt>
-              <dd class='text-muted-foreground'>Custom In-House Engine</dd>
-
-              <dt class='text-foreground font-medium'>Website</dt>
-              <dd>
-                <a
-                  href='https://ravenwhisp.github.io/Ravenwhisp/'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  class='text-primary hover:underline'
-                >
-                  https://ravenwhisp.github.io/Ravenwhisp/
-                </a>
-              </dd>
-            </dl>
-          </div>
-
-          <div class='space-y-4'>
-            <h3 class='text-foreground text-2xl font-semibold'>Short Description</h3>
-            <p class='text-muted-foreground leading-relaxed'>
-              Bound By Death is a cooperative dark fantasy hack-and-slash adventure in which players take on the roles
-              of Lyriel, an elven heir to the throne, and Death itself.
-            </p>
-            <p class='text-muted-foreground leading-relaxed'>
-              Together, they must venture through a mysterious world filled with enemies, puzzles, and challenging
-              encounters, uncovering the secrets of the past while confronting the consequences of defying mortality.
-            </p>
-          </div>
-
-          <div class='space-y-4'>
-            <h3 class='text-foreground text-2xl font-semibold'>Key Features</h3>
-            <ul class='text-muted-foreground list-disc space-y-2 pl-5 leading-relaxed'>
-              <li><strong class='text-foreground'>Cooperative Combat:</strong> Experience an adventure built around cooperation and the combination of different abilities.</li>
-              <li><strong class='text-foreground'>Two Playable Characters:</strong> Take on the roles of Lyriel and Death, each bringing a different perspective to the journey.</li>
-              <li><strong class='text-foreground'>Hack-and-Slash Gameplay:</strong> Fight enemies through challenging encounters and combat sequences.</li>
-              <li><strong class='text-foreground'>Exploration &amp; Puzzles:</strong> Navigate mysterious environments, overcome obstacles, and uncover the secrets hidden within the world.</li>
-              <li><strong class='text-foreground'>Dark Fantasy Setting:</strong> Discover a world shaped by forgotten histories, mortality, and the struggle against fate.</li>
-            </ul>
-          </div>
-
-          <div class='space-y-4'>
-            <h3 class='text-foreground text-2xl font-semibold'>Main Characters</h3>
-            <div class='space-y-4'>
-              <div>
-                <h4 class='text-foreground text-xl font-semibold'>Lyriel</h4>
-                <p class='text-muted-foreground leading-relaxed'>
-                  The elven heir to the throne, whose journey will challenge everything she believes about life, death,
-                  and her destiny.
-                </p>
-              </div>
-              <div>
-                <h4 class='text-foreground text-xl font-semibold'>Death</h4>
-                <p class='text-muted-foreground leading-relaxed'>
-                  An enigmatic companion who embodies the inevitable force that governs the world.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class='space-y-4' aria-labelledby='press-contact-heading'>
-          <h2 id='press-contact-heading' class='text-foreground text-3xl font-semibold'>Press &amp; Media Contact</h2>
+        <div class='space-y-4'>
+          <h3 class='text-foreground text-2xl font-semibold'>Short Description</h3>
           <p class='text-muted-foreground leading-relaxed'>
-            For press enquiries, interviews, review requests, additional information, or media assets, please contact:
+            Bound By Death is a cooperative dark fantasy hack-and-slash adventure in which players take on the roles of
+            Lyriel, an elven heir to the throne, and Death itself.
           </p>
-          <div class='bg-card border-border rounded-xl border p-6'>
-            <p class='text-foreground text-lg font-medium'>Ravenwhisp Studios — Press Team</p>
-            <p class='text-muted-foreground mt-3'>Email: <span class='text-foreground font-medium'>ravenwhispstudios@gmail.com</span></p>
-            <p class='text-muted-foreground mt-3'>
-              We are happy to provide additional information, answer questions, and assist with media coverage of Bound By Death.
-            </p>
-          </div>
-        </section>
+          <p class='text-muted-foreground leading-relaxed'>
+            Together, they must venture through a mysterious world filled with enemies, puzzles, and challenging
+            encounters, uncovering the secrets of the past while confronting the consequences of defying mortality.
+          </p>
+        </div>
 
-        <section class='space-y-4' aria-labelledby='official-website-heading'>
-          <h2 id='official-website-heading' class='text-foreground text-3xl font-semibold'>Official Website</h2>
-          <div class='bg-card border-border rounded-xl border p-6'>
-            <p class='text-muted-foreground leading-relaxed'>
-              Discover more about Ravenwhisp Studios and explore the world of Bound By Death.
-            </p>
-            <p class='mt-3'>
+        <div class='bg-card border-primary/30 rounded-xl border p-6 shadow-lg'>
+          <h3 class='text-foreground mb-4 text-2xl font-semibold'>Factsheet</h3>
+          <dl class='grid gap-3 sm:grid-cols-[180px_1fr]'>
+            <dt class='text-foreground font-medium'>Developer</dt>
+            <dd class='text-muted-foreground'>Ravenwhisp Studios</dd>
+
+            <dt class='text-foreground font-medium'>Location</dt>
+            <dd class='text-muted-foreground'>Barcelona, Spain</dd>
+
+            <dt class='text-foreground font-medium'>Genre</dt>
+            <dd class='text-muted-foreground'>Action / Hack and Slash / Dark Fantasy</dd>
+
+            <dt class='text-foreground font-medium'>Perspective</dt>
+            <dd class='text-muted-foreground'>3D Top-Down</dd>
+
+            <dt class='text-foreground font-medium'>Game Mode</dt>
+            <dd class='text-muted-foreground'>Cooperative</dd>
+
+            <dt class='text-foreground font-medium'>Players</dt>
+            <dd class='text-muted-foreground'>2</dd>
+
+            <dt class='text-foreground font-medium'>Platform</dt>
+            <dd class='text-muted-foreground'>PC</dd>
+
+            <dt class='text-foreground font-medium'>Release Date</dt>
+            <dd class='text-muted-foreground'>November 7, 2026</dd>
+
+            <dt class='text-foreground font-medium'>Game Engine</dt>
+            <dd class='text-muted-foreground'>Custom In-House Engine</dd>
+
+            <dt class='text-foreground font-medium'>Website</dt>
+            <dd>
               <a
                 href='https://ravenwhisp.github.io/Ravenwhisp/'
                 target='_blank'
                 rel='noopener noreferrer'
                 class='text-primary hover:underline'
               >
-                Website: https://ravenwhisp.github.io/Ravenwhisp/
+                https://ravenwhisp.github.io/Ravenwhisp/
               </a>
-            </p>
-            <p class='text-muted-foreground mt-3'>
-              Visit our website for game information, development updates, studio news, and additional content.
-            </p>
-          </div>
-        </section>
+            </dd>
+          </dl>
+        </div>
 
-        <section class='space-y-4' aria-labelledby='trailers-heading'>
-          <h2 id='trailers-heading' class='text-foreground text-3xl font-semibold'>Trailers &amp; Video Materials</h2>
-          <p class='text-muted-foreground leading-relaxed'>
-            Explore the world of Bound By Death through our official trailers and gameplay videos.
-          </p>
-          <p class='text-muted-foreground'>
-            This section provides an overview of the game's visual direction, atmosphere, combat, and cooperative gameplay.
-          </p>
+        <div class='space-y-4'>
+          <h3 class='text-foreground text-2xl font-semibold'>Key Features</h3>
+          <ul class='text-muted-foreground list-disc space-y-2 pl-5 leading-relaxed'>
+            <li>
+              <strong class='text-foreground'>Cooperative Combat:</strong> Experience an adventure built around cooperation
+              and the combination of different abilities.
+            </li>
+            <li>
+              <strong class='text-foreground'>Two Playable Characters:</strong> Take on the roles of Lyriel and Death, each
+              bringing a different perspective to the journey.
+            </li>
+            <li>
+              <strong class='text-foreground'>Hack-and-Slash Gameplay:</strong> Fight enemies through challenging encounters
+              and combat sequences.
+            </li>
+            <li>
+              <strong class='text-foreground'>Exploration &amp; Puzzles:</strong> Navigate mysterious environments, overcome
+              obstacles, and uncover the secrets hidden within the world.
+            </li>
+            <li>
+              <strong class='text-foreground'>Dark Fantasy Setting:</strong> Discover a world shaped by forgotten histories,
+              mortality, and the struggle against fate.
+            </li>
+          </ul>
+        </div>
 
-          <div class='grid gap-6 lg:grid-cols-2'>
-            <div class='space-y-3'>
-              <h3 class='text-foreground text-2xl font-semibold'>Official Trailer</h3>
-              <p class='text-muted-foreground'>
-                Discover the world of Bound By Death, meet its protagonists, and experience the journey that awaits.
+        <div class='space-y-4'>
+          <h3 class='text-foreground text-2xl font-semibold'>Main Characters</h3>
+          <div class='space-y-4'>
+            <div>
+              <h4 class='text-foreground text-xl font-semibold'>Lyriel</h4>
+              <p class='text-muted-foreground leading-relaxed'>
+                The elven heir to the throne, whose journey will challenge everything she believes about life, death,
+                and her destiny.
               </p>
-              <div class='aspect-video overflow-hidden rounded-xl border border-border bg-[#1d1f24]'>
-                <iframe
-                  src={officialTrailerUrl}
-                  title='Official Bound By Death trailer placeholder'
-                  class='h-full w-full'
-                  loading='lazy'
-                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  allowfullscreen
-                />
-              </div>
             </div>
-
-            <div class='space-y-3'>
-              <h3 class='text-foreground text-2xl font-semibold'>Engine Trailer</h3>
-              <p class='text-muted-foreground'>
-                Take a closer look at RavEngine, Ravenwhisp Studios' custom game engine and editor.
+            <div>
+              <h4 class='text-foreground text-xl font-semibold'>Death</h4>
+              <p class='text-muted-foreground leading-relaxed'>
+                An enigmatic companion who embodies the inevitable force that governs the world.
               </p>
-              <div class='aspect-video overflow-hidden rounded-xl border border-border bg-[#1d1f24]'>
-                <iframe
-                  src={engineTrailerUrl}
-                  title='RavEngine trailer'
-                  class='h-full w-full'
-                  loading='lazy'
-                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  allowfullscreen
-                />
-              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id='studio-information' class='space-y-4' aria-labelledby='studio-info-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>The Studio</p>
+          <h2
+            id='studio-info-heading'
+            class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'
+          >
+            About Ravenwhisp Studios
+          </h2>
+        </header>
+        <div class='text-muted-foreground space-y-4 text-base leading-relaxed'>
+          <p>
+            <strong class='text-foreground'>Ravenwhisp Studios</strong> is an independent game development team based in Barcelona,
+            Spain, formed through the Master's Degree in Advanced Programming for AAA Video Games at UPC School.
+          </p>
+          <p>
+            Bringing together programmers, artists, designers, and audio collaborators, the studio focuses on creating
+            original interactive experiences by combining technical innovation with creative vision.
+          </p>
+          <p>
+            Its work spans gameplay programming, custom engine development, level design, visual effects, environment
+            creation, and audio integration. Through collaboration and experimentation, Ravenwhisp Studios aims to
+            transform ambitious ideas into immersive and engaging game experiences.
+          </p>
+          <p>
+            <strong class='text-foreground'>Current Project:</strong> Bound By Death
+          </p>
+        </div>
+      </section>
+
+      <section id='trailers' class='space-y-5' aria-labelledby='trailers-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>See the Journey</p>
+          <h2 id='trailers-heading' class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'>
+            Trailers &amp; Video Materials
+          </h2>
+        </header>
+        <p class='text-muted-foreground leading-relaxed'>
+          Explore the world of Bound By Death through our official trailers and gameplay videos.
+        </p>
+        <p class='text-muted-foreground'>
+          This section provides an overview of the game's visual direction, atmosphere, combat, and cooperative
+          gameplay.
+        </p>
+
+        <div class='grid gap-6 lg:grid-cols-2'>
+          <div class='space-y-3'>
+            <h3 class='text-foreground text-2xl font-semibold'>Official Trailer</h3>
+            <p class='text-muted-foreground'>
+              Discover the world of Bound By Death, meet its protagonists, and experience the journey that awaits.
+            </p>
+            <div class='border-border bg-muted aspect-video overflow-hidden rounded-xl border'>
+              <iframe
+                src={officialTrailerUrl}
+                title='Official Bound By Death trailer'
+                class='h-full w-full'
+                loading='lazy'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                allowfullscreen></iframe>
             </div>
           </div>
 
           <div class='space-y-3'>
-            <h3 class='text-foreground text-2xl font-semibold'>Downloadable Video Assets</h3>
-            <p class='text-muted-foreground leading-relaxed'>
-              For media coverage, video production, and promotional purposes, high-quality versions of our trailers are available for download.
-            </p>
+            <h3 class='text-foreground text-2xl font-semibold'>Engine Trailer</h3>
             <p class='text-muted-foreground'>
-              The archive contains the official trailer video files in high-quality formats for press and promotional use.
+              Take a closer look at RavEngine, Ravenwhisp Studios' custom game engine and editor.
             </p>
-            <a
-              href={trailerDownloadUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-              class={buttonVariants({ size: 'lg' })}
-            >
-              Download All Trailers (.ZIP)
+            <div class='border-border bg-muted aspect-video overflow-hidden rounded-xl border'>
+              <iframe
+                src={engineTrailerUrl}
+                title='RavEngine trailer'
+                class='h-full w-full'
+                loading='lazy'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class='space-y-3'>
+          <h3 class='text-foreground text-2xl font-semibold'>Downloadable Video Assets</h3>
+          <p class='text-muted-foreground leading-relaxed'>
+            For media coverage, video production, and promotional purposes, high-quality versions of our trailers are
+            available for download.
+          </p>
+          <p class='text-muted-foreground'>
+            The archive contains the official trailer video files in high-quality formats for press and promotional use.
+          </p>
+          <a href={trailerDownloadUrl} target='_blank' rel='noopener noreferrer' class={buttonVariants({ size: 'lg' })}>
+            Download All Trailers (.ZIP)
+          </a>
+        </div>
+      </section>
+
+      <section id='press-assets' class='space-y-5' aria-labelledby='press-assets-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Media Resources</p>
+          <h2
+            id='press-assets-heading'
+            class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'
+          >
+            Press Assets
+          </h2>
+        </header>
+        <div class='grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {
+            pressKitItems.map(item => (
+              <article class='bg-card border-primary/30 overflow-hidden rounded-xl border shadow-lg'>
+                <a href={withBasePath(item.href)} class='group flex h-full flex-col'>
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    class='h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105'
+                    loading='lazy'
+                  />
+                  <div class='flex flex-1 items-start justify-between gap-3 px-4 py-4'>
+                    <div class='min-w-0'>
+                      <h3 class='text-foreground font-semibold'>{item.title}</h3>
+                      <p class='text-muted-foreground mt-2 text-sm leading-relaxed'>{item.shortDescription}</p>
+                    </div>
+                    <ExternalLinkIcon className='text-muted-foreground size-4 shrink-0' />
+                  </div>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section id='briefing' class='space-y-5' aria-labelledby='briefing-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Studio Resources</p>
+          <h2 id='briefing-heading' class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'>
+            Briefing
+          </h2>
+        </header>
+        <article class='bg-card border-primary/30 overflow-hidden rounded-xl border shadow-lg sm:flex'>
+          <img
+            src={withBasePath(briefingAssets[0]?.src || '/images/placeholder.png')}
+            alt={briefingAssets[0]?.alt ?? ''}
+            class='h-48 w-full object-cover sm:h-auto sm:w-64 sm:shrink-0'
+            loading='lazy'
+          />
+          <div class='flex flex-1 flex-col items-start justify-center gap-4 p-6'>
+            <p class='text-muted-foreground leading-relaxed'>Because visual identiy is important, check ours.</p>
+            <a href={withBasePath('/press/briefing/')} class={buttonVariants({ variant: 'outline' })}>
+              Visual Identity Briefing
             </a>
           </div>
-        </section>
-      </div>
+        </article>
+      </section>
+
+      <section id='press-contact' class='space-y-4' aria-labelledby='press-contact-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Get in Touch</p>
+          <h2
+            id='press-contact-heading'
+            class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'
+          >
+            Press Contact
+          </h2>
+        </header>
+        <p class='text-muted-foreground leading-relaxed'>
+          For press enquiries, interviews, review requests, additional information, or media assets, please contact:
+        </p>
+        <div class='bg-card border-primary/30 rounded-xl border p-6 shadow-lg'>
+          <p class='text-foreground text-lg font-medium'>Ravenwhisp Studios — Press Team</p>
+          <p class='text-muted-foreground mt-3'>
+            Email: <span class='text-foreground font-medium'>ravenwhispstudios@gmail.com</span>
+          </p>
+          <p class='text-muted-foreground mt-3'>
+            We are happy to provide additional information, answer questions, and assist with media coverage of Bound By
+            Death.
+          </p>
+        </div>
+      </section>
+
+      <section id='official-website' class='space-y-4' aria-labelledby='official-website-heading'>
+        <header class='space-y-2'>
+          <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Visit Ravenwhisp</p>
+          <h2
+            id='official-website-heading'
+            class='text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl'
+          >
+            Official Website
+          </h2>
+        </header>
+        <div class='bg-card border-primary/30 rounded-xl border p-6 shadow-lg'>
+          <p class='text-muted-foreground leading-relaxed'>
+            Discover more about Ravenwhisp Studios and explore the world of Bound By Death.
+          </p>
+          <p class='mt-3'>
+            <a
+              href='https://ravenwhisp.github.io/Ravenwhisp/'
+              target='_blank'
+              rel='noopener noreferrer'
+              class='text-primary hover:underline'
+            >
+              Website: https://ravenwhisp.github.io/Ravenwhisp/
+            </a>
+          </p>
+          <p class='text-muted-foreground mt-3'>
+            Visit our website for game information, development updates, studio news, and additional content.
+          </p>
+        </div>
+      </section>
     </div>
   </section>
 </Layout>

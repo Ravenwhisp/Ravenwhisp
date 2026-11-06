@@ -1,34 +1,38 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { buttonVariants } from '@/components/ui/button'
 import { DownloadIcon } from 'lucide-react'
 import { getPressKitAssets } from '@/utils/presskit'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Screenshots | Press Kit | Ravenwhisp Studios'
-const pageDescription =
-  'In-game screenshots of Bound By Death for press, media coverage, and promotional use.'
+const pageDescription = 'In-game screenshots of Bound By Death for press, media coverage, and promotional use.'
 const screenshotsDescription =
   "A collection of in-game screenshots showcasing Bound By Death during development. Featuring gameplay moments, environments, menu interfaces, and other elements of the player experience, these images offer a closer look at the game's visual direction and current state of development. Available for press, media coverage, and promotional use."
 const screenshotAssets = getPressKitAssets('screenshots')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class='py-12 sm:py-16'>
-    <div class='mx-auto max-w-5xl space-y-8 px-4 sm:px-6 lg:px-8'>
-      <div class='space-y-3'>
-        <div class='flex'>
-          <a href={withBasePath('/press')} class='text-muted-foreground text-sm hover:underline'>← Press Kit</a>
-        </div>
-        <h1 class='text-foreground text-4xl font-bold'>Screenshots</h1>
-        <p class='text-muted-foreground max-w-3xl text-lg'>{screenshotsDescription}</p>
+  <section class='bg-background border-b' aria-labelledby='screenshots-title'>
+    <div class='mx-auto max-w-7xl space-y-5 px-4 py-8 sm:px-6 md:py-10 lg:px-8'>
+      <div class='space-y-4'>
+        <a href={withBasePath('/press')} class='text-muted-foreground text-sm hover:underline'>← Press Kit</a>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Bound By Death</p>
+        <h1 id='screenshots-title' class='text-foreground text-4xl font-bold tracking-tight text-balance sm:text-5xl'>
+          Screenshots
+        </h1>
+        <p class='text-muted-foreground max-w-3xl text-lg leading-relaxed'>{screenshotsDescription}</p>
       </div>
+    </div>
+  </section>
 
-      <div class='space-y-8'>
-        <div class='grid gap-6 lg:grid-cols-2'>
-          {
-            screenshotAssets.map(asset => (
-            <article class='bg-card border-border overflow-hidden rounded-xl border'>
-              <div class='relative flex min-h-56 flex-col justify-center bg-[#1d1f24] sm:min-h-72'>
+  <section class='pt-8 pb-16 sm:pt-12 sm:pb-24' aria-label='Screenshots gallery'>
+    <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      <div class='grid gap-6 lg:grid-cols-2'>
+        {
+          screenshotAssets.map(asset => (
+            <article class='bg-card border-primary/30 overflow-hidden rounded-xl border shadow-lg'>
+              <div class='bg-muted relative flex min-h-56 flex-col justify-center sm:min-h-72'>
                 <img
                   src={withBasePath(asset.src)}
                   alt={asset.alt}
@@ -36,7 +40,7 @@ const screenshotAssets = getPressKitAssets('screenshots')
                   loading='lazy'
                 />
                 <a
-                  class='absolute right-4 bottom-4 rounded-full shadow-lg'
+                  class={`${buttonVariants({ variant: 'outline', size: 'icon' })} absolute right-4 bottom-4 rounded-full shadow-lg`}
                   href={withBasePath(asset.src)}
                   download={asset.fileName}
                   aria-label={`Download ${asset.title}`}
@@ -53,8 +57,7 @@ const screenshotAssets = getPressKitAssets('screenshots')
               </div>
             </article>
           ))
-          }
-        </div>
+        }
       </div>
     </div>
   </section>

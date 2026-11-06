@@ -1,60 +1,59 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { buttonVariants } from '@/components/ui/button'
 import { DownloadIcon } from 'lucide-react'
 import { getPressKitAssets } from '@/utils/presskit'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Visual Identity Briefing | Press Kit | Ravenwhisp Studios'
-const pageDescription =
-  'Ravenwhisp Studios brand and visual identity briefing slides for press, partners, and media.'
+const pageDescription = 'Ravenwhisp Studios brand and visual identity briefing slides for press, partners, and media.'
 const briefingAssets = getPressKitAssets('briefing')
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class='py-12 sm:py-16'>
-    <div class='mx-auto max-w-5xl space-y-8 px-4 sm:px-6 lg:px-8'>
-      <div class='space-y-3'>
-        <div class='flex'>
-          <a href={withBasePath('/press')} class='text-muted-foreground text-sm hover:underline'>← Press Kit</a>
-        </div>
-        <h1 class='text-foreground text-4xl font-bold'>Visual Identity Briefing</h1>
-        <p class='text-muted-foreground max-w-3xl text-lg'>
-          A visual guide to Ravenwhisp Studios’ brand identity and visual language. Explore our logos, colour palette, typography, graphic motifs, and usage guidelines.
-          Individual slides are available for download for press, media, and partner use.
+  <section class='bg-background border-b' aria-labelledby='briefing-title'>
+    <div class='mx-auto max-w-7xl space-y-5 px-4 py-8 sm:px-6 md:py-10 lg:px-8'>
+      <div class='space-y-4'>
+        <a href={withBasePath('/press')} class='text-muted-foreground text-sm hover:underline'>← Press Kit</a>
+        <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Ravenwhisp Studios</p>
+        <h1 id='briefing-title' class='text-foreground text-4xl font-bold tracking-tight text-balance sm:text-5xl'>
+          Visual Identity Briefing
+        </h1>
+        <p class='text-muted-foreground max-w-3xl text-lg leading-relaxed'>
+          A visual guide to Ravenwhisp Studios’ brand identity and visual language. Explore our logos, colour palette,
+          typography, graphic motifs, and usage guidelines. Individual slides are available for download for press,
+          media, and partner use.
         </p>
       </div>
+    </div>
+  </section>
 
-      <div class='space-y-8'>
-        {
-          briefingAssets.map(asset => (
-            <article class='bg-card border-border overflow-hidden rounded-xl border'>
-              <div class='relative flex min-h-48 flex-col justify-center bg-[#1d1f24] sm:min-h-64'>
-                <img
-                  src={withBasePath(asset.src)}
-                  alt={asset.alt}
-                  class='h-full w-full object-contain'
-                  loading='lazy'
-                />
-                <a
-                  class='absolute right-4 bottom-4 rounded-full shadow-lg'
-                  href={withBasePath(asset.src)}
-                  download={asset.fileName}
-                  aria-label={`Download ${asset.title}`}
-                >
-                  <DownloadIcon className='size-6' />
-                </a>
-              </div>
+  <section class='pt-8 pb-16 sm:pt-12 sm:pb-24' aria-label='Visual identity briefing slides'>
+    <div class='mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8'>
+      {
+        briefingAssets.map(asset => (
+          <article class='bg-card border-primary/30 overflow-hidden rounded-xl border shadow-lg'>
+            <div class='bg-muted relative flex min-h-48 flex-col justify-center sm:min-h-64'>
+              <img src={withBasePath(asset.src)} alt={asset.alt} class='h-full w-full object-contain' loading='lazy' />
+              <a
+                class={`${buttonVariants({ variant: 'outline', size: 'icon' })} absolute right-4 bottom-4 rounded-full shadow-lg`}
+                href={withBasePath(asset.src)}
+                download={asset.fileName}
+                aria-label={`Download ${asset.title}`}
+              >
+                <DownloadIcon className='size-6' />
+              </a>
+            </div>
 
-              <div class='flex items-center justify-between px-4 py-3'>
-                <div>
-                  <h2 class='text-foreground font-medium'>{asset.title}</h2>
-                  <p class='text-muted-foreground text-sm'>{asset.fileName}</p>
-                </div>
+            <div class='flex items-center justify-between px-4 py-3'>
+              <div>
+                <h2 class='text-foreground font-medium'>{asset.title}</h2>
+                <p class='text-muted-foreground text-sm'>{asset.fileName}</p>
               </div>
-            </article>
-          ))
-        }
-      </div>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 </Layout>
