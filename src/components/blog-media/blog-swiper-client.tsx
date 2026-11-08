@@ -19,6 +19,7 @@ export type BlogSwiperSlide = {
 
 type Props = {
   slides: BlogSwiperSlide[]
+  uniformLayout?: boolean
 }
 
 type SwiperControls = {
@@ -26,8 +27,12 @@ type SwiperControls = {
   slideNext: () => void
 }
 
-export default function BlogSwiperClient({ slides }: Props) {
+export default function BlogSwiperClient({ slides, uniformLayout = false }: Props) {
   const [swiperInstance, setSwiperInstance] = useState<SwiperControls | null>(null)
+
+  const figureClassName = uniformLayout
+    ? 'flex h-full flex-col space-y-2 p-3 sm:p-4'
+    : 'space-y-3 p-3 sm:p-4'
 
   const slidePrev = () => {
     swiperInstance?.slidePrev()
@@ -38,7 +43,9 @@ export default function BlogSwiperClient({ slides }: Props) {
   }
 
   return (
-    <div className='blog-swiper-wrap border-border bg-card my-8 overflow-hidden rounded-2xl border shadow-sm'>
+    <div
+      className={`blog-swiper-wrap border-border bg-card overflow-hidden rounded-2xl border shadow-sm ${uniformLayout ? 'my-0' : 'my-8'}`}
+    >
       <div className='relative'>
         <Swiper
           modules={[A11y, Pagination]}
@@ -46,22 +53,30 @@ export default function BlogSwiperClient({ slides }: Props) {
           pagination={{ clickable: true }}
           slidesPerView={1}
           spaceBetween={16}
-          className='blog-swiper'
+          className={uniformLayout ? 'blog-swiper blog-swiper-uniform' : 'blog-swiper'}
         >
           {slides.map(slide => (
             <SwiperSlide key={slide.src}>
-              <figure className='space-y-3 p-3 sm:p-4'>
-                <div className='overflow-hidden rounded-2xl'>
+              <figure className={figureClassName}>
+                <div className={uniformLayout ? 'bg-muted aspect-video overflow-hidden rounded-2xl' : 'overflow-hidden rounded-2xl'}>
                   <img
                     src={withBasePath(slide.src)}
                     alt={slide.alt}
-                    className='h-auto w-full object-cover'
+                    className={uniformLayout ? 'h-full w-full object-contain' : 'h-auto w-full object-cover'}
                     loading='lazy'
                     decoding='async'
                   />
                 </div>
                 {slide.caption && (
-                  <figcaption className='text-muted-foreground px-1 text-sm leading-6'>{slide.caption}</figcaption>
+                  <figcaption
+                    className={
+                      uniformLayout
+                        ? 'text-muted-foreground line-clamp-2 h-12 px-1 text-sm leading-6'
+                        : 'text-muted-foreground px-1 text-sm leading-6'
+                    }
+                  >
+                    {slide.caption}
+                  </figcaption>
                 )}
               </figure>
             </SwiperSlide>
@@ -72,7 +87,7 @@ export default function BlogSwiperClient({ slides }: Props) {
           type='button'
           onClick={slidePrev}
           aria-label='Previous slide'
-          className='bg-background/90 text-foreground hover:bg-background border-border absolute top-1/2 left-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm transition lg:flex'
+          className='bg-background/90 text-foreground hover:bg-background border-border absolute top-1/2 left-4 z-10 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm transition lg:flex'
         >
           <ChevronLeftIcon className='size-5' />
         </button>
@@ -81,7 +96,7 @@ export default function BlogSwiperClient({ slides }: Props) {
           type='button'
           onClick={slideNext}
           aria-label='Next slide'
-          className='bg-background/90 text-foreground hover:bg-background border-border absolute top-1/2 right-4 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm transition lg:flex'
+          className='bg-background/90 text-foreground hover:bg-background border-border absolute top-1/2 right-4 z-10 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border shadow-sm transition lg:flex'
         >
           <ChevronRightIcon className='size-5' />
         </button>

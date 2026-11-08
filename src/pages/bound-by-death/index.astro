@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import BlogYouTube from '@/components/blog-media/blog-youtube.astro'
+import BlogSwiper from '@/components/blog-media/blog-swiper.astro'
 import { withBasePath } from '@/lib/paths'
 
 const pageTitle = 'Bound By Death'
@@ -75,6 +76,162 @@ const deathAbilities = [
     controlNote: '',
     image: 'death-dash.gif',
     imageAlt: 'Death dashing through enemies'
+  }
+]
+
+const environmentLevels = [
+  {
+    number: '01',
+    name: 'The Castle Halls',
+    tagline: 'A familiar place turned into a battlefield.',
+    description: [
+      'The journey begins in the castle halls, the place Lýriel has called home throughout her life. Once familiar and well-preserved, these corridors are now filled with human enemies standing in her way.',
+      "This level introduces the player to the castle's architecture and atmosphere, balancing the warmth of torchlight with the cold glow of moonlight filtering through its windows."
+    ],
+    visualIdentity: [
+      'The brightest environment of the three levels.',
+      'Moonlight and torches illuminate the halls.',
+      'Warmer colour palette.',
+      'Well-preserved architecture and surroundings.'
+    ],
+    references: [
+      {
+        src: '/images/bound-by-death/enviroment-before/level1-corridor-outside-lyriels-room.png',
+        alt: 'Early corridor plan and blockout marked with moonlight and a broken bridge.',
+        caption: 'An early corridor layout exploring moonlight, stairs, and a broken bridge.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-before/level1-first-puzzle.png',
+        alt: 'Top-down puzzle layout and early three-dimensional blockout.',
+        caption: 'The first puzzle, shown as a layout sketch and a simple blockout.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-before/level1-lyriels-room.png',
+        alt: 'Early layout sketches and blockout for Lýriel’s room.',
+        caption: 'Development sketches for Lýriel’s room inside the castle.'
+      }
+    ],
+    screenshots: [
+      {
+        src: '/images/bound-by-death/enviroment-after/level1-corridor-outside-lyriels-room-after.png',
+        alt: 'A finished stone corridor beside a purple-lit water channel.',
+        caption: 'The completed corridor outside Lýriel’s room.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level1-first-puzzle-after.png',
+        alt: 'The finished castle puzzle area viewed from above.',
+        caption: 'The first puzzle area in its in-game environment.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level1-thrones-room.png',
+        alt: 'The castle throne room with its raised throne and red carpet.',
+        caption: 'The throne room, lit by torches along the hall.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level1-puzzle-zone.png',
+        alt: 'An overhead view of the completed castle puzzle zone.',
+        caption: 'A wider view of the castle’s puzzle zone.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level1-lyriels-room-after.png',
+        alt: 'Lýriel’s finished room with its bed and warm interior lighting.',
+        caption: 'Lýriel’s room, connected to the surrounding castle halls.'
+      }
+    ]
+  },
+  {
+    number: '02',
+    name: 'The Catacombs',
+    tagline: 'Deeper into the castle, closer to Death.',
+    description: [
+      'Beneath the castle lies its forgotten catacombs, a place Lýriel has never ventured into before. Unlike the halls above, these underground chambers have been touched by Death, and their inhabitants are no longer among the living.',
+      'Here, Lýriel faces the undead as she explores a deteriorating environment filled with a more threatening atmosphere. The deeper she goes, the further she moves away from everything she once knew.'
+    ],
+    visualIdentity: [
+      'Underground dungeons and narrow chambers.',
+      'Darker environments with greenish tones.',
+      'More deteriorated architecture and surroundings.',
+      'A more hostile and oppressive atmosphere.'
+    ],
+    references: [
+      {
+        src: '/images/bound-by-death/enviroment-before/level2-enemies-zone.png',
+        alt: 'Early catacomb enemy-zone layout and three-dimensional blockout.',
+        caption: 'The planned enemy zone, shown as a layout and simple blockout.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-before/level2-references-full-level.png',
+        alt: 'Catacomb level plan with visual references for its chambers and atmosphere.',
+        caption: 'Level-wide planning and visual references for the catacombs.'
+      }
+    ],
+    screenshots: [
+      {
+        src: '/images/bound-by-death/enviroment-after/level2-enemies-zone-after.png',
+        alt: 'A green-lit catacomb chamber with enemies and stone platforms.',
+        caption: 'The completed enemy zone in the catacombs.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level2-elevator.png',
+        alt: 'A wooden lift and platforms inside the dark catacombs.',
+        caption: 'The elevator route through the underground chambers.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level2-full-level.png',
+        alt: 'A wide overview of the multi-level catacomb environment.',
+        caption: 'An overview of the completed catacomb level.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level2-waterfall.png',
+        alt: 'A stone bridge and waterfall inside the catacombs.',
+        caption: 'A water-filled passage deeper beneath the castle.'
+      }
+    ]
+  },
+  {
+    number: '03',
+    name: 'The Ritual Chamber',
+    tagline: 'The place where everything began.',
+    description: [
+      'At the heart of the castle lies the chamber where the ritual that bound Lýriel and Death together took place. Surrounded by damned souls, this vast pentagonal space holds the answers behind their connection.',
+      'Its atmosphere stands apart from the previous environments. Although brighter, its colder tones and distinctive visual identity create an unsettling sense of something beyond the ordinary.',
+      'This is where Lýriel faces the final boss and the truth behind the ritual is finally revealed.'
+    ],
+    visualIdentity: [
+      'A vast, pentagonal-shaped chamber.',
+      'Surrounded by damned souls.',
+      'A distinct visual atmosphere from the previous levels.',
+      'Brighter lighting with colder colour tones.'
+    ],
+    references: [
+      {
+        src: '/images/bound-by-death/enviroment-before/level3-entrance.png',
+        alt: 'Early sketch of the ritual chamber entrance.',
+        caption: 'An early drawing exploring the chamber’s entrance and lighting.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-before/level3-fight-area.png',
+        alt: 'Pentagonal fight-area plan with ritual points marked around the center.',
+        caption: 'A plan for the pentagonal arena and its ritual layout.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-before/level3-references-full-level.png',
+        alt: 'Ritual chamber layout and visual references for its environment.',
+        caption: 'Level-wide planning and visual references for the ritual chamber.'
+      }
+    ],
+    screenshots: [
+      {
+        src: '/images/bound-by-death/enviroment-after/level3-entrance.png',
+        alt: 'The completed entrance to the ritual chamber above a blue-lit expanse.',
+        caption: 'The final approach to the ritual chamber.'
+      },
+      {
+        src: '/images/bound-by-death/enviroment-after/level3-fight-area.png',
+        alt: 'The completed pentagonal ritual chamber surrounded by blue light.',
+        caption: 'The final boss arena and its distinctive pentagonal layout.'
+      }
+    ]
   }
 ]
 ---
@@ -529,13 +686,45 @@ const deathAbilities = [
 
       <section class='space-y-5' aria-labelledby='environment-title'>
         <h3 id='environment-title' class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>Environment</h3>
-        <div class='space-y-4 text-muted-foreground leading-relaxed'>
-          <p>
-            The game takes place within the royal castle of Lýndoril, capital of the elven kingdom—the world Lýriel knows, or believed she knew. Its locations draw on dark fantasy and medieval castle architecture, especially in the upper floors.
-          </p>
-          <p>
-            As the heroes descend through the castle, the atmosphere grows darker and clues about the kingdom’s history and the events of the last 20 years emerge.
-          </p>
+        <div class='space-y-10'>
+          {
+            environmentLevels.map(level => (
+              <article class='scroll-mt-24 space-y-6 border-b border-border pb-10 last:border-b-0 last:pb-0'>
+                <header class='space-y-2'>
+                  <p class='text-primary text-sm font-semibold tracking-widest uppercase'>Level {level.number}</p>
+                  <h4 class='text-foreground text-2xl font-semibold text-balance sm:text-3xl'>{level.name}</h4>
+                  <p class='text-primary mb-0 text-lg font-medium italic'>{level.tagline}</p>
+                </header>
+
+                <div class='space-y-4 text-muted-foreground leading-relaxed'>
+                  {level.description.map(paragraph => <p>{paragraph}</p>)}
+                </div>
+
+                <div class='border-border bg-card rounded-xl border p-5 shadow-sm sm:p-6'>
+                  <h5 class='text-foreground mt-0 mb-3 text-lg font-semibold'>Visual Identity</h5>
+                  <ul class='text-muted-foreground mb-0 list-disc space-y-2 pl-5'>
+                    {level.visualIdentity.map(item => <li>{item}</li>)}
+                  </ul>
+                </div>
+
+                <div class='grid gap-6 xl:grid-cols-2'>
+                  <section class='min-w-0 space-y-3' aria-label={`Level ${level.number} references and development`}>
+                    <h5 class='text-primary mb-0 text-sm font-semibold tracking-widest uppercase'>
+                      BEFORE — References &amp; Development
+                    </h5>
+                    <BlogSwiper slides={level.references} uniformLayout />
+                  </section>
+
+                  <section class='min-w-0 space-y-3' aria-label={`Level ${level.number} in-game environment`}>
+                    <h5 class='text-primary mb-0 text-sm font-semibold tracking-widest uppercase'>
+                      AFTER — In-Game Environment
+                    </h5>
+                    <BlogSwiper slides={level.screenshots} uniformLayout />
+                  </section>
+                </div>
+              </article>
+            ))
+          }
         </div>
       </section>
 

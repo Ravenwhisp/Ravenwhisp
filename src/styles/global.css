@@ -292,6 +292,11 @@
   opacity: 1;
 }
 
+.blog-swiper-uniform .swiper-pagination {
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 button {
   @apply cursor-pointer;
 }

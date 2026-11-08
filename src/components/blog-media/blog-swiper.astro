@@ -3,9 +3,10 @@ import BlogSwiperClient, { type BlogSwiperSlide } from './blog-swiper-client'
 
 type Props = {
   slides: BlogSwiperSlide[]
+  uniformLayout?: boolean
 }
 
-const { slides } = Astro.props as Props
+const { slides, uniformLayout = false } = Astro.props as Props
 ---
 
-<BlogSwiperClient client:only='react' slides={slides} />
+<BlogSwiperClient client:only='react' slides={slides} uniformLayout={uniformLayout} />
